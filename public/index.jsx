@@ -1,7 +1,7 @@
 import hydrate from 'preact-iso/hydrate';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
 
-import pageinfo from './components/pageinfo.json';
+import { PageInfo } from './components/pageinfo.jsx';
 import './style.scss';
 
 export function App() {
@@ -15,12 +15,7 @@ export function App() {
 
   return (
     <div class="container">
-      <h1>{appTitle}</h1>
-      {pageinfo.text.map((line) => {
-        return (
-          <p>{line}</p>
-        );
-      })}
+      <PageInfo title={appTitle} />
     </div>
   );
 }

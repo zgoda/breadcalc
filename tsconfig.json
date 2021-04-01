@@ -16,7 +16,8 @@
     "downlevelIteration": true
   },
   "include": [
-    "node_modules/wmr/types.d.ts"
+    "node_modules/wmr/types.d.ts",
+    "**/*",
   ],
   "typeAcquisition": {
     "enable": true
