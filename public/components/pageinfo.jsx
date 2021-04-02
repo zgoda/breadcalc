@@ -4,7 +4,7 @@ function PageInfo({ title }) {
   return (
     <>
       <h1>{title}</h1>
-      {json.text.map((line) => (<p>{line}</p>))}
+      {json.text.map((line) => (<p key={line}>{line}</p>))}
     </>
   );
 }
