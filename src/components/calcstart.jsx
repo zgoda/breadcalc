@@ -1,6 +1,6 @@
-import { HelpCircle } from 'preact-feather';
 import { useState } from 'preact/hooks';
 
+import { HelpButton } from './misc';
 import { round } from '../utils/numbers';
 import fieldHelp from './fieldhelp.json';
 
@@ -40,26 +40,16 @@ function CalcStart() {
                 type="number"
                 inputMode="numeric"
                 value={flourTotal}
-                // @ts-ignore
                 onInput={(e) => setFlourTotal(e.target.value)}
               />
             </div>
             <div class="M3">
-              <button
-                class="button button-clear"
-                type="button"
-                aria-label={fieldHelp.flourTotal}
-                data-microtip-position="bottom"
-                data-microtip-size="medium"
-                role="tooltip"
-              >
-                <HelpCircle />
-              </button>
+              <HelpButton text={fieldHelp.flourTotal} />
             </div>
           </div>
           <div class="row X--middle">
             <div class="M3">
-              <label>Całkowita ilość wody (g, ml)</label>
+              <label for="input-waterTotal">Całkowita ilość wody (g, ml)</label>
             </div>
             <div class="M6">
               <div class="row X-middle">
@@ -70,12 +60,11 @@ function CalcStart() {
                     step="1"
                     inputMode="numeric"
                     value={Math.round(waterTotal)}
-                    // @ts-ignore
                     onInput={(e) => calcWater(e.target.value, 'total')}
                   />
                 </div>
                 <div class="S4">
-                  <label>lub nawodnienie w %</label>
+                  <label for="input-waterPc">lub nawodnienie w %</label>
                 </div>
                 <div class="S4">
                 <input
@@ -84,11 +73,13 @@ function CalcStart() {
                   step="0.1"
                   inputMode="numeric"
                   value={round(waterPc, 1)}
-                  // @ts-ignore
                   onInput={(e) => calcWater(e.target.value, 'percent')}
                 />
                 </div>
               </div>
+            </div>
+            <div class="M3">
+              <HelpButton text={fieldHelp.water} />
             </div>
           </div>
         </fieldset>

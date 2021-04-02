@@ -1,3 +1,4 @@
 {
-  "flourTotal": "Całkowita ilość mąki i \"skrobionośnych\" dodatków do ciasta (płatki, ziarno) - w gramach."
+  "flourTotal": "Całkowita ilość mąki i \"skrobionośnych\" dodatków do ciasta (płatki, ziarno) - w gramach.",
+  "water": "Ilość wody w cieście. Możesz podać wagę / objętość lub nawodnienie w %, druga wartość zostanie wyliczona automatycznie."
 }

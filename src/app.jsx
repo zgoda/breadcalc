@@ -2,6 +2,7 @@ import { useLang, useTitle, useMeta } from 'hoofd/preact';
 
 import { PageInfo } from './components/pageinfo';
 import { CalcStart } from './components/calcstart';
+import { FlourIngredients } from './components/flour';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
     <div class="container">
       <PageInfo title={appTitle} />
       <CalcStart />
+      <FlourIngredients />
     </div>
   );
 }
