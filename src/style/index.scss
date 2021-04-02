@@ -26,7 +26,7 @@ $color-quinary: #E76F51 !default;
 
 @import '../node_modules/microtip/microtip';
 
-@import './style/fonts.scss';
+@import './fonts.scss';
 
 :root {
   --microtip-font-size: 1rem;

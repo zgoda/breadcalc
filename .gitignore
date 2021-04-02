@@ -1,5 +1,10 @@
-.cache
 node_modules
 package-lock.json
-dist
-stats.html
+/build
+/*.log
+size-plugin.json
+
+# include VS Code debugging configuration
+!.vscode/
+.vscode/*
+!.vscode/launch.json
