@@ -52,7 +52,6 @@
   "dependencies": {
     "flex-box-grid": "^1.0.0",
     "hoofd": "^1.2.2",
-    "microtip": "^0.2.2",
     "milligram": "^1.4.1",
     "preact": "^10.5.13",
     "preact-feather": "^4.2.1",

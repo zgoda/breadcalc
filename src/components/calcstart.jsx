@@ -17,6 +17,11 @@ function CalcStart() {
   const [saltTotal, setSaltTotal] = useState(0);
   const [saltPc, setSaltPc] = useState(0);
 
+  const inputs = new Map();
+  ['flourTotal', 'waterTotal', 'waterPc', 'saltTotal', 'saltPc'].forEach((item) => {
+    inputs.set(item, `input-${item}`);
+  });
+
   const setFlour = ((e) => {
     e.preventDefault();
     const amount = Number.parseFloat(e.target.value);
@@ -61,11 +66,11 @@ function CalcStart() {
         <fieldset>
           <div class="row X--middle">
             <div class="M3">
-              <label for="input-flourTotal">Całkowita ilość mąki (g)</label>
+              <label for={inputs.get('flourTotal')}>Całkowita ilość mąki (g)</label>
             </div>
             <div class="M6">
               <input
-                id="input-flourTotal"
+                id={inputs.get('flourTotal')}
                 type="number"
                 inputMode="numeric"
                 value={flourTotal}
@@ -78,13 +83,13 @@ function CalcStart() {
           </div>
           <div class="row X--middle">
             <div class="M3">
-              <label for="input-waterTotal">Całkowita ilość wody (g, ml)</label>
+              <label for={inputs.get('waterTotal')}>Całkowita ilość wody (g, ml)</label>
             </div>
             <div class="M6">
               <div class="row X--middle">
                 <div class="S4">
                   <input
-                    id="input-waterTotal"
+                    id={inputs.get('waterTotal')}
                     type="number"
                     step="1"
                     inputMode="numeric"
@@ -97,11 +102,11 @@ function CalcStart() {
                   />
                 </div>
                 <div class="S4">
-                  <label for="input-waterPc">lub w %</label>
+                  <label for={inputs.get('waterPc')}>lub w %</label>
                 </div>
                 <div class="S4">
                 <input
-                  id="input-waterPc"
+                  id={inputs.get('waterPc')}
                   type="number"
                   step="0.1"
                   inputMode="numeric"
@@ -121,13 +126,13 @@ function CalcStart() {
           </div>
           <div class="row X--middle">
             <div class="M3">
-              <label for="input-saltTotal">Całkowita ilość soli (g)</label>
+              <label for={inputs.get('saltTotal')}>Całkowita ilość soli (g)</label>
             </div>
             <div class="M6">
               <div class="row X--middle">
                 <div class="S4">
                   <input
-                    id="input-saltTotal"
+                    id={inputs.get('saltTotal')}
                     type="number"
                     step="1"
                     inputMode="numeric"
@@ -140,11 +145,11 @@ function CalcStart() {
                   />
                 </div>
                 <div class="S4">
-                  <label for="input-saltPc">lub w %</label>
+                  <label for={inputs.get('saltPc')}>lub w %</label>
                 </div>
                 <div class="S4">
                   <input
-                    id="input-saltPc"
+                    id={inputs.get('saltPc')}
                     type="number"
                     step="0.1"
                     inputMode="numeric"
