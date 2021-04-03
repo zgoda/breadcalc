@@ -4,7 +4,7 @@ import { Provider } from 'unistore/preact';
 import { store } from './service/state';
 import { PageInfo } from './components/pageinfo';
 import { CalcStart } from './components/calcstart';
-import { FlourIngredients } from './components/flour';
+import { DryIngredients } from './components/dryingredients';
 
 function Application() {
 
@@ -19,7 +19,7 @@ function Application() {
     <div class="container">
       <PageInfo title={appTitle} />
       <CalcStart />
-      <FlourIngredients />
+      <DryIngredients />
     </div>
   );
 }

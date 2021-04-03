@@ -38,3 +38,13 @@ body {
 .field-help {
   font-size: 80%;
 }
+
+.add-item-button {
+  text-align: center;
+}
+
+.error {
+  color: $color-quinary;
+  font-size: 80%;
+  font-style: italic;
+}
