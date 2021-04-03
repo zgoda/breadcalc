@@ -1,10 +1,12 @@
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
+import { Provider } from 'unistore/preact';
 
+import { store } from './service/state';
 import { PageInfo } from './components/pageinfo';
 import { CalcStart } from './components/calcstart';
 import { FlourIngredients } from './components/flour';
 
-function App() {
+function Application() {
 
   const appTitle = 'Kalkulator ciasta chlebowego';
 
@@ -21,5 +23,13 @@ function App() {
     </div>
   );
 }
+
+const App = (() => {
+  return (
+    <Provider store={store}>
+      <Application />
+    </Provider>
+  );
+});
 
 export { App };

@@ -1,4 +1,4 @@
-import { HelpCircle } from 'preact-feather';
+import { HelpCircle, PlusCircle } from 'preact-feather';
 import { useState, useRef } from 'preact/hooks';
 
 function HelpButton({ text }) {
@@ -28,4 +28,26 @@ function HelpButton({ text }) {
   );
 }
 
-export { HelpButton };
+function AddItemButton({ actionHandler, size = 32 }) {
+
+  const buttonRef = useRef(null);
+
+  const handleButtonClick = ((e) => {
+    e.preventDefault();
+    actionHandler();
+    buttonRef.current && buttonRef.current.blur();
+  });
+
+  return (
+    <button
+      class="button button-clear"
+      type="button"
+      ref={buttonRef}
+      onClick={handleButtonClick}
+    >
+      <PlusCircle size={size} />
+    </button>
+  );
+}
+
+export { HelpButton, AddItemButton };
