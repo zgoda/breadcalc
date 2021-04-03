@@ -1,5 +1,6 @@
-import { useState } from 'preact/hooks';
+import { connect } from 'unistore/preact';
 
+import { actions } from '../service/state';
 import { HelpButton } from './misc';
 import { round } from '../utils/numbers';
 import fieldHelp from './fieldhelp.json';
@@ -9,16 +10,17 @@ const AmountType = Object.freeze({
   PERCENT: 'percent',
 });
 
-function CalcStart() {
+const stateItems = ['flourTotal', 'waterTotal', 'waterPc', 'saltTotal', 'saltPc'];
 
-  const [flourTotal, setFlourTotal] = useState(0);
-  const [waterTotal, setWaterTotal] = useState(0);
-  const [waterPc, setWaterPc] = useState(0);
-  const [saltTotal, setSaltTotal] = useState(0);
-  const [saltPc, setSaltPc] = useState(0);
+function CalcStartBase(
+  {
+    flourTotal, waterTotal, waterPc, saltTotal, saltPc,
+    setFlourTotal, setWaterTotal, setWaterPc, setSaltTotal, setSaltPc,
+  }
+) {
 
   const inputs = new Map();
-  ['flourTotal', 'waterTotal', 'waterPc', 'saltTotal', 'saltPc'].forEach((item) => {
+  stateItems.forEach((item) => {
     inputs.set(item, `input-${item}`);
   });
 
@@ -172,5 +174,7 @@ function CalcStart() {
     </>
   );
 }
+
+const CalcStart = connect(stateItems, actions)(CalcStartBase);
 
 export { CalcStart };

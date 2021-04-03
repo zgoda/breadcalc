@@ -6,7 +6,8 @@ const store = createStore({
   waterPc: 0,
   dryIngredients: [],
   wetIngredients: [],
-  adjuncts: [],
+  dryAdjuncts: [],
+  wetAdjuncts: [],
   saltTotal: 0,
   saltPc: 0,
 });
@@ -27,8 +28,11 @@ const actions = {
   setWetIngredients: (_state, value) => {
     return { wetIngredients: value };
   },
-  setAdjuncts: (_state, value) => {
-    return { adjuncts: value };
+  setDryAdjuncts: (_state, value) => {
+    return { dryAdjuncts: value };
+  },
+  setWetAdjuncts: (_state, value) => {
+    return { wetAdjuncts: value };
   },
   setSaltTotal: (_state, value) => {
     return { saltTotal: value };
