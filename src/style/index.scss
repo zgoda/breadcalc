@@ -43,6 +43,11 @@ body {
   text-align: center;
 }
 
+.label-required {
+  color: $color-quinary;
+  font-weight: bold;
+}
+
 .error {
   color: $color-quinary;
   font-size: 80%;

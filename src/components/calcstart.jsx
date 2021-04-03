@@ -2,13 +2,8 @@ import { connect } from 'unistore/preact';
 
 import { actions } from '../service/state';
 import { HelpButton } from './misc';
-import { round } from '../utils/numbers';
+import { round, AmountType } from '../utils/numbers';
 import fieldHelp from './fieldhelp.json';
-
-const AmountType = Object.freeze({
-  TOTAL: 'total',
-  PERCENT: 'percent',
-});
 
 const stateItems = ['flourTotal', 'waterTotal', 'waterPc', 'saltTotal', 'saltPc'];
 
@@ -68,7 +63,9 @@ function CalcStartBase(
         <fieldset>
           <div class="row X--middle">
             <div class="M3">
-              <label for={inputs.get('flourTotal')}>Całkowita ilość mąki (g)</label>
+              <label for={inputs.get('flourTotal')}>
+                Całkowita ilość mąki (g) <span class="label-required">*</span>
+              </label>
             </div>
             <div class="M6">
               <input
@@ -77,6 +74,7 @@ function CalcStartBase(
                 inputMode="numeric"
                 value={flourTotal}
                 onInput={setFlour}
+                required
               />
             </div>
             <div class="M3">

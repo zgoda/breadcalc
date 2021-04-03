@@ -4,9 +4,10 @@ import { uid } from 'uid';
 
 import { actions } from '../service/state';
 import { AddItemButton, SaveItemButton, RemoveItemButton } from './misc';
+import { AmountType } from '../utils/numbers';
 import dryingredients from './dryingredients.json';
 
-function DryIngredientItem({ item, flourLeft }) {
+function DryIngredientItem({ item, flourLeft, flourTotal }) {
 
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
@@ -24,12 +25,27 @@ function DryIngredientItem({ item, flourLeft }) {
     }
   }, [item]);
 
+  const recalcAmount = ((value, type) => {
+    if (type === AmountType.PERCENT) {
+      setAmtWeight(flourTotal * value / 100);
+      setAmtPc(value);
+    } else if (type === AmountType.TOTAL) {
+      setAmtWeight(value);
+      setAmtPc(value / flourTotal * 100);
+    }
+  });
+
   return (
     <div class="row X--middle">
       <div class="M6">
         <label>
-          Nazwa
-          <input type="text" value={name} onInput={(e) => setName(e.target.value)} />
+          Nazwa <span class="label-required">*</span>
+          <input
+            type="text"
+            value={name}
+            onInput={(e) => setName(e.target.value)}
+            required
+          />
         </label>
       </div>
       <div class="M2">
@@ -41,7 +57,9 @@ function DryIngredientItem({ item, flourLeft }) {
             step="1"
             max={flourLeft}
             value={amtWeight}
-            onInput={(e) => setAmtWeight(e.target.value)}
+            onInput={
+              (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.TOTAL)
+            }
           />
         </label>
       </div>
@@ -54,11 +72,13 @@ function DryIngredientItem({ item, flourLeft }) {
             step="0.1"
             max="100"
             value={amtPc}
-            onInput={(e) => setAmtPc(e.target.value)}
+            onInput={
+              (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.PERCENT)
+            }
           />
         </label>
       </div>
-      <div class="M1">
+      <div class="M2">
         <SaveItemButton />
         <RemoveItemButton />
       </div>
@@ -70,9 +90,19 @@ const stateItems = ['flourTotal', 'dryIngredients'];
 
 function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
 
-  const reducer = (accumulator, currentItem) => accumulator + currentItem.amtWeight;
+  const calcUsedFlour = (() => {
+    let used = 0;
+    dryIngredients.forEach((item) => {
+      let curUsed = item.get('amtWeight');
+      if (curUsed == null) {
+        curUsed = 0;
+      }
+      used = used + curUsed;
+    });
+    return used;
+  });
   const flourLeft =
-    dryIngredients.length ? flourTotal - dryIngredients.reduce(reducer) : flourTotal;
+    dryIngredients.length ? flourTotal - calcUsedFlour() : flourTotal;
 
   const addItemHandler = (() => {
     const items = [...dryIngredients, new Map([['uid', uid(16)]])];
@@ -90,6 +120,7 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
               item={item}
               key={item.get('uid')}
               flourLeft={flourLeft}
+              flourTotal={flourTotal}
             />
           ))}
         </fieldset>
