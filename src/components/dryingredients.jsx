@@ -148,7 +148,7 @@ function DryIngredientsBase(
   });
 
   const changeItemHandler = ((amount) => {
-    setFlourLeft(flourLeft - amount);
+    setFlourLeft(flourLeft + amount);
   });
 
   return (
