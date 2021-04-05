@@ -2,7 +2,7 @@ import { useLang, useTitle, useMeta } from 'hoofd/preact';
 import { Provider } from 'unistore/preact';
 
 import { store } from './service/state';
-import { PageInfo } from './components/pageinfo';
+import { PageInfo, SectionTitle } from './components/pageinfo';
 import { CalcStart } from './components/calcstart';
 import { DryIngredients } from './components/dryingredients';
 
@@ -19,6 +19,7 @@ function Application() {
     <div class="container">
       <PageInfo title={appTitle} />
       <CalcStart />
+      <SectionTitle title={'Składniki'} level={2} />
       <DryIngredients />
     </div>
   );

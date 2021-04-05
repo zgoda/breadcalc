@@ -5,6 +5,7 @@ import { uid } from 'uid';
 import { actions } from '../service/state';
 import { AddItemButton, SaveItemButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
+import { SectionTitle } from './pageinfo';
 import dryingredients from './dryingredients.json';
 
 function DryIngredientItem({ item, flourLeft, flourTotal }) {
@@ -111,7 +112,7 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
 
   return (
     <>
-      <h2>Mąka</h2>
+      <SectionTitle title={'Mąka i składniki suche'} level={3} />
       <p>{dryingredients.text}</p>
       <form>
         <fieldset>
