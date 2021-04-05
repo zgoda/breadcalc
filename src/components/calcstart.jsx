@@ -11,6 +11,7 @@ function CalcStartBase(
   {
     flourTotal, waterTotal, waterPc, saltTotal, saltPc,
     setFlourTotal, setWaterTotal, setWaterPc, setSaltTotal, setSaltPc,
+    setFlourLeft, setWaterLeft, setSaltLeft,
   }
 ) {
 
@@ -23,36 +24,51 @@ function CalcStartBase(
     e.preventDefault();
     const amount = Number.parseFloat(e.target.value);
     setFlourTotal(amount);
-    setWaterTotal(amount * waterPc / 100);
-    setSaltTotal(amount * saltPc / 100);
+    setFlourLeft(amount);
+    const water = amount * waterPc / 100;
+    setWaterTotal(water);
+    setWaterLeft(water);
+    const salt = amount * saltPc / 100;
+    setSaltTotal(salt);
+    setSaltLeft(salt);
   });
 
   const calcWater = ((value, type) => {
+    let waterPc = 0;
+    let waterTotal = 0;
     if (type === AmountType.PERCENT) {
       if (flourTotal !== 0) {
-        setWaterTotal(flourTotal * value / 100);
+        waterTotal = flourTotal * value / 100;
       }
-      setWaterPc(value);
+      waterPc = value;
     } else if (type === AmountType.TOTAL) {
       if (flourTotal !== 0) {
-        setWaterPc(value / flourTotal * 100);
+        waterPc = value / flourTotal * 100;
       }
-      setWaterTotal(value);
+      waterTotal = value;
     }
+    setWaterPc(waterPc);
+    setWaterTotal(waterTotal);
+    setWaterLeft(waterTotal);
   });
 
   const calcSalt = ((value, type) => {
+    let saltPc = 0;
+    let saltTotal = 0;
     if (type === AmountType.PERCENT) {
       if (flourTotal !== 0) {
-        setSaltTotal(flourTotal * value / 100);
+        saltTotal = flourTotal * value / 100;
       }
-      setSaltPc(value);
+      saltPc = value;
     } else if (type === AmountType.TOTAL) {
       if (flourTotal !== 0) {
-        setSaltPc(value / flourTotal * 100);
+        saltPc = value / flourTotal * 100;
       }
-      setSaltTotal(value);
+      saltTotal = value;
     }
+    setSaltTotal(saltTotal);
+    setSaltPc(saltPc);
+    setSaltLeft(saltTotal);
   });
 
   return (

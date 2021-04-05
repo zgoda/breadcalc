@@ -6,14 +6,14 @@ import snarkdown from 'snarkdown';
 
 import { actions } from '../service/state';
 import { SectionTitle } from './pageinfo';
-import { AddItemButton } from './misc';
+import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import wetingredients from './wetingredients.json';
 
 function WetIngredientItem(
   { 
     item, flourLeft, waterLeft, flourTotal, waterTotal,
-    removeItemHandler, setFlourLeft, setWaterLeft,
+    removeItemHandler, changeItemHandler,
   }
 ) {
 
@@ -62,7 +62,7 @@ function WetIngredientItem(
     item.set('amtWeight', amtWeight);
     setAmtPc(amtPc);
     item.set('amtPc', amtPc);
-    setFlourLeft(flourLeft - amtWeight);
+    changeItemHandler(amtWeight, waterWeight);
   });
 
   const recalcWater = ((value, type) => {
@@ -78,7 +78,19 @@ function WetIngredientItem(
     item.set('waterWeight', waterWeight);
     setWaterPc(waterPc);
     item.set('waterPc', waterPc);
-    setWaterLeft(waterLeft - waterWeight);
+    changeItemHandler(amtWeight, waterWeight);
+  });
+
+  const makeReadOnly = (() => {
+    setReadOnly(true);
+  });
+
+  const makeEditable = (() => {
+    setReadOnly(false);
+  });
+
+  const removeItem = (() => {
+    removeItemHandler(uid);
   });
 
   return (
@@ -146,7 +158,6 @@ function WetIngredientItem(
             type="number"
             inputMode="numeric"
             step="0.1"
-            max="100"
             value={waterPc}
             onInput={
               (e) => recalcWater(Number.parseFloat(e.target.value), AmountType.PERCENT)
@@ -156,47 +167,36 @@ function WetIngredientItem(
         </label>
       </div>
       <div class="M2">
-        Akcje
+        {
+          readOnly 
+            ? <UnlockButton actionHandler={makeEditable} />
+            : <LockButton actionHandler={makeReadOnly} />
+        }
+        <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
   );
 }
 
-const wetIngredientsStateItems = ['flourTotal', 'waterTotal', 'wetIngredients'];
+const wetIngredientsStateItems = [
+  'flourTotal', 'waterTotal', 'flourLeft', 'waterLeft',
+  'wetIngredients', 'dryIngredients',
+];
 
 function WetIngredientsBase(
-  { flourTotal, waterTotal, wetIngredients, setWetIngredients }
+  {
+    flourTotal, waterTotal, flourLeft, waterLeft, wetIngredients, dryIngredients,
+    setWetIngredients, setFlourLeft, setWaterLeft,
+  }
 ) {
 
-  const [flourLeft, setFlourLeft] = useState(0);
-  const [waterLeft, setWaterLeft] = useState(0);
   const [canAddItem, setCanAddItem] = useState(true);
 
   useEffect(() => {
-    let usedFlour = 0;
-    let usedWater = 0;
-    wetIngredients.forEach((item) => {
-      let curUsedFlour = item.get('amtWeight');
-      if (curUsedFlour == null) {
-        curUsedFlour = 0;
-      }
-      usedFlour = usedFlour + curUsedFlour;
-      let curUsedWater = item.get('waterWeight');
-      if (curUsedWater == null) {
-        curUsedWater = 0;
-      }
-      usedWater = usedWater + curUsedWater;
-    });
-    const flourLeft =
-      wetIngredients.length ? flourTotal - usedFlour : flourTotal;
-    setFlourLeft(flourLeft);
-    const waterLeft = wetingredients.length ? waterTotal - usedWater : waterTotal;
-    setWaterLeft(waterLeft);
-  }, [flourTotal, waterTotal, wetIngredients]);
-
-  useEffect(() => {
-    setCanAddItem(flourLeft > 0 && flourTotal > 0 && waterLeft > 0 && waterTotal > 0);
-  }, [flourTotal, flourLeft, waterTotal, waterLeft]);
+    setCanAddItem(
+      (flourLeft > 0 && flourTotal > 0) && (waterLeft > 0 && waterTotal > 0)
+    );
+  }, [flourTotal, flourLeft, waterTotal, waterLeft, dryIngredients, wetIngredients]);
 
   const addItemHandler = (() => {
     const items = [...wetIngredients, new Map([['uid', uid(16)]])];
@@ -206,6 +206,11 @@ function WetIngredientsBase(
   const removeItemHandler = ((uid) => {
     const items = wetIngredients.filter((item) => item.get('uid') !== uid);
     setWetIngredients(items);
+  });
+
+  const changeItemHandler = ((amtFlour, amtWater) => {
+    setFlourLeft(flourLeft + amtFlour);
+    setWaterLeft(waterLeft + amtWater);
   });
 
   return (
@@ -224,8 +229,7 @@ function WetIngredientsBase(
               waterLeft={waterLeft}
               waterTotal={waterTotal}
               removeItemHandler={removeItemHandler}
-              setFlourLeft={setFlourLeft}
-              setWaterLeft={setWaterLeft}
+              changeItemHandler={changeItemHandler}
             />
           ))}
         </fieldset>

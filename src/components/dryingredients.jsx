@@ -11,7 +11,7 @@ import { SectionTitle } from './pageinfo';
 import dryingredients from './dryingredients.json';
 
 function DryIngredientItem(
-  { item, flourLeft, flourTotal, removeItemHandler, setFlourLeft }
+  { item, flourLeft, flourTotal, removeItemHandler, changeItemHandler }
 ) {
 
   const [uid, setUid] = useState('');
@@ -51,7 +51,7 @@ function DryIngredientItem(
     item.set('amtWeight', amtWeight);
     setAmtPc(amtPc);
     item.set('amtPc', amtPc);
-    setFlourLeft(flourLeft - amtWeight);
+    changeItemHandler(amtWeight);
   });
 
   const makeReadOnly = (() => {
@@ -63,7 +63,7 @@ function DryIngredientItem(
   });
 
   const removeItem = (() => {
-    removeItemHandler(uid);
+    removeItemHandler(uid, amtWeight);
   });
 
   return (
@@ -124,39 +124,31 @@ function DryIngredientItem(
   );
 }
 
-const dryIngredientsStateItems = ['flourTotal', 'dryIngredients'];
+const dryIngredientsStateItems = ['flourTotal', 'flourLeft', 'dryIngredients'];
 
-function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
+function DryIngredientsBase(
+  { flourTotal, flourLeft, dryIngredients, setDryIngredients, setFlourLeft }
+) {
 
-  const [flourLeft, setFlourLeft] = useState(0);
   const [canAddItem, setCanAddItem] = useState(true);
 
   useEffect(() => {
-    let used = 0;
-    dryIngredients.forEach((item) => {
-      let curUsed = item.get('amtWeight');
-      if (curUsed == null) {
-        curUsed = 0;
-      }
-      used = used + curUsed;
-    });
-    const flourLeft =
-      dryIngredients.length ? flourTotal - used : flourTotal;
-    setFlourLeft(flourLeft);
-  }, [flourTotal, dryIngredients]);
-
-  useEffect(() => {
     setCanAddItem(flourLeft > 0 && flourTotal > 0);
-  }, [flourTotal, flourLeft]);
+  }, [flourTotal, flourLeft, dryIngredients]);
 
   const addItemHandler = (() => {
     const items = [...dryIngredients, new Map([['uid', uid(16)]])];
     setDryIngredients(items);
   });
 
-  const removeItemHandler = ((uid) => {
+  const removeItemHandler = ((uid, amount) => {
+    setFlourLeft(flourLeft + amount);
     const items = dryIngredients.filter((item) => item.get('uid') !== uid);
     setDryIngredients(items);
+  });
+
+  const changeItemHandler = ((amount) => {
+    setFlourLeft(flourLeft - amount);
   });
 
   return (
@@ -173,7 +165,7 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
               flourLeft={flourLeft}
               flourTotal={flourTotal}
               removeItemHandler={removeItemHandler}
-              setFlourLeft={setFlourLeft}
+              changeItemHandler={changeItemHandler}
             />
           ))}
         </fieldset>
