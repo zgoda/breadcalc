@@ -129,6 +129,7 @@ const dryIngredientsStateItems = ['flourTotal', 'dryIngredients'];
 function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
 
   const [flourLeft, setFlourLeft] = useState(0);
+  const [canAddItem, setCanAddItem] = useState(true);
 
   useEffect(() => {
     let used = 0;
@@ -144,7 +145,9 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
     setFlourLeft(flourLeft);
   }, [flourTotal, dryIngredients]);
 
-  const canAddItem = flourLeft > 0 && flourTotal > 0;
+  useEffect(() => {
+    setCanAddItem(flourLeft > 0 && flourTotal > 0);
+  }, [flourTotal, flourLeft]);
 
   const addItemHandler = (() => {
     const items = [...dryIngredients, new Map([['uid', uid(16)]])];
