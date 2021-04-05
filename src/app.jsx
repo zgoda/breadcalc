@@ -23,6 +23,8 @@ function Application() {
       <SectionTitle title={'Składniki'} level={2} />
       <DryIngredients />
       <WetIngredients />
+      <SectionTitle title={'Zaczyn'} level={2} />
+      <SectionTitle title={'Ciasto właściwe'} level={2} />
     </div>
   );
 }

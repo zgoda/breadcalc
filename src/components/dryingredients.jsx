@@ -4,13 +4,15 @@ import { uid } from 'uid';
 
 import { actions } from '../service/state';
 import {
-  AddItemButton, RemoveItemButton, DoneButton, LockButton, UnlockButton,
+  AddItemButton, RemoveItemButton, LockButton, UnlockButton,
 } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
 import dryingredients from './dryingredients.json';
 
-function DryIngredientItem({ item, flourLeft, flourTotal, removeItemHandler }) {
+function DryIngredientItem(
+  { item, flourLeft, flourTotal, removeItemHandler, setFlourLeft }
+) {
 
   const [uid, setUid] = useState('');
   const [name, setName] = useState('');
@@ -49,6 +51,7 @@ function DryIngredientItem({ item, flourLeft, flourTotal, removeItemHandler }) {
     item.set('amtWeight', amtWeight);
     setAmtPc(amtPc);
     item.set('amtPc', amtPc);
+    setFlourLeft(flourLeft - amtWeight);
   });
 
   const makeReadOnly = (() => {
@@ -125,7 +128,9 @@ const dryIngredientsStateItems = ['flourTotal', 'dryIngredients'];
 
 function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
 
-  const calcUsedFlour = (() => {
+  const [flourLeft, setFlourLeft] = useState(0);
+
+  useEffect(() => {
     let used = 0;
     dryIngredients.forEach((item) => {
       let curUsed = item.get('amtWeight');
@@ -134,10 +139,10 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
       }
       used = used + curUsed;
     });
-    return used;
-  });
-  const flourLeft =
-    dryIngredients.length ? flourTotal - calcUsedFlour() : flourTotal;
+    const flourLeft =
+      dryIngredients.length ? flourTotal - used : flourTotal;
+    setFlourLeft(flourLeft);
+  }, [flourTotal, dryIngredients]);
 
   const canAddItem = flourLeft > 0 && flourTotal > 0;
 
@@ -164,15 +169,13 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
               flourLeft={flourLeft}
               flourTotal={flourTotal}
               removeItemHandler={removeItemHandler}
+              setFlourLeft={setFlourLeft}
             />
           ))}
         </fieldset>
       </form>
       <div class="add-item-button">
         {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
-      </div>
-      <div>
-        <DoneButton />
       </div>
     </>
   );
