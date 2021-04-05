@@ -163,6 +163,7 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
     <>
       <SectionTitle title={'Mąka i składniki suche'} level={3} />
       <p>{dryingredients.text}</p>
+      {!canAddItem && <p class="error">{dryingredients.full}</p>}
       <form>
         <fieldset>
           {dryIngredients.map((item) => (
