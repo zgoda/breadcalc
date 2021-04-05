@@ -5,6 +5,7 @@ import { store } from './service/state';
 import { PageInfo, SectionTitle } from './components/pageinfo';
 import { CalcStart } from './components/calcstart';
 import { DryIngredients } from './components/dryingredients';
+import { WetIngredients } from './components/wetingredients';
 
 function Application() {
 
@@ -21,6 +22,7 @@ function Application() {
       <CalcStart />
       <SectionTitle title={'Składniki'} level={2} />
       <DryIngredients />
+      <WetIngredients />
     </div>
   );
 }

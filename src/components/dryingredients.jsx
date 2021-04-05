@@ -4,7 +4,7 @@ import { uid } from 'uid';
 
 import { actions } from '../service/state';
 import {
-  AddItemButton, SaveItemButton, RemoveItemButton, EditItemButton, DoneButton,
+  AddItemButton, RemoveItemButton, DoneButton, LockButton, UnlockButton,
 } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
@@ -31,17 +31,27 @@ function DryIngredientItem({ item, flourLeft, flourTotal, removeItemHandler }) {
     }
   }, [item]);
 
-  const recalcAmount = ((value, type) => {
-    if (type === AmountType.PERCENT) {
-      setAmtWeight(flourTotal * value / 100);
-      setAmtPc(value);
-    } else if (type === AmountType.TOTAL) {
-      setAmtWeight(value);
-      setAmtPc(value / flourTotal * 100);
-    }
+  const nameChange = ((name) => {
+    setName(name);
+    item.set('name', name);
   });
 
-  const saveItem = (() => {
+  const recalcAmount = ((value, type) => {
+    let amtPc, amtWeight;
+    if (type === AmountType.PERCENT) {
+      amtWeight = flourTotal * value / 100;
+      amtPc = value;
+    } else if (type === AmountType.TOTAL) {
+      amtWeight = value;
+      amtPc = value / flourTotal * 100;
+    }
+    setAmtWeight(amtWeight);
+    item.set('amtWeight', amtWeight);
+    setAmtPc(amtPc);
+    item.set('amtPc', amtPc);
+  });
+
+  const makeReadOnly = (() => {
     setReadOnly(true);
   });
 
@@ -61,7 +71,7 @@ function DryIngredientItem({ item, flourLeft, flourTotal, removeItemHandler }) {
           <input
             type="text"
             value={name}
-            onInput={(e) => setName(e.target.value)}
+            onInput={(e) => nameChange(e.target.value)}
             required
             readOnly={readOnly}
           />
@@ -102,8 +112,8 @@ function DryIngredientItem({ item, flourLeft, flourTotal, removeItemHandler }) {
       <div class="M2">
         {
           readOnly 
-            ? <EditItemButton actionHandler={makeEditable} />
-            : <SaveItemButton actionHandler={saveItem} />
+            ? <UnlockButton actionHandler={makeEditable} />
+            : <LockButton actionHandler={makeReadOnly} />
         }
         <RemoveItemButton actionHandler={removeItem} />
       </div>
@@ -128,6 +138,8 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
   });
   const flourLeft =
     dryIngredients.length ? flourTotal - calcUsedFlour() : flourTotal;
+
+  const canAddItem = flourLeft > 0 && flourTotal > 0;
 
   const addItemHandler = (() => {
     const items = [...dryIngredients, new Map([['uid', uid(16)]])];
@@ -157,7 +169,7 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
         </fieldset>
       </form>
       <div class="add-item-button">
-        {flourTotal > 0 && <AddItemButton actionHandler={addItemHandler} />}
+        {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
       </div>
       <div>
         <DoneButton />
