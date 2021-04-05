@@ -1,6 +1,6 @@
 {
   "text": [
-    "Przy użyciu tego kalkulatora obliczysz ilość potrzebnej mąki, wody, soli i innych dodatków.",
+    "Przy użyciu tego kalkulatora obliczysz ilość potrzebnej mąki, wody, soli i innych dodatków do przygotowania ciasta na chleb. Zasadniczo kalkulator jest przeznaczony do wyliczeń dla chleba na zakwasie, ale przy niewielkiej gimnastyce można go użyć do obliczania dowolnego innego chleba.",
     "Wyliczenia mogą bazować zarówno na wadze składników, jak i na tzw. procentach piekarniczych, czyli relatywnej ilości składnika względem całkowitej ilości mąki. Są różne modele wyliczania, na tej stronie używany jest taki sam jak w książce \"Chleb\" Jeffreya Hamelmanna. Oznacza to m.in. że woda używana do namaczania ziarna jest wliczana do ogólnego nawodnienia ciasta, natomiast woda w zakwasie używana do sporządzenia zaczynu już nie.",
     "Aby rozpocząć wyliczenia konieczne jest podanie całkowitej wagi mąki użytej do ciasta. Po zakończeniu kalkulacji można zapisać recepturę do późniejszego wykorzystania - zostanie ona zapisana w pamięci trwałej przeglądarki (co np. oznacza, że po wyczyszczeniu danych użytkownika w telefonie jednak zostanie usunięta). Zapisana receptura będzie oparta na procentach piekarniczych, aby ją później ponownie wykorzystać wystarczy podać całkowitą wagę mąki."
   ]

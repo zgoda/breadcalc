@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'preact/hooks';
 import { connect } from 'unistore/preact';
+import { useState, useEffect } from 'preact/hooks';
 import { uid } from 'uid';
 
-import { actions } from '../service/state';
-import {
-  AddItemButton, RemoveItemButton, LockButton, UnlockButton,
-} from './misc';
 import { AmountType } from '../utils/numbers';
+import { actions } from '../service/state';
 import { SectionTitle } from './pageinfo';
-import dryingredients from './dryingredients.json';
+import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
+import wetadjuncts from './wetadjuncts.json';
 
-function DryIngredientItem(
-  { item, flourLeft, flourTotal, removeItemHandler, changeItemHandler }
+function WetAdjunctItem(
+  { item, waterLeft, flourTotal, removeItemHandler, changeItemHandler }
 ) {
 
   const [uid, setUid] = useState('');
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
+  const [waterWeight, setWaterWeight] = useState(0);
+  const [waterPc, setWaterPc] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
@@ -30,6 +30,12 @@ function DryIngredientItem(
     }
     if (item.has('amtPc')) {
       setAmtPc(item.get('amtPc'));
+    }
+    if (item.has('waterWeight')) {
+      setWaterWeight(item.get('waterWeight'));
+    }
+    if (item.has('waterPc')) {
+      setWaterPc(item.get('waterPc'));
     }
   }, [item]);
 
@@ -51,7 +57,25 @@ function DryIngredientItem(
     item.set('amtWeight', amtWeight);
     setAmtPc(amtPc);
     item.set('amtPc', amtPc);
-    changeItemHandler(amtWeight);
+  });
+
+  const recalcWater = ((value, type) => {
+    if (amtWeight === 0 || amtWeight == null) {
+      return;
+    }
+    let waterPc, waterWeight;
+    if (type === AmountType.PERCENT) {
+      waterWeight = amtWeight * value / 100;
+      waterPc = value;
+    } else if (type === AmountType.TOTAL) {
+      waterWeight = value;
+      waterPc = value / amtWeight * 100;
+    }
+    setWaterWeight(waterWeight);
+    item.set('waterWeight', waterWeight);
+    setWaterPc(waterPc);
+    item.set('waterPc', waterPc);
+    changeItemHandler(waterWeight);
   });
 
   const makeReadOnly = (() => {
@@ -63,7 +87,7 @@ function DryIngredientItem(
   });
 
   const removeItem = (() => {
-    removeItemHandler(uid, amtWeight);
+    removeItemHandler(uid);
   });
 
   return (
@@ -82,12 +106,11 @@ function DryIngredientItem(
       </div>
       <div class="M2">
         <label>
-          Ilość (g)
+          Składnik wagowo
           <input
             type="number"
             inputMode="numeric"
             step="1"
-            max={flourLeft}
             value={amtWeight}
             onInput={
               (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.TOTAL)
@@ -95,18 +118,44 @@ function DryIngredientItem(
             readOnly={readOnly}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
-          Ilość (%)
+          Składnik procentowo
           <input
             type="number"
             inputMode="numeric"
             step="0.1"
-            max="100"
             value={amtPc}
             onInput={
               (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.PERCENT)
+            }
+            readOnly={readOnly}
+          />
+        </label>
+      </div>
+      <div class="M2">
+      <label>
+          Woda wagowo
+          <input
+            type="number"
+            inputMode="numeric"
+            step="1"
+            max={waterLeft}
+            value={waterWeight}
+            onInput={
+              (e) => recalcWater(Number.parseFloat(e.target.value), AmountType.TOTAL)
+            }
+            readOnly={readOnly}
+          />
+        </label>
+        <label>
+          Woda procentowo
+          <input
+            type="number"
+            inputMode="numeric"
+            step="0.1"
+            value={waterPc}
+            onInput={
+              (e) => recalcWater(Number.parseFloat(e.target.value), AmountType.PERCENT)
             }
             readOnly={readOnly}
           />
@@ -122,47 +171,52 @@ function DryIngredientItem(
       </div>
     </div>
   );
+
 }
 
-const dryIngredientsStateItems = ['flourTotal', 'flourLeft', 'dryIngredients'];
+const wetAdjunctsStateItems = [
+  'flourTotal', 'waterTotal', 'waterLeft', 'wetAdjuncts', 'wetIngredients',
+];
 
-function DryIngredientsBase(
-  { flourTotal, flourLeft, dryIngredients, setDryIngredients, setFlourLeft }
+function WetAdjunctsBase(
+  {
+    flourTotal, waterTotal, waterLeft, wetAdjuncts, wetIngredients,
+    setWetAdjuncts, setWaterLeft,
+  }
 ) {
 
   const [canAddItem, setCanAddItem] = useState(true);
 
   useEffect(() => {
-    setCanAddItem(flourLeft > 0 && flourTotal > 0);
-  }, [flourTotal, flourLeft, dryIngredients]);
+    setCanAddItem(waterLeft > 0 && waterTotal > 0);
+  }, [flourTotal, waterTotal, waterLeft, wetAdjuncts, wetIngredients]);
 
   const addItemHandler = (() => {
-    const items = [...dryIngredients, new Map([['uid', uid(16)]])];
-    setDryIngredients(items);
+    const items = [...wetAdjuncts, new Map([['uid', uid(16)]])];
+    setWetAdjuncts(items);
   });
 
-  const removeItemHandler = ((uid, amount) => {
-    const items = dryIngredients.filter((item) => item.get('uid') !== uid);
-    setDryIngredients(items);
-    setFlourLeft(flourLeft + amount);
+  const removeItemHandler = ((uid) => {
+    const items = wetAdjuncts.filter((item) => item.get('uid') !== uid);
+    setWetAdjuncts(items);
   });
 
-  const changeItemHandler = ((amount) => {
-    setFlourLeft(flourLeft - amount);
+  const changeItemHandler = ((amtWater) => {
+    setWaterLeft(waterLeft + amtWater);
   });
 
   return (
     <>
-      <SectionTitle title={'Mąka i składniki suche'} level={3} />
-      <p>{dryingredients.text}</p>
-      {!canAddItem && <p class="error">{dryingredients.full}</p>}
+      <SectionTitle title={'Dodatki namaczane'} level={3} />
+      <p>{wetadjuncts.text}</p>
+      {!canAddItem && <p class="error">{wetadjuncts.full}</p>}
       <form>
         <fieldset>
-          {dryIngredients.map((item) => (
-            <DryIngredientItem
+          {wetAdjuncts.map((item) => (
+            <WetAdjunctItem
               item={item}
               key={item.get('uid')}
-              flourLeft={flourLeft}
+              waterLeft={waterLeft}
               flourTotal={flourTotal}
               removeItemHandler={removeItemHandler}
               changeItemHandler={changeItemHandler}
@@ -177,6 +231,6 @@ function DryIngredientsBase(
   );
 }
 
-const DryIngredients = connect(dryIngredientsStateItems, actions)(DryIngredientsBase);
+const WetAdjuncts = connect(wetAdjunctsStateItems, actions)(WetAdjunctsBase);
 
-export { DryIngredients };
+export { WetAdjuncts };

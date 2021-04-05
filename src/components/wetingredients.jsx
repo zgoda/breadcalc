@@ -2,7 +2,6 @@
 import { connect } from 'unistore/preact';
 import { useState, useEffect } from 'preact/hooks';
 import { uid } from 'uid';
-import snarkdown from 'snarkdown';
 
 import { actions } from '../service/state';
 import { SectionTitle } from './pageinfo';
@@ -12,7 +11,7 @@ import wetingredients from './wetingredients.json';
 
 function WetIngredientItem(
   { 
-    item, flourLeft, waterLeft, flourTotal, waterTotal,
+    item, flourLeft, waterLeft, flourTotal,
     removeItemHandler, changeItemHandler,
   }
 ) {
@@ -66,13 +65,16 @@ function WetIngredientItem(
   });
 
   const recalcWater = ((value, type) => {
+    if (amtWeight === 0 || amtWeight == null) {
+      return;
+    }
     let waterPc, waterWeight;
     if (type === AmountType.PERCENT) {
-      waterWeight = waterTotal * value / 100;
+      waterWeight = amtWeight * value / 100;
       waterPc = value;
     } else if (type === AmountType.TOTAL) {
       waterWeight = value;
-      waterPc = value / waterTotal * 100;
+      waterPc = value / amtWeight * 100;
     }
     setWaterWeight(waterWeight);
     item.set('waterWeight', waterWeight);
@@ -90,7 +92,7 @@ function WetIngredientItem(
   });
 
   const removeItem = (() => {
-    removeItemHandler(uid);
+    removeItemHandler(uid, amtWeight, waterWeight);
   });
 
   return (
@@ -203,20 +205,22 @@ function WetIngredientsBase(
     setWetIngredients(items);
   });
 
-  const removeItemHandler = ((uid) => {
+  const removeItemHandler = ((uid, amtFlour, amtWater) => {
     const items = wetIngredients.filter((item) => item.get('uid') !== uid);
     setWetIngredients(items);
+    setFlourLeft(flourLeft + amtFlour);
+    setWaterLeft(waterLeft + amtWater);
   });
 
   const changeItemHandler = ((amtFlour, amtWater) => {
-    setFlourLeft(flourLeft + amtFlour);
-    setWaterLeft(waterLeft + amtWater);
+    setFlourLeft(flourLeft - amtFlour);
+    setWaterLeft(waterLeft - amtWater);
   });
 
   return (
     <>
       <SectionTitle title={'Mąka i składniki namaczane'} level={3} />
-      <p dangerouslySetInnerHTML={{ __html: snarkdown(wetingredients.text) }} />
+      <p dangerouslySetInnerHTML={{ __html: wetingredients.text }} />
       {!canAddItem && <p class="error">{wetingredients.full}</p>}
       <form>
         <fieldset>
@@ -227,7 +231,6 @@ function WetIngredientsBase(
               flourLeft={flourLeft}
               flourTotal={flourTotal}
               waterLeft={waterLeft}
-              waterTotal={waterTotal}
               removeItemHandler={removeItemHandler}
               changeItemHandler={changeItemHandler}
             />

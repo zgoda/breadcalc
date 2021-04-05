@@ -7,6 +7,8 @@ import { CalcStart } from './components/calcstart';
 import { DryIngredients } from './components/dryingredients';
 import { WetIngredients } from './components/wetingredients';
 import { DryAdjuncts } from './components/dryadjuncts';
+import { WetAdjuncts } from './components/wetadjuncts';
+import { Leaven } from './components/leaven';
 
 function Application() {
 
@@ -25,7 +27,9 @@ function Application() {
       <DryIngredients />
       <WetIngredients />
       <DryAdjuncts />
+      <WetAdjuncts />
       <SectionTitle title={'Zaczyn'} level={2} />
+      <Leaven />
       <SectionTitle title={'Ciasto właściwe'} level={2} />
     </div>
   );
