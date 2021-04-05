@@ -1,5 +1,5 @@
 import {
-  HelpCircle, PlusCircle, CheckCircle, Edit3, MinusCircle
+  HelpCircle, PlusCircle, CheckCircle, Edit3, MinusCircle, Check,
 } from 'preact-feather';
 import { useState, useRef } from 'preact/hooks';
 
@@ -118,4 +118,30 @@ function RemoveItemButton({ actionHandler }) {
   );
 }
 
-export { HelpButton, AddItemButton, SaveItemButton, EditItemButton, RemoveItemButton };
+function DoneButton({ actionHandler }) {
+
+  const buttonRef = useRef(null);
+
+  const handleButtonClick = ((e) => {
+    e.preventDefault();
+    actionHandler && actionHandler();
+    buttonRef.current && buttonRef.current.blur();
+  });
+
+  return (
+    <button
+      class="button"
+      type="button"
+      ref={buttonRef}
+      onClick={handleButtonClick}
+    >
+      <Check />
+      gotowe
+    </button>
+  );
+}
+
+export {
+  HelpButton, AddItemButton, SaveItemButton, EditItemButton, RemoveItemButton,
+  DoneButton,
+};

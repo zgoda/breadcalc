@@ -3,18 +3,23 @@ import { connect } from 'unistore/preact';
 import { uid } from 'uid';
 
 import { actions } from '../service/state';
-import { AddItemButton, SaveItemButton, RemoveItemButton } from './misc';
+import {
+  AddItemButton, SaveItemButton, RemoveItemButton, EditItemButton, DoneButton,
+} from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
 import dryingredients from './dryingredients.json';
 
-function DryIngredientItem({ item, flourLeft, flourTotal }) {
+function DryIngredientItem({ item, flourLeft, flourTotal, removeItemHandler }) {
 
+  const [uid, setUid] = useState('');
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
+  const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
+    setUid(item.get('uid'));
     if (item.has('name')) {
       setName(item.get('name'));
     }
@@ -36,6 +41,18 @@ function DryIngredientItem({ item, flourLeft, flourTotal }) {
     }
   });
 
+  const saveItem = (() => {
+    setReadOnly(true);
+  });
+
+  const makeEditable = (() => {
+    setReadOnly(false);
+  });
+
+  const removeItem = (() => {
+    removeItemHandler(uid);
+  });
+
   return (
     <div class="row X--middle">
       <div class="M6">
@@ -46,6 +63,7 @@ function DryIngredientItem({ item, flourLeft, flourTotal }) {
             value={name}
             onInput={(e) => setName(e.target.value)}
             required
+            readOnly={readOnly}
           />
         </label>
       </div>
@@ -61,6 +79,7 @@ function DryIngredientItem({ item, flourLeft, flourTotal }) {
             onInput={
               (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.TOTAL)
             }
+            readOnly={readOnly}
           />
         </label>
       </div>
@@ -76,18 +95,23 @@ function DryIngredientItem({ item, flourLeft, flourTotal }) {
             onInput={
               (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.PERCENT)
             }
+            readOnly={readOnly}
           />
         </label>
       </div>
       <div class="M2">
-        <SaveItemButton />
-        <RemoveItemButton />
+        {
+          readOnly 
+            ? <EditItemButton actionHandler={makeEditable} />
+            : <SaveItemButton actionHandler={saveItem} />
+        }
+        <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
   );
 }
 
-const stateItems = ['flourTotal', 'dryIngredients'];
+const dryIngredientsStateItems = ['flourTotal', 'dryIngredients'];
 
 function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
 
@@ -110,6 +134,11 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
     setDryIngredients(items);
   });
 
+  const removeItemHandler = ((uid) => {
+    const items = dryIngredients.filter((item) => item.get('uid') !== uid);
+    setDryIngredients(items);
+  });
+
   return (
     <>
       <SectionTitle title={'Mąka i składniki suche'} level={3} />
@@ -122,6 +151,7 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
               key={item.get('uid')}
               flourLeft={flourLeft}
               flourTotal={flourTotal}
+              removeItemHandler={removeItemHandler}
             />
           ))}
         </fieldset>
@@ -129,10 +159,13 @@ function DryIngredientsBase({ flourTotal, dryIngredients, setDryIngredients }) {
       <div class="add-item-button">
         {flourTotal > 0 && <AddItemButton actionHandler={addItemHandler} />}
       </div>
+      <div>
+        <DoneButton />
+      </div>
     </>
   );
 }
 
-const DryIngredients = connect(stateItems, actions)(DryIngredientsBase);
+const DryIngredients = connect(dryIngredientsStateItems, actions)(DryIngredientsBase);
 
 export { DryIngredients };
