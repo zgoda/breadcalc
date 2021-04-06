@@ -177,7 +177,12 @@ function LeavenFlourItem(
   );
 }
 
-function LeavenFlourItems({ items, flourItemsListId, flourTotal, flourLeft }) {
+function LeavenFlourItems(
+  {
+    items, flourItemsListId, flourTotal, flourLeft,
+    changeItemHandler, removeItemHandler,
+  }
+) {
   return (
     <>
       {items.map((item) => (
@@ -186,6 +191,8 @@ function LeavenFlourItems({ items, flourItemsListId, flourTotal, flourLeft }) {
           listId={flourItemsListId}
           flourTotal={flourTotal}
           flourLeft={flourLeft}
+          changeItemHandler={changeItemHandler}
+          removeItemHandler={removeItemHandler}
         />
       ))}
     </>
@@ -208,6 +215,14 @@ function LeavenBase(
   const [leavenFlourLeft, setLeavenFlourLeft] = useState(0);
   const [availableFlourItems, setAvailableFlourItems] = useState([]);
   const [leavenFlourItems, setLeavenFlourItems] = useState([]);
+  const [leavenWater, setLeavenWater] = useState(0);
+  const [leavenSourdough, setLeavenSourdough] = useState(0);
+
+  useEffect(() => {
+    setLeavenFlourItems(leaven.flour);
+    setLeavenWater(leaven.water);
+    setLeavenSourdough(leaven.sourdough);
+  }, [leaven]);
 
   useEffect(() => {
     setCanAddItem(flourTotal > 0 && waterTotal > 0);
@@ -230,7 +245,51 @@ function LeavenBase(
     setLeavenFlourItems(items);
   });
 
+  const updateLeaven = (() => {
+    const leaven = {
+      flour: leavenFlourItems, water: leavenWater, sourdough: leavenSourdough
+    };
+    setLeaven(leaven);
+  });
+
+  const changeItemHandler = ((amtFlour, amtWater) => {
+    setLeavenFlourTotal(leavenFlourTotal + amtFlour);
+    setLeavenFlourLeft(leavenFlourLeft - amtFlour);
+    setFlourLeft(flourLeft - amtFlour);
+    setWaterLeft(waterLeft - amtWater);
+    updateLeaven();
+  });
+
+  const removeItemHandler = ((uid, amtFlour, amtWater) => {
+    const items = leavenFlourItems.filter((item) => item.get('uid') !== uid);
+    setLeavenFlourItems(items);
+    setLeavenFlourLeft(leavenFlourLeft + amtFlour);
+    setFlourLeft(flourLeft + amtFlour);
+    setWaterLeft(waterLeft + amtWater);
+    updateLeaven();
+  });
+
   const flourItemsListId = 'leaven-flour-items';
+
+  const LeavenIngredients = (() => (
+    <>
+      <LeavenFlourWeight
+        flourTotal={flourTotal}
+        setLeavenFlourWeight={setLeavenFlourWeight}
+      />
+      <LeavenFlourItems
+        items={leavenFlourItems}
+        flourItemsListId={flourItemsListId}
+        flourTotal={leavenFlourTotal}
+        flourLeft={leavenFlourLeft}
+        changeItemHandler={changeItemHandler}
+        removeItemHandler={removeItemHandler}
+      />
+      <div class="add-item-button">
+        {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
+      </div>
+    </>
+  ));
 
   return (
     <>
@@ -240,19 +299,7 @@ function LeavenBase(
           <option value={item.uid} key={item.uid}>{item.name}</option>
         ))}
       </datalist>
-      {canAddItem && <LeavenFlourWeight
-        flourTotal={flourTotal}
-        setLeavenFlourWeight={setLeavenFlourWeight}
-      />}
-      {canAddItem && <LeavenFlourItems
-        items={leavenFlourItems}
-        flourItemsListId={flourItemsListId}
-        flourTotal={leavenFlourTotal}
-        flourLeft={leavenFlourLeft}
-      />}
-      <div class="add-item-button">
-        {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
-      </div>
+      {canAddItem && <LeavenIngredients />}
     </>
   );
 }
