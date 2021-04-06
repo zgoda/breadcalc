@@ -225,8 +225,8 @@ function LeavenBase(
   }, [leaven]);
 
   useEffect(() => {
-    setCanAddItem(flourTotal > 0 && waterTotal > 0);
-  }, [flourTotal, waterTotal]);
+    setCanAddItem(flourTotal > 0 && waterTotal > 0 && dryIngredients.length > 0);
+  }, [flourTotal, waterTotal, dryIngredients]);
 
   useEffect(() => {
     const names = dryIngredients.map((item) => (
@@ -273,10 +273,6 @@ function LeavenBase(
 
   const LeavenIngredients = (() => (
     <>
-      <LeavenFlourWeight
-        flourTotal={flourTotal}
-        setLeavenFlourWeight={setLeavenFlourWeight}
-      />
       <LeavenFlourItems
         items={leavenFlourItems}
         flourItemsListId={flourItemsListId}
@@ -299,6 +295,11 @@ function LeavenBase(
           <option value={item.uid} key={item.uid}>{item.name}</option>
         ))}
       </datalist>
+      {canAddItem && <LeavenFlourWeight
+          flourTotal={flourTotal}
+          setLeavenFlourWeight={setLeavenFlourWeight}
+        />
+      }
       {canAddItem && <LeavenIngredients />}
     </>
   );
