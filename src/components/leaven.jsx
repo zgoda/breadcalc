@@ -5,7 +5,7 @@ import { uid } from 'uid';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { actions } from '../service/state';
-import leaven from './leaven.json';
+import leavenText from './leaven.json';
 
 function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
 
@@ -193,13 +193,13 @@ function LeavenFlourItems({ items, flourItemsListId, flourTotal, flourLeft }) {
 }
 
 const leavenStateItems = [
-  'flourTotal', 'waterTotal', 'flourLeft', 'waterLeft', 'dryIngredients',
+  'leaven', 'flourTotal', 'waterTotal', 'flourLeft', 'waterLeft', 'dryIngredients',
 ];
 
 function LeavenBase(
   {
-    flourTotal, waterTotal, flourLeft, waterLeft, dryIngredients,
-    setFlourLeft, setWaterLeft,
+    leaven, flourTotal, waterTotal, flourLeft, waterLeft, dryIngredients,
+    setLeaven, setFlourLeft, setWaterLeft,
   }
 ) {
 
@@ -234,7 +234,7 @@ function LeavenBase(
 
   return (
     <>
-      <p>{leaven.text}</p>
+      <p>{leavenText.text}</p>
       <datalist id={flourItemsListId}>
         {availableFlourItems.map((item) => (
           <option value={item.uid} key={item.uid}>{item.name}</option>

@@ -13,6 +13,7 @@ const store = createStore({
   flourLeft: 0,
   waterLeft: 0,
   saltLeft: 0,
+  leaven: { flour: [], water: 0, sourdough: 0 },
 });
 
 const actions = {
@@ -28,6 +29,7 @@ const actions = {
   setFlourLeft: (_state, value) => ({ flourLeft: value }),
   setWaterLeft: (_state, value) => ({ waterLeft: value }),
   setSaltLeft: (_state, value) => ({ saltLeft: value }),
+  setLeaven: (_state, value) => ({ leaven: value }),
 };
 
 export { store, actions };
