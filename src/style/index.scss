@@ -58,3 +58,33 @@ body {
   vertical-align: middle;
   margin-right: 1rem;
 }
+
+.topmenu {
+  border-bottom: 1px solid $color-secondary;
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+
+    li {
+      display: inline-block;
+      padding-right: 1rem;
+
+      ::before {
+        content: "\25E6";
+        display: inline-block;
+        padding-right: 0.5rem;
+      }
+    }
+  }
+}
+
+.footerlinks {
+  text-align: center;
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(22ch, 1fr));
+    gap: 1rem;
+  }  
+}

@@ -271,21 +271,26 @@ function LeavenBase(
 
   const flourItemsListId = 'leaven-flour-items';
 
-  const LeavenIngredients = (() => (
-    <>
-      <LeavenFlourItems
-        items={leavenFlourItems}
-        flourItemsListId={flourItemsListId}
-        flourTotal={leavenFlourTotal}
-        flourLeft={leavenFlourLeft}
-        changeItemHandler={changeItemHandler}
-        removeItemHandler={removeItemHandler}
-      />
-      <div class="add-item-button">
-        {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
-      </div>
-    </>
-  ));
+  const LeavenIngredients = (() => {
+    if (canAddItem) {
+      return (
+        <>
+          <LeavenFlourItems
+            items={leavenFlourItems}
+            flourItemsListId={flourItemsListId}
+            flourTotal={leavenFlourTotal}
+            flourLeft={leavenFlourLeft}
+            changeItemHandler={changeItemHandler}
+            removeItemHandler={removeItemHandler}
+          />
+          <div class="add-item-button">
+            <AddItemButton actionHandler={addItemHandler} />
+          </div>
+        </>
+      );
+    }
+    return null;
+  });
 
   return (
     <>
@@ -296,11 +301,10 @@ function LeavenBase(
         ))}
       </datalist>
       {canAddItem && <LeavenFlourWeight
-          flourTotal={flourTotal}
-          setLeavenFlourWeight={setLeavenFlourWeight}
-        />
-      }
-      {canAddItem && <LeavenIngredients />}
+        flourTotal={flourTotal}
+        setLeavenFlourWeight={setLeavenFlourWeight}
+      />}
+      <LeavenIngredients />
     </>
   );
 }

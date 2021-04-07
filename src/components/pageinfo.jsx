@@ -1,15 +1,18 @@
 import json from './pageinfo.json';
 
-function SectionTitle({ title, level }) {
+function SectionTitle({ title, level, id }) {
   const Tag = `h${level}`;
+  if (id != null) {
+    return <Tag id={id}>{title}</Tag>;
+  }
   return <Tag>{title}</Tag>;
 }
 
 function PageInfo({ title }) {
   return (
     <>
-      <SectionTitle title={title} level={1} />
-      {json.text.map((line) => (<p key={line}>{line}</p>))}
+      <SectionTitle title={title} level={1} id="home" />
+      {json.text.map((line, index) => (<p key={index}>{line}</p>))}
     </>
   );
 }

@@ -73,7 +73,8 @@ function CalcStartBase(
 
   return (
     <>
-      <h2>Początek wyliczeń</h2>
+      <h2 id="calc">Początek wyliczeń</h2>
+      <p><a href="#home">Początek</a></p>
       <p>Zawsze zaczyna się od mąki, wody i soli.</p>
       <form>
         <fieldset>
