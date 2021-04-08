@@ -12,7 +12,7 @@ function PageInfo({ title }) {
   return (
     <>
       <SectionTitle title={title} level={1} id="home" />
-      {json.text.map((line, index) => (<p key={index}>{line}</p>))}
+      {json.text.map((line, index) => (<p key={`appinfo-line-${index}`}>{line}</p>))}
     </>
   );
 }
