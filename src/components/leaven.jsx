@@ -187,6 +187,7 @@ function LeavenFlourItems(
     <>
       {items.map((item) => (
         <LeavenFlourItem
+          key={`leaven-flour-item-${item.uid}`}
           item={item}
           listId={flourItemsListId}
           flourTotal={flourTotal}
