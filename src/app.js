@@ -1,4 +1,3 @@
-import { useLang, useTitle, useMeta } from 'hoofd/preact';
 import { Provider } from 'unistore/preact';
 
 import { store } from './service/state';
@@ -13,18 +12,10 @@ import { Leaven } from './components/leaven';
 import { About } from './components/about';
 
 function Application() {
-
-  const appTitle = 'Kalkulator ciasta chlebowego';
-
-  useLang('pl');
-  useTitle(appTitle);
-  useMeta({ name: 'Author', content: 'Jarek Zgoda' });
-  useMeta({ name: 'description', content: appTitle });
-
   return (
     <div class="container">
       <Navigation />
-      <PageInfo title={appTitle} />
+      <PageInfo title="Kalkulator ciasta chlebowego" />
       <CalcStart />
       <SectionTitle title={'Składniki'} level={2} />
       <DryIngredients />

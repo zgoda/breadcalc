@@ -7,22 +7,22 @@ $color-tertiary: #E9C46A !default;
 $color-quaternary: #F4A261 !default;
 $color-quinary: #E76F51 !default;
 
-@import '../node_modules/milligram/src/_Color.sass';
-@import '../node_modules/milligram/src/_Base.sass';
-@import '../node_modules/milligram/src/_Blockquote.sass';
-@import '../node_modules/milligram/src/_Button.sass';
-@import '../node_modules/milligram/src/_Code.sass';
-@import '../node_modules/milligram/src/_Divider.sass';
-@import '../node_modules/milligram/src/_Form.sass';
-@import '../node_modules/milligram/src/_Link.sass';
-@import '../node_modules/milligram/src/_List.sass';
-@import '../node_modules/milligram/src/_Spacing.sass';
-@import '../node_modules/milligram/src/_Table.sass';
-@import '../node_modules/milligram/src/_Typography.sass';
-@import '../node_modules/milligram/src/_Image.sass';
-@import '../node_modules/milligram/src/_Utility.sass';
+@import '../../node_modules/milligram/src/_Color.sass';
+@import '../../node_modules/milligram/src/_Base.sass';
+@import '../../node_modules/milligram/src/_Blockquote.sass';
+@import '../../node_modules/milligram/src/_Button.sass';
+@import '../../node_modules/milligram/src/_Code.sass';
+@import '../../node_modules/milligram/src/_Divider.sass';
+@import '../../node_modules/milligram/src/_Form.sass';
+@import '../../node_modules/milligram/src/_Link.sass';
+@import '../../node_modules/milligram/src/_List.sass';
+@import '../../node_modules/milligram/src/_Spacing.sass';
+@import '../../node_modules/milligram/src/_Table.sass';
+@import '../../node_modules/milligram/src/_Typography.sass';
+@import '../../node_modules/milligram/src/_Image.sass';
+@import '../../node_modules/milligram/src/_Utility.sass';
 
-@import '../node_modules/flex-box-grid/dist/scss/index.scss';
+@import '../../node_modules/flex-box-grid/dist/scss/index.scss';
 
 @import './fonts.scss';
  
