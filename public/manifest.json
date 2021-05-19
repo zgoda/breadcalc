@@ -10,8 +10,7 @@
   "theme_color": "transparent",
   "description": "Kalkulator ciasta chlebowego",
   "orientation": "any",
-  "related_applications": [],
-  "prefer_related_applications": "false",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "manifest-icon-192.png",

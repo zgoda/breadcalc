@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === 'production') {
     }),
     terser(),
     generateSW({
-      swDest: 'public/sw-esm.js',
+      swDest: 'public/sw.js',
       globDirectory: 'public/',
       globPatterns: [
           '**/*.{html,json,js,css,woff,woff2}',
@@ -57,7 +57,7 @@ if (process.env.NODE_ENV === 'production') {
         options: {
           cacheName: 'images',
           expiration: {
-            maxEntries: 10,
+            maxEntries: 20,
           },
         },
       }],
