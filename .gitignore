@@ -5,6 +5,10 @@ package-lock.json
 /*.log
 size-plugin.json
 
+# Service Worker
+**/workbox*
+**/sw*
+
 # include VS Code debugging configuration
 !.vscode/
 .vscode/*

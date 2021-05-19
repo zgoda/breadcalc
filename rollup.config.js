@@ -6,6 +6,7 @@ import hotcss from 'rollup-plugin-hot-css';
 import static_files from 'rollup-plugin-static-files';
 import { terser } from 'rollup-plugin-terser';
 import prefresh from '@prefresh/nollup';
+import { generateSW } from 'rollup-plugin-workbox';
 
 let config = {
   input: './src/main.js',
@@ -41,7 +42,26 @@ if (process.env.NODE_ENV === 'production') {
     static_files({
       include: ['./public']
     }),
-    terser()
+    terser(),
+    generateSW({
+      swDest: 'public/sw-esm.js',
+      globDirectory: 'public/',
+      globPatterns: [
+          '**/*.{html,json,js,css,woff,woff2}',
+      ],
+      skipWaiting: true,
+      clientsClaim: true,
+      runtimeCaching: [{
+        urlPattern: /\.(?:png|jpg|jpeg|svg|woff|woff2)$/,
+        handler: 'CacheFirst',
+        options: {
+          cacheName: 'images',
+          expiration: {
+            maxEntries: 10,
+          },
+        },
+      }],
+    }),
   ]);
 }
 
