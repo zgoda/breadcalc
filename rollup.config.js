@@ -7,6 +7,7 @@ import static_files from 'rollup-plugin-static-files';
 import { terser } from 'rollup-plugin-terser';
 import prefresh from '@prefresh/nollup';
 import { generateSW } from 'rollup-plugin-workbox';
+import copy from 'rollup-plugin-copy';
 
 let config = {
   input: './src/main.js',
@@ -34,18 +35,32 @@ let config = {
     }),
     json(),
     process.env.NODE_ENV === 'development' && prefresh(),
-  ]
+  ],
 };
 
 if (process.env.NODE_ENV === 'production') {
   config.plugins = config.plugins.concat([
     static_files({
-      include: ['./public']
+      include: ['./public'],
     }),
     terser(),
+    copy({
+      hook: 'buildStart',
+      targets: [
+        { src: 'assets/manifest.json', dest: 'build/' },
+      ],
+      flatten: false,
+    }),
+    copy({
+      hook: 'buildStart',
+      targets: [
+        { src: 'assets/icons/**/*', dest: 'build/' },
+      ],
+      flatten: true,
+    }),
     generateSW({
-      swDest: 'public/sw.js',
-      globDirectory: 'public/',
+      swDest: 'build/sw.js',
+      globDirectory: 'build/',
       globPatterns: [
           '**/*.{html,json,js,css,woff,woff2}',
       ],
