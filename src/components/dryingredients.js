@@ -90,7 +90,7 @@ function DryIngredientItem(
             max={flourLeft}
             value={amtWeight}
             onInput={
-              (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.TOTAL)
+              (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
             }
             readOnly={readOnly}
           />
@@ -106,7 +106,7 @@ function DryIngredientItem(
             max="100"
             value={amtPc}
             onInput={
-              (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.PERCENT)
+              (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
             }
             readOnly={readOnly}
           />

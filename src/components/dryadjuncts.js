@@ -84,7 +84,7 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
             step="1"
             value={amtWeight}
             onInput={
-              (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.TOTAL)
+              (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
             }
             readOnly={readOnly}
           />
@@ -100,7 +100,7 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
             max="100"
             value={amtPc}
             onInput={
-              (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.PERCENT)
+              (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
             }
             readOnly={readOnly}
           />

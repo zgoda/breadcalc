@@ -22,7 +22,7 @@ function CalcStartBase(
 
   const setFlour = ((e) => {
     e.preventDefault();
-    const amount = Number.parseFloat(e.target.value);
+    const amount = parseFloat(e.target.value);
     setFlourTotal(amount);
     setFlourLeft(amount);
     const water = amount * waterPc / 100;
@@ -113,7 +113,7 @@ function CalcStartBase(
                     value={Math.round(waterTotal)}
                     onInput={
                       (e) => calcWater(
-                        Number.parseFloat(e.target.value), AmountType.TOTAL
+                        parseFloat(e.target.value), AmountType.TOTAL
                       )
                     }
                   />
@@ -130,7 +130,7 @@ function CalcStartBase(
                   value={round(waterPc, 1)}
                   onInput={
                     (e) => calcWater(
-                      Number.parseFloat(e.target.value), AmountType.PERCENT
+                      parseFloat(e.target.value), AmountType.PERCENT
                     )
                   }
                 />
@@ -156,7 +156,7 @@ function CalcStartBase(
                     value={Math.round(saltTotal)}
                     onInput={
                       (e) => calcSalt(
-                        Number.parseFloat(e.target.value), AmountType.TOTAL
+                        parseFloat(e.target.value), AmountType.TOTAL
                       )
                     }
                   />
@@ -173,7 +173,7 @@ function CalcStartBase(
                     value={round(saltPc, 1)}
                     onInput={
                       (e) => calcSalt(
-                        Number.parseFloat(e.target.value), AmountType.PERCENT
+                        parseFloat(e.target.value), AmountType.PERCENT
                       )
                     }
                   />

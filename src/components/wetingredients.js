@@ -119,7 +119,7 @@ function WetIngredientItem(
             max={flourLeft}
             value={amtWeight}
             onInput={
-              (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.TOTAL)
+              (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
             }
             readOnly={readOnly}
           />
@@ -133,7 +133,7 @@ function WetIngredientItem(
             max="100"
             value={amtPc}
             onInput={
-              (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.PERCENT)
+              (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
             }
             readOnly={readOnly}
           />
@@ -149,7 +149,7 @@ function WetIngredientItem(
             max={waterLeft}
             value={waterWeight}
             onInput={
-              (e) => recalcWater(Number.parseFloat(e.target.value), AmountType.TOTAL)
+              (e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)
             }
             readOnly={readOnly}
           />
@@ -162,7 +162,7 @@ function WetIngredientItem(
             step="0.1"
             value={waterPc}
             onInput={
-              (e) => recalcWater(Number.parseFloat(e.target.value), AmountType.PERCENT)
+              (e) => recalcWater(parseFloat(e.target.value), AmountType.PERCENT)
             }
             readOnly={readOnly}
           />

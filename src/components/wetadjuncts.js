@@ -113,7 +113,7 @@ function WetAdjunctItem(
             step="1"
             value={amtWeight}
             onInput={
-              (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.TOTAL)
+              (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
             }
             readOnly={readOnly}
           />
@@ -126,7 +126,7 @@ function WetAdjunctItem(
             step="0.1"
             value={amtPc}
             onInput={
-              (e) => recalcAmount(Number.parseFloat(e.target.value), AmountType.PERCENT)
+              (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
             }
             readOnly={readOnly}
           />
@@ -142,7 +142,7 @@ function WetAdjunctItem(
             max={waterLeft}
             value={waterWeight}
             onInput={
-              (e) => recalcWater(Number.parseFloat(e.target.value), AmountType.TOTAL)
+              (e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)
             }
             readOnly={readOnly}
           />
@@ -155,7 +155,7 @@ function WetAdjunctItem(
             step="0.1"
             value={waterPc}
             onInput={
-              (e) => recalcWater(Number.parseFloat(e.target.value), AmountType.PERCENT)
+              (e) => recalcWater(parseFloat(e.target.value), AmountType.PERCENT)
             }
             readOnly={readOnly}
           />
