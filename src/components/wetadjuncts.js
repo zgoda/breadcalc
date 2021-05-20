@@ -133,7 +133,7 @@ function WetAdjunctItem(
         </label>
       </div>
       <div class="M2">
-      <label>
+        <label>
           Woda wagowo
           <input
             type="number"
@@ -163,7 +163,7 @@ function WetAdjunctItem(
       </div>
       <div class="M2">
         {
-          readOnly 
+          readOnly
             ? <UnlockButton actionHandler={makeEditable} />
             : <LockButton actionHandler={makeReadOnly} />
         }

@@ -167,7 +167,7 @@ function LeavenFlourItem(
       </div>
       <div class="M2">
         {
-          readOnly 
+          readOnly
             ? <UnlockButton actionHandler={makeEditable} />
             : <LockButton actionHandler={makeReadOnly} />
         }

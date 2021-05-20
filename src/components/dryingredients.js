@@ -4,7 +4,7 @@ import { uid } from 'uid';
 
 import { actions } from '../service/state';
 import {
-  AddItemButton, RemoveItemButton, LockButton, UnlockButton,
+  AddItemButton, RemoveItemButton, LockButton, SaveItemButton, UnlockButton,
 } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
@@ -39,6 +39,9 @@ function DryIngredientItem(
   });
 
   const recalcAmount = ((value, type) => {
+    if (isNaN(value)) {
+      return;
+    }
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
       amtWeight = flourTotal * value / 100;
@@ -51,6 +54,9 @@ function DryIngredientItem(
     item.set('amtWeight', amtWeight);
     setAmtPc(amtPc);
     item.set('amtPc', amtPc);
+  });
+
+  const saveItem = (() => {
     changeItemHandler(amtWeight);
   });
 
@@ -68,7 +74,7 @@ function DryIngredientItem(
 
   return (
     <div class="row X--middle">
-      <div class="M6">
+      <div class="M5">
         <label>
           Nazwa <span class="label-required">*</span>
           <input
@@ -112,9 +118,12 @@ function DryIngredientItem(
           />
         </label>
       </div>
+      <div class="M1">
+        <SaveItemButton actionHandler={saveItem} />
+      </div>
       <div class="M2">
         {
-          readOnly 
+          readOnly
             ? <UnlockButton actionHandler={makeEditable} />
             : <LockButton actionHandler={makeReadOnly} />
         }
@@ -144,11 +153,15 @@ function DryIngredientsBase(
   const removeItemHandler = ((uid, amount) => {
     const items = dryIngredients.filter((item) => item.get('uid') !== uid);
     setDryIngredients(items);
-    setFlourLeft(flourLeft + amount);
+    if (!isNaN(amount)){
+      setFlourLeft(flourLeft + amount);
+    }
   });
 
   const changeItemHandler = ((amount) => {
-    setFlourLeft(flourLeft - amount);
+    if (!isNaN(amount)){
+      setFlourLeft(flourLeft - amount);
+    }
   });
 
   return (

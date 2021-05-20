@@ -10,7 +10,7 @@ import { AmountType } from '../utils/numbers';
 import wetingredients from './wetingredients.json';
 
 function WetIngredientItem(
-  { 
+  {
     item, flourLeft, waterLeft, flourTotal,
     removeItemHandler, changeItemHandler,
   }
@@ -140,7 +140,7 @@ function WetIngredientItem(
         </label>
       </div>
       <div class="M2">
-      <label>
+        <label>
           Woda wagowo
           <input
             type="number"
@@ -170,7 +170,7 @@ function WetIngredientItem(
       </div>
       <div class="M2">
         {
-          readOnly 
+          readOnly
             ? <UnlockButton actionHandler={makeEditable} />
             : <LockButton actionHandler={makeReadOnly} />
         }

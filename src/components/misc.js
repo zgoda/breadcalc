@@ -18,7 +18,7 @@ function HelpButton({ text }) {
   return (
     <>
       <button
-        class="button button-clear"
+        class="button button-clear button-icon-small"
         type="button"
         ref={buttonRef}
         onClick={handleButtonClick}
@@ -64,7 +64,7 @@ function SaveItemButton({ actionHandler }) {
 
   return (
     <button
-      class="button button-clear"
+      class="button button-clear button-icon-small"
       type="button"
       ref={buttonRef}
       onClick={handleButtonClick}
@@ -86,7 +86,7 @@ function EditItemButton({ actionHandler }) {
 
   return (
     <button
-      class="button button-clear"
+      class="button button-clear button-icon-small"
       type="button"
       ref={buttonRef}
       onClick={handleButtonClick}
@@ -108,7 +108,7 @@ function RemoveItemButton({ actionHandler }) {
 
   return (
     <button
-      class="button button-clear"
+      class="button button-clear button-icon-small"
       type="button"
       ref={buttonRef}
       onClick={handleButtonClick}
@@ -153,14 +153,14 @@ function LockButton({ actionHandler }) {
 
   return (
     <button
-      class="button button-clear"
+      class="button button-clear button-icon-small"
       type="button"
       ref={buttonRef}
       onClick={handleButtonClick}
     >
       <Lock />
     </button>
-  );  
+  );
 }
 
 function UnlockButton({ actionHandler }) {
@@ -175,14 +175,14 @@ function UnlockButton({ actionHandler }) {
 
   return (
     <button
-      class="button button-clear"
+      class="button button-clear button-icon-small"
       type="button"
       ref={buttonRef}
       onClick={handleButtonClick}
     >
       <Unlock />
     </button>
-  );  
+  );
 }
 
 export {

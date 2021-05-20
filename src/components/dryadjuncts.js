@@ -108,7 +108,7 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
       </div>
       <div class="M2">
         {
-          readOnly 
+          readOnly
             ? <UnlockButton actionHandler={makeEditable} />
             : <LockButton actionHandler={makeReadOnly} />
         }

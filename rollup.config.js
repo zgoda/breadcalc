@@ -1,4 +1,5 @@
 import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import { babel } from '@rollup/plugin-babel';
 import json from '@rollup/plugin-json';
 import commonjs from 'rollup-plugin-commonjs-alternate';
@@ -9,15 +10,24 @@ import prefresh from '@prefresh/nollup';
 import { generateSW } from 'rollup-plugin-workbox';
 import copy from 'rollup-plugin-copy';
 
+const envStr = JSON.stringify(process.env.NODE_ENV);
+
 let config = {
   input: './src/main.js',
   output: {
     dir: 'build',
     format: 'esm',
     entryFileNames: '[name].[hash].js',
-    assetFileNames: '[name].[hash][extname]'
+    assetFileNames: '[name].[hash][extname]',
+    sourceMap: true,
   },
   plugins: [
+    replace({
+      values: {
+        'process.env.NODE_ENV': envStr,
+      },
+      preventAssignment: true,
+    }),
     hotcss({
       hot: process.env.NODE_ENV === 'development',
       file: 'styles.css',
@@ -30,7 +40,7 @@ let config = {
     resolve(),
     commonjs({
       define: {
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        'process.env.NODE_ENV': envStr,
       }
     }),
     json(),

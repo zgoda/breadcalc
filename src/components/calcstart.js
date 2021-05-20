@@ -23,6 +23,9 @@ function CalcStartBase(
   const setFlour = ((e) => {
     e.preventDefault();
     const amount = parseFloat(e.target.value);
+    if (isNaN(amount)) {
+      return;
+    }
     setFlourTotal(amount);
     setFlourLeft(amount);
     const water = amount * waterPc / 100;
@@ -34,6 +37,9 @@ function CalcStartBase(
   });
 
   const calcWater = ((value, type) => {
+    if (isNaN(value)) {
+      return;
+    }
     let waterPc = 0;
     let waterTotal = 0;
     if (type === AmountType.PERCENT) {
@@ -53,6 +59,9 @@ function CalcStartBase(
   });
 
   const calcSalt = ((value, type) => {
+    if (isNaN(value)) {
+      return;
+    }
     let saltPc = 0;
     let saltTotal = 0;
     if (type === AmountType.PERCENT) {
@@ -122,18 +131,18 @@ function CalcStartBase(
                   <label for={inputs.get('waterPc')}>lub w %</label>
                 </div>
                 <div class="S4">
-                <input
-                  id={inputs.get('waterPc')}
-                  type="number"
-                  step="0.1"
-                  inputMode="numeric"
-                  value={round(waterPc, 1)}
-                  onInput={
-                    (e) => calcWater(
-                      parseFloat(e.target.value), AmountType.PERCENT
-                    )
-                  }
-                />
+                  <input
+                    id={inputs.get('waterPc')}
+                    type="number"
+                    step="0.1"
+                    inputMode="numeric"
+                    value={round(waterPc, 1)}
+                    onInput={
+                      (e) => calcWater(
+                        parseFloat(e.target.value), AmountType.PERCENT
+                      )
+                    }
+                  />
                 </div>
               </div>
             </div>
@@ -182,7 +191,7 @@ function CalcStartBase(
             </div>
             <div class="M3">
               <HelpButton text={fieldHelp.salt} />
-            </div>            
+            </div>
           </div>
         </fieldset>
       </form>
