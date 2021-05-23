@@ -4,7 +4,7 @@ import { uid } from 'uid';
 
 import { actions } from '../service/state';
 import {
-  AddItemButton, RemoveItemButton, LockButton, SaveItemButton, UnlockButton,
+  AddItemButton, RemoveItemButton, LockButton, UnlockButton,
 } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
@@ -54,9 +54,6 @@ function DryIngredientItem(
     item.set('amtWeight', amtWeight);
     setAmtPc(amtPc);
     item.set('amtPc', amtPc);
-  });
-
-  const saveItem = (() => {
     changeItemHandler(amtWeight);
   });
 
@@ -74,7 +71,7 @@ function DryIngredientItem(
 
   return (
     <div class="row X--middle">
-      <div class="M5">
+      <div class="M6">
         <label>
           Nazwa <span class="label-required">*</span>
           <input
@@ -95,7 +92,8 @@ function DryIngredientItem(
             step="1"
             max={flourLeft}
             value={amtWeight}
-            onInput={
+            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+            onBlur={
               (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
             }
             readOnly={readOnly}
@@ -111,22 +109,22 @@ function DryIngredientItem(
             step="0.1"
             max="100"
             value={amtPc}
-            onInput={
+            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+            onBlur={
               (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
             }
             readOnly={readOnly}
           />
         </label>
       </div>
-      <div class="M1">
-        <SaveItemButton actionHandler={saveItem} />
-      </div>
-      <div class="M2">
+      <div class="M1 center">
         {
           readOnly
             ? <UnlockButton actionHandler={makeEditable} />
             : <LockButton actionHandler={makeReadOnly} />
         }
+      </div>
+      <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
@@ -153,13 +151,13 @@ function DryIngredientsBase(
   const removeItemHandler = ((uid, amount) => {
     const items = dryIngredients.filter((item) => item.get('uid') !== uid);
     setDryIngredients(items);
-    if (!isNaN(amount)){
+    if (!isNaN(amount)) {
       setFlourLeft(flourLeft + amount);
     }
   });
 
   const changeItemHandler = ((amount) => {
-    if (!isNaN(amount)){
+    if (!isNaN(amount)) {
       setFlourLeft(flourLeft - amount);
     }
   });
@@ -183,7 +181,7 @@ function DryIngredientsBase(
           ))}
         </fieldset>
       </form>
-      <div class="add-item-button">
+      <div class="center">
         {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
       </div>
     </>

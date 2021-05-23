@@ -83,9 +83,10 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
             inputMode="numeric"
             step="1"
             value={amtWeight}
-            onInput={
+            onBlur={
               (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
             }
+            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
         </label>
@@ -99,19 +100,22 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
             step="0.1"
             max="100"
             value={amtPc}
-            onInput={
+            onBlur={
               (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
             }
+            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
         </label>
       </div>
-      <div class="M2">
+      <div class="M1 center">
         {
           readOnly
             ? <UnlockButton actionHandler={makeEditable} />
             : <LockButton actionHandler={makeReadOnly} />
         }
+      </div>
+      <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
@@ -154,7 +158,7 @@ function DryAdjunctsBase({ flourTotal, dryAdjuncts, setDryAdjuncts }) {
           ))}
         </fieldset>
       </form>
-      <div class="add-item-button">
+      <div class="center">
         {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
       </div>
     </>

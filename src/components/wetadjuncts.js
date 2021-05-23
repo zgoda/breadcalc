@@ -112,9 +112,10 @@ function WetAdjunctItem(
             inputMode="numeric"
             step="1"
             value={amtWeight}
-            onInput={
+            onBlur={
               (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
             }
+            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
         </label>
@@ -125,9 +126,10 @@ function WetAdjunctItem(
             inputMode="numeric"
             step="0.1"
             value={amtPc}
-            onInput={
+            onBlur={
               (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
             }
+            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
         </label>
@@ -141,9 +143,10 @@ function WetAdjunctItem(
             step="1"
             max={waterLeft}
             value={waterWeight}
-            onInput={
+            onBlur={
               (e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)
             }
+            onInput={(e) => setWaterWeight(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
         </label>
@@ -154,19 +157,22 @@ function WetAdjunctItem(
             inputMode="numeric"
             step="0.1"
             value={waterPc}
-            onInput={
+            onBlur={
               (e) => recalcWater(parseFloat(e.target.value), AmountType.PERCENT)
             }
+            onInput={(e) => setWaterPc(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
         </label>
       </div>
-      <div class="M2">
+      <div class="M1 center">
         {
           readOnly
             ? <UnlockButton actionHandler={makeEditable} />
             : <LockButton actionHandler={makeReadOnly} />
         }
+      </div>
+      <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
@@ -224,7 +230,7 @@ function WetAdjunctsBase(
           ))}
         </fieldset>
       </form>
-      <div class="add-item-button">
+      <div class="center">
         {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
       </div>
     </>

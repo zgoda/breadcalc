@@ -284,7 +284,7 @@ function LeavenBase(
             changeItemHandler={changeItemHandler}
             removeItemHandler={removeItemHandler}
           />
-          <div class="add-item-button">
+          <div class="center">
             <AddItemButton actionHandler={addItemHandler} />
           </div>
         </>

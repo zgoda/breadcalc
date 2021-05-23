@@ -103,7 +103,7 @@ function CalcStartBase(
                 required
               />
             </div>
-            <div class="M3">
+            <div class="M3 center">
               <HelpButton text={fieldHelp.flourTotal} />
             </div>
           </div>
@@ -146,7 +146,7 @@ function CalcStartBase(
                 </div>
               </div>
             </div>
-            <div class="M3">
+            <div class="M3 center">
               <HelpButton text={fieldHelp.water} />
             </div>
           </div>
@@ -189,7 +189,7 @@ function CalcStartBase(
                 </div>
               </div>
             </div>
-            <div class="M3">
+            <div class="M3 center">
               <HelpButton text={fieldHelp.salt} />
             </div>
           </div>
