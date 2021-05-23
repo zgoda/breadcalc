@@ -19,7 +19,6 @@ let config = {
     format: 'esm',
     entryFileNames: '[name].[hash].js',
     assetFileNames: '[name].[hash][extname]',
-    sourceMap: true,
   },
   plugins: [
     replace({
