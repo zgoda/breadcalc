@@ -22,7 +22,7 @@ $color-quinary: #E76F51 !default;
 @import '../../node_modules/milligram/src/_Image.sass';
 @import '../../node_modules/milligram/src/_Utility.sass';
 
-@import '../../node_modules/flex-box-grid/dist/scss/index.scss';
+@import './flexboxgrid/index.scss';
 
 @import './fonts.scss';
  
