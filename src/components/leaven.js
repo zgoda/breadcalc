@@ -142,7 +142,8 @@ function LeavenFlourItem(
             step="1"
             max={flourLeft}
             value={amtWeight}
-            onInput={
+            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+            onBlur={
               (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
             }
             readOnly={readOnly}
@@ -158,19 +159,22 @@ function LeavenFlourItem(
             step="0.1"
             max="100"
             value={amtPc}
-            onInput={
+            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+            onBlur={
               (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
             }
             readOnly={readOnly}
           />
         </label>
       </div>
-      <div class="M2">
+      <div class="M1 center">
         {
           readOnly
             ? <UnlockButton actionHandler={makeEditable} />
             : <LockButton actionHandler={makeReadOnly} />
         }
+      </div>
+      <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
