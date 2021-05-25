@@ -138,9 +138,11 @@ function DryIngredientsBase(
 ) {
 
   const [canAddItem, setCanAddItem] = useState(true);
+  const [warnFull, setWarnFull] = useState(false);
 
   useEffect(() => {
     setCanAddItem(flourLeft > 0 && flourTotal > 0);
+    setWarnFull(flourLeft <= 0 && flourTotal > 0);
   }, [flourTotal, flourLeft, dryIngredients]);
 
   const addItemHandler = (() => {
@@ -166,7 +168,7 @@ function DryIngredientsBase(
     <>
       <SectionTitle title={'Mąka i składniki suche'} level={3} />
       <p>{dryingredients.text}</p>
-      {!canAddItem && <p class="error">{dryingredients.full}</p>}
+      {warnFull && <p class="error">{dryingredients.full}</p>}
       <form>
         <fieldset>
           {dryIngredients.map((item) => (

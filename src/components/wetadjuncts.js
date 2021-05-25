@@ -192,9 +192,11 @@ function WetAdjunctsBase(
 ) {
 
   const [canAddItem, setCanAddItem] = useState(true);
+  const [warnFull, setWarnFull] = useState(false);
 
   useEffect(() => {
     setCanAddItem(waterLeft > 0 && waterTotal > 0);
+    setWarnFull(waterLeft <= 0 && waterTotal > 0);
   }, [flourTotal, waterTotal, waterLeft, wetAdjuncts, wetIngredients]);
 
   const addItemHandler = (() => {
@@ -215,7 +217,7 @@ function WetAdjunctsBase(
     <>
       <SectionTitle title={'Dodatki namaczane'} level={3} />
       <p>{wetadjuncts.text}</p>
-      {!canAddItem && <p class="error">{wetadjuncts.full}</p>}
+      {warnFull && <p class="error">{wetadjuncts.full}</p>}
       <form>
         <fieldset>
           {wetAdjuncts.map((item) => (

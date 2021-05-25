@@ -199,10 +199,14 @@ function WetIngredientsBase(
 ) {
 
   const [canAddItem, setCanAddItem] = useState(true);
+  const [warnFull, setWarnFull] = useState(false);
 
   useEffect(() => {
     setCanAddItem(
       (flourLeft > 0 && flourTotal > 0) && (waterLeft > 0 && waterTotal > 0)
+    );
+    setWarnFull(
+      (flourLeft <= 0 && flourTotal > 0) && (waterLeft <= 0 && waterTotal > 0)
     );
   }, [flourTotal, flourLeft, waterTotal, waterLeft, dryIngredients, wetIngredients]);
 
@@ -227,7 +231,7 @@ function WetIngredientsBase(
     <>
       <SectionTitle title={'Mąka i składniki namaczane'} level={3} />
       <p dangerouslySetInnerHTML={{ __html: wetingredients.text }} />
-      {!canAddItem && <p class="error">{wetingredients.full}</p>}
+      {warnFull && <p class="error">{wetingredients.full}</p>}
       <form>
         <fieldset>
           {wetIngredients.map((item) => (
