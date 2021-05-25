@@ -1,5 +1,5 @@
 import { SectionTitle } from './pageinfo';
-import json from './about.json';
+import json from '../data/about.json';
 
 function About({ title }) {
   return (

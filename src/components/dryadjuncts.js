@@ -6,7 +6,7 @@ import { actions } from '../service/state';
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
-import dryadjuncts from './dryadjuncts.json';
+import dryadjuncts from '../data/dryadjuncts.json';
 
 function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
 

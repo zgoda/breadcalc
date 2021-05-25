@@ -1,4 +1,4 @@
-import json from './pageinfo.json';
+import json from '../data/pageinfo.json';
 
 function SectionTitle({ title, level, id }) {
   const Tag = `h${level}`;

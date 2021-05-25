@@ -3,7 +3,7 @@ import { connect } from 'unistore/preact';
 import { actions } from '../service/state';
 import { HelpButton } from './misc';
 import { round, AmountType } from '../utils/numbers';
-import fieldHelp from './fieldhelp.json';
+import fieldHelp from '../data/fieldhelp.json';
 
 const stateItems = ['flourTotal', 'waterTotal', 'waterPc', 'saltTotal', 'saltPc'];
 

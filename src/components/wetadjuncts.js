@@ -6,7 +6,7 @@ import { AmountType } from '../utils/numbers';
 import { actions } from '../service/state';
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
-import wetadjuncts from './wetadjuncts.json';
+import wetadjuncts from '../data/wetadjuncts.json';
 
 function WetAdjunctItem(
   { item, waterLeft, flourTotal, removeItemHandler, changeItemHandler }

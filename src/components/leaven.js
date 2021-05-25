@@ -5,7 +5,7 @@ import { uid } from 'uid';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { actions } from '../service/state';
-import leavenText from './leaven.json';
+import leavenText from '../data/leaven.json';
 
 function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
 

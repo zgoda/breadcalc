@@ -8,7 +8,7 @@ import {
 } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
-import dryingredients from './dryingredients.json';
+import dryingredients from '../data/dryingredients.json';
 
 function DryIngredientItem(
   { item, flourLeft, flourTotal, removeItemHandler, changeItemHandler }

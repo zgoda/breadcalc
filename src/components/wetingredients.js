@@ -7,7 +7,7 @@ import { actions } from '../service/state';
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
-import wetingredients from './wetingredients.json';
+import wetingredients from '../data/wetingredients.json';
 
 function WetIngredientItem(
   {
