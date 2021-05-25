@@ -26,7 +26,7 @@ function Application() {
       <Leaven />
       <SectionTitle title={'Ciasto właściwe'} level={2} />
       <hr />
-      <About />
+      <About title="O programie" />
     </div>
   );
 }

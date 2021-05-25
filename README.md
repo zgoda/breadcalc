@@ -16,4 +16,4 @@ Wersja "na żywo" jest dostępna pod adresem https://breadcalc.netlify.app.
 
 Copyright (c) 2021, Jarek Zgoda
 
-Licensed unded BSD 3-Clause license.
+Licensed under BSD 3-Clause license.
