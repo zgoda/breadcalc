@@ -62,6 +62,25 @@ function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
   );
 }
 
+function LeavenWaterWeight() {
+  return (
+    <div class="row X--middle X--around">
+      <div class="M3">
+        <label>
+          Waga wody w zaczynie (g)
+          <input type="number" inputMode="numeric" step="1" />
+        </label>
+      </div>
+      <div class="M3">
+        <label>
+          Jako % ilości mąki w zaczynie
+          <input type="number" inputMode="numeric" step="0.1" />
+        </label>
+      </div>
+    </div>
+  );
+}
+
 function LeavenFlourItem(
   { item, flourLeft, flourTotal, removeItemHandler, changeItemHandler, listId }
 ) {
@@ -216,6 +235,7 @@ function LeavenBase(
 ) {
 
   const [canAddItem, setCanAddItem] = useState(true);
+  const [canAddWater, setCanAddWater] = useState(false);
   const [leavenFlourTotal, setLeavenFlourTotal] = useState(0);
   const [leavenFlourLeft, setLeavenFlourLeft] = useState(0);
   const [availableFlourItems, setAvailableFlourItems] = useState([]);
@@ -232,6 +252,10 @@ function LeavenBase(
   useEffect(() => {
     setCanAddItem(flourTotal > 0 && waterTotal > 0 && dryIngredients.length > 0);
   }, [flourTotal, waterTotal, dryIngredients]);
+
+  useEffect(() => {
+    setCanAddWater(leavenFlourTotal > 0);
+  }, [leavenFlourTotal]);
 
   useEffect(() => {
     const names = dryIngredients.map((item) => (
@@ -309,6 +333,7 @@ function LeavenBase(
         flourTotal={flourTotal}
         setLeavenFlourWeight={setLeavenFlourWeight}
       />}
+      {canAddWater && <LeavenWaterWeight />}
       <LeavenIngredients />
     </>
   );
