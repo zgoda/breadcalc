@@ -37,7 +37,8 @@ function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
             step="1"
             max={flourTotal}
             value={amtWeight}
-            onInput={
+            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+            onBlur={
               (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
             }
           />
@@ -52,7 +53,8 @@ function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
             step="0.1"
             max="100"
             value={amtPc}
-            onInput={
+            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+            onBlur={
               (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
             }
           />
@@ -62,19 +64,51 @@ function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
   );
 }
 
-function LeavenWaterWeight() {
+function LeavenWaterWeight({ leavenFlourTotal, changeWaterHandler }) {
+
+  const [amtWeight, setAmtWeight] = useState(0);
+  const [amtPc, setAmtPc] = useState(0);
+
+  const recalcAmount = ((value, type) => {
+    let amtPc, amtWeight;
+    if (type === AmountType.PERCENT) {
+      amtPc = value;
+      amtWeight = leavenFlourTotal * value / 100;
+    } else if (type === AmountType.TOTAL) {
+      amtPc = value / leavenFlourTotal * 100;
+      amtWeight = value;
+    }
+    setAmtPc(amtPc);
+    setAmtWeight(amtWeight);
+    changeWaterHandler(amtWeight);
+  });
+
   return (
     <div class="row X--middle X--around">
       <div class="M3">
         <label>
           Waga wody w zaczynie (g)
-          <input type="number" inputMode="numeric" step="1" />
+          <input
+            type="number"
+            inputMode="numeric"
+            step="1"
+            value={amtWeight}
+            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
+          />
         </label>
       </div>
       <div class="M3">
         <label>
           Jako % ilości mąki w zaczynie
-          <input type="number" inputMode="numeric" step="0.1" />
+          <input
+            type="number"
+            inputMode="numeric"
+            step="0.1"
+            value={amtPc}
+            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
+          />
         </label>
       </div>
     </div>
@@ -281,20 +315,24 @@ function LeavenBase(
     setLeaven(leaven);
   });
 
-  const changeItemHandler = ((amtFlour, amtWater) => {
-    setLeavenFlourTotal(leavenFlourTotal + amtFlour);
-    setLeavenFlourLeft(leavenFlourLeft - amtFlour);
-    setFlourLeft(flourLeft - amtFlour);
+  const changeWaterHandler = ((amtWater) => {
+    setLeavenWater(amtWater);
     setWaterLeft(waterLeft - amtWater);
     updateLeaven();
   });
 
-  const removeItemHandler = ((uid, amtFlour, amtWater) => {
+  const changeFlourItemHandler = ((amtFlour) => {
+    setLeavenFlourTotal(leavenFlourTotal + amtFlour);
+    setLeavenFlourLeft(leavenFlourLeft - amtFlour);
+    setFlourLeft(flourLeft - amtFlour);
+    updateLeaven();
+  });
+
+  const removeFlourItemHandler = ((uid, amtFlour) => {
     const items = leavenFlourItems.filter((item) => item.get('uid') !== uid);
     setLeavenFlourItems(items);
     setLeavenFlourLeft(leavenFlourLeft + amtFlour);
     setFlourLeft(flourLeft + amtFlour);
-    setWaterLeft(waterLeft + amtWater);
     updateLeaven();
   });
 
@@ -309,8 +347,8 @@ function LeavenBase(
             flourItemsListId={flourItemsListId}
             flourTotal={leavenFlourTotal}
             flourLeft={leavenFlourLeft}
-            changeItemHandler={changeItemHandler}
-            removeItemHandler={removeItemHandler}
+            changeItemHandler={changeFlourItemHandler}
+            removeItemHandler={removeFlourItemHandler}
           />
           <div class="center">
             <AddItemButton actionHandler={addItemHandler} />
@@ -333,7 +371,10 @@ function LeavenBase(
         flourTotal={flourTotal}
         setLeavenFlourWeight={setLeavenFlourWeight}
       />}
-      {canAddWater && <LeavenWaterWeight />}
+      {canAddWater && <LeavenWaterWeight
+        changeWaterHandler={changeWaterHandler}
+        leavenFlourTotal={leavenFlourTotal}
+      />}
       <LeavenIngredients />
     </>
   );
