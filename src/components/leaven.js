@@ -270,6 +270,7 @@ function LeavenBase(
 
   const [canAddItem, setCanAddItem] = useState(true);
   const [canAddWater, setCanAddWater] = useState(false);
+  const [isFull, setIsFull] = useState(false);
   const [leavenFlourTotal, setLeavenFlourTotal] = useState(0);
   const [leavenFlourLeft, setLeavenFlourLeft] = useState(0);
   const [availableFlourItems, setAvailableFlourItems] = useState([]);
@@ -284,8 +285,10 @@ function LeavenBase(
   }, [leaven]);
 
   useEffect(() => {
-    setCanAddItem(flourTotal > 0 && waterTotal > 0 && dryIngredients.length > 0);
-  }, [flourTotal, waterTotal, dryIngredients]);
+    const canAddItem = flourTotal > 0 && waterTotal > 0 && dryIngredients.length > 0;
+    setCanAddItem(canAddItem);
+    setIsFull(canAddItem && leavenFlourLeft === 0);
+  }, [flourTotal, waterTotal, dryIngredients, leavenFlourLeft]);
 
   useEffect(() => {
     setCanAddWater(leavenFlourTotal > 0);
@@ -339,24 +342,24 @@ function LeavenBase(
   const flourItemsListId = 'leaven-flour-items';
 
   const LeavenIngredients = (() => {
-    if (canAddItem) {
-      return (
-        <>
-          <LeavenFlourItems
-            items={leavenFlourItems}
-            flourItemsListId={flourItemsListId}
-            flourTotal={leavenFlourTotal}
-            flourLeft={leavenFlourLeft}
-            changeItemHandler={changeFlourItemHandler}
-            removeItemHandler={removeFlourItemHandler}
-          />
-          <div class="center">
-            <AddItemButton actionHandler={addItemHandler} />
-          </div>
-        </>
-      );
+    if (isFull) {
+      return null;
     }
-    return null;
+    return (
+      <>
+        <LeavenFlourItems
+          items={leavenFlourItems}
+          flourItemsListId={flourItemsListId}
+          flourTotal={leavenFlourTotal}
+          flourLeft={leavenFlourLeft}
+          changeItemHandler={changeFlourItemHandler}
+          removeItemHandler={removeFlourItemHandler}
+        />
+        <div class="center">
+          <AddItemButton actionHandler={addItemHandler} />
+        </div>
+      </>
+    );
   });
 
   return (
@@ -376,6 +379,7 @@ function LeavenBase(
         leavenFlourTotal={leavenFlourTotal}
       />}
       <LeavenIngredients />
+      {isFull && <p class="error">{leavenText.full}</p>}
     </>
   );
 }
