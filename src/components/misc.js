@@ -1,5 +1,5 @@
 import {
-  HelpCircle, PlusCircle, CheckCircle, Edit3, MinusCircle, Check, Lock, Unlock,
+  HelpCircle, PlusCircle, CheckCircle, Edit3, MinusCircle, Lock, Unlock,
 } from 'preact-feather';
 import { useState, useRef } from 'preact/hooks';
 
@@ -28,6 +28,58 @@ function HelpButton({ text }) {
       {helpVisible && <div class="field-help">{text}</div>}
     </>
   );
+}
+
+function ActionButton({ actionHandler, actionType, text, size, small = true }) {
+
+  const buttonRef = useRef(null);
+
+  const handleButtonClick = ((e) => {
+    e.preventDefault();
+    actionHandler && actionHandler();
+    buttonRef.current && buttonRef.current.blur();
+  });
+
+  const ActionTypeIcon = (() => {
+    const typeIcons = new Map(
+      ['add', PlusCircle],
+      ['save', CheckCircle],
+      ['edit', Edit3],
+      ['remove', MinusCircle],
+      ['lock', Lock],
+      ['unlock', Unlock],
+    );
+    const TypeIcon = typeIcons.get(actionType);
+    if (TypeIcon != null) {
+      if (size != null) {
+        return <TypeIcon size={size} />;
+      }
+      return <TypeIcon />;
+    }
+    return null;
+  });
+
+  const buttonClasses = ['button'];
+  if (small || (size != null && size < 32)) {
+    buttonClasses.push('button-icon-small');
+  }
+  if (text === null || text === undefined) {
+    buttonClasses.push('button-clear');
+  }
+  const buttonClassesStr = buttonClasses.join(' ');
+
+  return (
+    <button
+      class={buttonClassesStr}
+      type="button"
+      ref={buttonRef}
+      onClick={handleButtonClick}
+    >
+      <ActionTypeIcon />
+      {text && `${text}`}
+    </button>
+  );
+
 }
 
 function AddItemButton({ actionHandler, size = 32 }) {
@@ -118,29 +170,6 @@ function RemoveItemButton({ actionHandler }) {
   );
 }
 
-function DoneButton({ actionHandler }) {
-
-  const buttonRef = useRef(null);
-
-  const handleButtonClick = ((e) => {
-    e.preventDefault();
-    actionHandler && actionHandler();
-    buttonRef.current && buttonRef.current.blur();
-  });
-
-  return (
-    <button
-      class="button"
-      type="button"
-      ref={buttonRef}
-      onClick={handleButtonClick}
-    >
-      <Check />
-      gotowe
-    </button>
-  );
-}
-
 function LockButton({ actionHandler }) {
 
   const buttonRef = useRef(null);
@@ -187,5 +216,5 @@ function UnlockButton({ actionHandler }) {
 
 export {
   HelpButton, AddItemButton, SaveItemButton, EditItemButton, RemoveItemButton,
-  DoneButton, LockButton, UnlockButton,
+  LockButton, UnlockButton, ActionButton,
 };

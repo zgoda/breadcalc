@@ -11,7 +11,11 @@
       "url": "http://localhost:8080",
       "webRoot": "${workspaceFolder}/src",
       "sourceMapPathOverrides": {
-        "nollup://*": "${workspaceFolder}/*"
+        "meteor://💻app/*": "${workspaceFolder}/*",
+        "webpack:///./~/*": "${workspaceFolder}/node_modules/*",
+        "webpack://?:*/*": "${workspaceFolder}/*",
+        "nollup://?:*/*": "${workspaceFolder}/*",
+        "nollup-int:///./~/*": "${workspaceFolder}/node_modules/*",
       }
     }
   ]

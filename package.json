@@ -55,7 +55,7 @@
     "nollup": "^0.16.5",
     "pwa-asset-generator": "^4.1.1",
     "react-refresh": "^0.10.0",
-    "rollup": "^2.50.3",
+    "rollup": "^2.50.5",
     "rollup-plugin-commonjs-alternate": "^0.8.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-hot-css": "^0.5.1",
