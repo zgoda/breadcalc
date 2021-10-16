@@ -40,7 +40,7 @@ let config = {
     commonjs({
       define: {
         'process.env.NODE_ENV': envStr,
-      }
+      },
     }),
     json(),
     process.env.NODE_ENV === 'development' && prefresh(),
@@ -55,36 +55,32 @@ if (process.env.NODE_ENV === 'production') {
     terser(),
     copy({
       hook: 'buildStart',
-      targets: [
-        { src: 'assets/manifest.json', dest: 'build/' },
-      ],
+      targets: [{ src: 'assets/manifest.json', dest: 'build/' }],
       flatten: false,
     }),
     copy({
       hook: 'buildStart',
-      targets: [
-        { src: 'assets/icons/**/*', dest: 'build/' },
-      ],
+      targets: [{ src: 'assets/icons/**/*', dest: 'build/' }],
       flatten: true,
     }),
     generateSW({
       swDest: 'build/sw.js',
       globDirectory: 'build/',
-      globPatterns: [
-          '**/*.{html,json,js,css,woff,woff2}',
-      ],
+      globPatterns: ['**/*.{html,json,js,css,woff,woff2}'],
       skipWaiting: true,
       clientsClaim: true,
-      runtimeCaching: [{
-        urlPattern: /\.(?:png|jpg|jpeg|svg|woff|woff2)$/,
-        handler: 'CacheFirst',
-        options: {
-          cacheName: 'images',
-          expiration: {
-            maxEntries: 20,
+      runtimeCaching: [
+        {
+          urlPattern: /\.(?:png|jpg|jpeg|svg|woff|woff2)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'images',
+            expiration: {
+              maxEntries: 20,
+            },
           },
         },
-      }],
+      ],
     }),
   ]);
 }
