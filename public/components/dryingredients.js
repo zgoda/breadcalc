@@ -14,6 +14,17 @@ import {
   setFlourLeft,
 } from '../service/state';
 
+/**
+ * @typedef {object} DryIngredientItemProps
+ * @property {Map<string, string|number>} item
+ * @property {number} flourLeft
+ * @property {number} flourTotal
+ * @property {(arg0: string, arg1: number) => void} removeItemHandler
+ * @property {(arg0: number) => void} changeItemHandler
+ *
+ * @param {DryIngredientItemProps} props
+ * @returns {JSX.Element}
+ */
 function DryIngredientItem({
   item,
   flourLeft,
@@ -28,15 +39,15 @@ function DryIngredientItem({
   const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
-    setUid(item.get('uid'));
+    setUid(item.get('uid').toString());
     if (item.has('name')) {
-      setName(item.get('name'));
+      setName(item.get('name').toString());
     }
     if (item.has('amtWeight')) {
-      setAmtWeight(item.get('amtWeight'));
+      setAmtWeight(Number(item.get('amtWeight')));
     }
     if (item.has('amtPc')) {
-      setAmtPc(item.get('amtPc'));
+      setAmtPc(Number(item.get('amtPc')));
     }
   }, [item]);
 

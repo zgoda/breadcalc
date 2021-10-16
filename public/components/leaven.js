@@ -279,6 +279,18 @@ function LeavenFlourItem({
   );
 }
 
+/**
+ * @typedef {object} LeavenFlourItemsProps
+ * @property {Array<Map<string, string|number>>} items
+ * @property {string} flourItemsListId
+ * @property {number} flourTotal
+ * @property {number} flourLeft
+ * @property {(arg0: number) => void} changeItemHandler
+ * @property {(arg0: string, arg1: number) => void} removeItemHandler
+ *
+ * @param {LeavenFlourItemsProps} props
+ * @returns {JSX.Element}
+ */
 function LeavenFlourItems({
   items,
   flourItemsListId,
@@ -289,7 +301,7 @@ function LeavenFlourItems({
 }) {
   return (
     <>
-      {items.map((/** @type {Map<string, string|number>} */ item) => (
+      {items.map((item) => (
         <LeavenFlourItem
           key={`leaven-flour-item-${item.get('uid')}`}
           item={item}
