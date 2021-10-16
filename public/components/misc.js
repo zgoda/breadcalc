@@ -14,7 +14,7 @@ function HelpButton({ text }) {
 
   const buttonRef = useRef(null);
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
     setHelpVisible(!helpVisible);
     buttonRef.current && buttonRef.current.blur();
@@ -38,7 +38,7 @@ function HelpButton({ text }) {
 function ActionButton({ actionHandler, actionType, text, size, small = true }) {
   const buttonRef = useRef(null);
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
@@ -88,7 +88,7 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
 function AddItemButton({ actionHandler, size = 32 }) {
   const buttonRef = useRef(null);
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
@@ -109,7 +109,7 @@ function AddItemButton({ actionHandler, size = 32 }) {
 function SaveItemButton({ actionHandler }) {
   const buttonRef = useRef(null);
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
@@ -130,7 +130,7 @@ function SaveItemButton({ actionHandler }) {
 function EditItemButton({ actionHandler }) {
   const buttonRef = useRef(null);
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
@@ -151,7 +151,7 @@ function EditItemButton({ actionHandler }) {
 function RemoveItemButton({ actionHandler }) {
   const buttonRef = useRef(null);
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
@@ -172,7 +172,7 @@ function RemoveItemButton({ actionHandler }) {
 function LockButton({ actionHandler }) {
   const buttonRef = useRef(null);
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
@@ -193,7 +193,7 @@ function LockButton({ actionHandler }) {
 function UnlockButton({ actionHandler }) {
   const buttonRef = useRef(null);
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();

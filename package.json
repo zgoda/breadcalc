@@ -5,9 +5,7 @@
     "build": "wmr build --prerender",
     "serve": "wmr serve"
   },
-  "eslintConfig": {
-    "extends": "preact"
-  },
+  "types": "./index.d.ts",
   "dependencies": {
     "milligram": "^1.4.1",
     "nanostores": "^0.4.9",

@@ -1,13 +1,32 @@
-import { connect } from 'unistore/preact';
 import { useState, useEffect } from 'preact/hooks';
 import { uid } from 'uid';
+import { useStore } from 'nanostores/preact';
 
 import { AmountType } from '../utils/numbers';
-import { actions } from '../service/state';
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import wetadjuncts from '../data/wetadjuncts.json';
+import {
+  flourTotalStore,
+  setWaterLeft,
+  setWetAdjuncts,
+  waterLeftStore,
+  waterTotalStore,
+  wetAdjunctsStore,
+  wetIngredientsStore,
+} from '../service/state';
 
+/**
+ * @typedef {object} WetAdjunctItemProps
+ * @property {Map<string, string|number>} item
+ * @property {number} waterLeft
+ * @property {number} flourTotal
+ * @property {(arg0: string) => void} removeItemHandler
+ * @property {(arg0: number) => void} changeItemHandler
+ *
+ * @param {WetAdjunctItemProps} props
+ * @returns {JSX.Element}
+ */
 function WetAdjunctItem({
   item,
   waterLeft,
@@ -24,30 +43,30 @@ function WetAdjunctItem({
   const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
-    setUid(item.get('uid'));
+    setUid(item.get('uid').toString());
     if (item.has('name')) {
-      setName(item.get('name'));
+      setName(item.get('name').toString());
     }
     if (item.has('amtWeight')) {
-      setAmtWeight(item.get('amtWeight'));
+      setAmtWeight(Number(item.get('amtWeight')));
     }
     if (item.has('amtPc')) {
-      setAmtPc(item.get('amtPc'));
+      setAmtPc(Number(item.get('amtPc')));
     }
     if (item.has('waterWeight')) {
-      setWaterWeight(item.get('waterWeight'));
+      setWaterWeight(Number(item.get('waterWeight')));
     }
     if (item.has('waterPc')) {
-      setWaterPc(item.get('waterPc'));
+      setWaterPc(Number(item.get('waterPc')));
     }
   }, [item]);
 
-  const nameChange = (name) => {
+  const nameChange = (/** @type {string} */ name) => {
     setName(name);
     item.set('name', name);
   };
 
-  const recalcAmount = (value, type) => {
+  const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
       amtWeight = (flourTotal * value) / 100;
@@ -62,7 +81,7 @@ function WetAdjunctItem({
     item.set('amtPc', amtPc);
   };
 
-  const recalcWater = (value, type) => {
+  const recalcWater = (/** @type {number} */ value, /** @type {string} */ type) => {
     if (amtWeight === 0 || amtWeight == null) {
       return;
     }
@@ -101,6 +120,7 @@ function WetAdjunctItem({
           <input
             type="text"
             value={name}
+            // @ts-ignore
             onInput={(e) => nameChange(e.target.value)}
             required
             readOnly={readOnly}
@@ -115,7 +135,9 @@ function WetAdjunctItem({
             inputMode="numeric"
             step="1"
             value={amtWeight}
+            // @ts-ignore
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
+            // @ts-ignore
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
@@ -127,7 +149,9 @@ function WetAdjunctItem({
             inputMode="numeric"
             step="0.1"
             value={amtPc}
+            // @ts-ignore
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
+            // @ts-ignore
             onInput={(e) => setAmtPc(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
@@ -142,7 +166,9 @@ function WetAdjunctItem({
             step="1"
             max={waterLeft}
             value={waterWeight}
+            // @ts-ignore
             onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)}
+            // @ts-ignore
             onInput={(e) => setWaterWeight(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
@@ -154,7 +180,9 @@ function WetAdjunctItem({
             inputMode="numeric"
             step="0.1"
             value={waterPc}
+            // @ts-ignore
             onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.PERCENT)}
+            // @ts-ignore
             onInput={(e) => setWaterPc(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
@@ -174,25 +202,15 @@ function WetAdjunctItem({
   );
 }
 
-const wetAdjunctsStateItems = [
-  'flourTotal',
-  'waterTotal',
-  'waterLeft',
-  'wetAdjuncts',
-  'wetIngredients',
-];
-
-function WetAdjunctsBase({
-  flourTotal,
-  waterTotal,
-  waterLeft,
-  wetAdjuncts,
-  wetIngredients,
-  setWetAdjuncts,
-  setWaterLeft,
-}) {
+function WetAdjuncts() {
   const [canAddItem, setCanAddItem] = useState(true);
   const [warnFull, setWarnFull] = useState(false);
+
+  const waterTotal = useStore(waterTotalStore);
+  const waterLeft = useStore(waterLeftStore);
+  const flourTotal = useStore(flourTotalStore);
+  const wetAdjuncts = useStore(wetAdjunctsStore);
+  const wetIngredients = useStore(wetIngredientsStore);
 
   useEffect(() => {
     setCanAddItem(waterLeft > 0 && waterTotal > 0);
@@ -204,12 +222,14 @@ function WetAdjunctsBase({
     setWetAdjuncts(items);
   };
 
-  const removeItemHandler = (uid) => {
-    const items = wetAdjuncts.filter((item) => item.get('uid') !== uid);
+  const removeItemHandler = (/** @type {string} */ uid) => {
+    const items = wetAdjuncts.filter(
+      (/** @type {Map<string, string|number>} */ item) => item.get('uid') !== uid,
+    );
     setWetAdjuncts(items);
   };
 
-  const changeItemHandler = (amtWater) => {
+  const changeItemHandler = (/** @type {number} */ amtWater) => {
     setWaterLeft(waterLeft + amtWater);
   };
 
@@ -238,7 +258,5 @@ function WetAdjunctsBase({
     </>
   );
 }
-
-const WetAdjuncts = connect(wetAdjunctsStateItems, actions)(WetAdjunctsBase);
 
 export { WetAdjuncts };

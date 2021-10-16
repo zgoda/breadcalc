@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'preact/hooks';
-import { connect } from 'unistore/preact';
 import { uid } from 'uid';
+import { useStore } from 'nanostores/preact';
 
-import { actions } from '../service/state';
 import { AddItemButton, RemoveItemButton, LockButton, UnlockButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
 import dryingredients from '../data/dryingredients.json';
+import {
+  dryIngredientsStore,
+  flourLeftStore,
+  flourTotalStore,
+  setDryIngredients,
+  setFlourLeft,
+} from '../service/state';
 
 function DryIngredientItem({
   item,
@@ -34,12 +40,12 @@ function DryIngredientItem({
     }
   }, [item]);
 
-  const nameChange = (name) => {
+  const nameChange = (/** @type {string} */ name) => {
     setName(name);
     item.set('name', name);
   };
 
-  const recalcAmount = (value, type) => {
+  const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
     if (isNaN(value)) {
       return;
     }
@@ -78,6 +84,7 @@ function DryIngredientItem({
           <input
             type="text"
             value={name}
+            // @ts-ignore
             onInput={(e) => nameChange(e.target.value)}
             required
             readOnly={readOnly}
@@ -93,7 +100,9 @@ function DryIngredientItem({
             step="1"
             max={flourLeft}
             value={amtWeight}
+            // @ts-ignore
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+            // @ts-ignore
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
             readOnly={readOnly}
           />
@@ -108,7 +117,9 @@ function DryIngredientItem({
             step="0.1"
             max="100"
             value={amtPc}
+            // @ts-ignore
             onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+            // @ts-ignore
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
             readOnly={readOnly}
           />
@@ -128,17 +139,13 @@ function DryIngredientItem({
   );
 }
 
-const dryIngredientsStateItems = ['flourTotal', 'flourLeft', 'dryIngredients'];
-
-function DryIngredientsBase({
-  flourTotal,
-  flourLeft,
-  dryIngredients,
-  setDryIngredients,
-  setFlourLeft,
-}) {
+function DryIngredients() {
   const [canAddItem, setCanAddItem] = useState(true);
   const [warnFull, setWarnFull] = useState(false);
+
+  const flourTotal = useStore(flourTotalStore);
+  const flourLeft = useStore(flourLeftStore);
+  const dryIngredients = useStore(dryIngredientsStore);
 
   useEffect(() => {
     setCanAddItem(flourLeft > 0 && flourTotal > 0);
@@ -150,15 +157,20 @@ function DryIngredientsBase({
     setDryIngredients(items);
   };
 
-  const removeItemHandler = (uid, amount) => {
-    const items = dryIngredients.filter((item) => item.get('uid') !== uid);
+  const removeItemHandler = (
+    /** @type {string} */ uid,
+    /** @type {number} */ amount,
+  ) => {
+    const items = dryIngredients.filter(
+      (/** @type {Map<string, string|number>} */ item) => item.get('uid') !== uid,
+    );
     setDryIngredients(items);
     if (!isNaN(amount)) {
       setFlourLeft(flourLeft + amount);
     }
   };
 
-  const changeItemHandler = (amount) => {
+  const changeItemHandler = (/** @type {number} */ amount) => {
     if (!isNaN(amount)) {
       setFlourLeft(flourLeft - amount);
     }
@@ -189,7 +201,5 @@ function DryIngredientsBase({
     </>
   );
 }
-
-const DryIngredients = connect(dryIngredientsStateItems, actions)(DryIngredientsBase);
 
 export { DryIngredients };

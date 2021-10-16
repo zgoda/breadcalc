@@ -20,6 +20,13 @@ function SectionTitle({ title, level, id }) {
   return createElement(tag, props, title);
 }
 
+/**
+ * @typedef {object} PageInfoProps
+ * @property {string} title
+ *
+ * @param {PageInfoProps} props
+ * @returns {JSX.Element}
+ */
 function PageInfo({ title }) {
   return (
     <>

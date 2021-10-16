@@ -5,9 +5,9 @@ const AmountType = Object.freeze({
 
 /**
  * Round number to specified precision
- * @param {Number} num number to round
- * @param {Number} dp decimal places
- * @returns Number
+ * @param {number} num number to round
+ * @param {number} dp decimal places
+ * @returns {number}
  */
 function round(num, dp) {
   const multiplier = 10 ** dp;

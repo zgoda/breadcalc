@@ -1,13 +1,22 @@
-import { connect } from 'unistore/preact';
 import { useState, useEffect } from 'preact/hooks';
 import { uid } from 'uid';
+import { useStore } from 'nanostores/preact';
 
-import { actions } from '../service/state';
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import dryadjuncts from '../data/dryadjuncts.json';
+import { dryAdjunctsStore, flourTotalStore, setDryAdjuncts } from '../service/state';
 
+/**
+ * @typedef {object} DryAdjunctItemProps
+ * @property {Map<string, string|number>} item
+ * @property {number} flourTotal
+ * @property {(arg0: string, arg1: number) => void} removeItemHandler
+ *
+ * @param {DryAdjunctItemProps} props
+ * @returns {JSX.Element}
+ */
 function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
   const [uid, setUid] = useState('');
   const [name, setName] = useState('');
@@ -16,24 +25,24 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
   const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
-    setUid(item.get('uid'));
+    setUid(item.get('uid').toString());
     if (item.has('name')) {
-      setName(item.get('name'));
+      setName(item.get('name').toString());
     }
     if (item.has('amtWeight')) {
-      setAmtWeight(item.get('amtWeight'));
+      setAmtWeight(Number(item.get('amtWeight')));
     }
     if (item.has('amtPc')) {
-      setAmtPc(item.get('amtPc'));
+      setAmtPc(Number(item.get('amtPc')));
     }
   }, [item]);
 
-  const nameChange = (name) => {
+  const nameChange = (/** @type {string} */ name) => {
     setName(name);
     item.set('name', name);
   };
 
-  const recalcAmount = (value, type) => {
+  const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
       amtWeight = (flourTotal * value) / 100;
@@ -68,6 +77,7 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
           <input
             type="text"
             value={name}
+            // @ts-ignore
             onInput={(e) => nameChange(e.target.value)}
             required
             readOnly={readOnly}
@@ -82,7 +92,9 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
             inputMode="numeric"
             step="1"
             value={amtWeight}
+            // @ts-ignore
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
+            // @ts-ignore
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
@@ -97,7 +109,9 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
             step="0.1"
             max="100"
             value={amtPc}
+            // @ts-ignore
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
+            // @ts-ignore
             onInput={(e) => setAmtPc(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
@@ -117,10 +131,11 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
   );
 }
 
-const dryAdjunctsStateItems = ['flourTotal', 'dryAdjuncts'];
-
-function DryAdjunctsBase({ flourTotal, dryAdjuncts, setDryAdjuncts }) {
+function DryAdjuncts() {
   const [canAddItem, setCanAddItem] = useState(true);
+
+  const flourTotal = useStore(flourTotalStore);
+  const dryAdjuncts = useStore(dryAdjunctsStore);
 
   useEffect(() => {
     setCanAddItem(flourTotal > 0);
@@ -131,14 +146,14 @@ function DryAdjunctsBase({ flourTotal, dryAdjuncts, setDryAdjuncts }) {
     setDryAdjuncts(items);
   };
 
-  const removeItemHandler = (uid) => {
+  const removeItemHandler = (/** @type {string} */ uid) => {
     const items = dryAdjuncts.filter((item) => item.get('uid') !== uid);
     setDryAdjuncts(items);
   };
 
   return (
     <>
-      <SectionTitle title={'Dodatki suche'} level={3} />
+      <SectionTitle title="Dodatki suche" level={3} />
       <p>{dryadjuncts.text}</p>
       <form>
         <fieldset>
@@ -158,7 +173,5 @@ function DryAdjunctsBase({ flourTotal, dryAdjuncts, setDryAdjuncts }) {
     </>
   );
 }
-
-const DryAdjuncts = connect(dryAdjunctsStateItems, actions)(DryAdjunctsBase);
 
 export { DryAdjuncts };

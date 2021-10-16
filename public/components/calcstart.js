@@ -4,9 +4,9 @@ import { HelpButton } from './misc';
 import { round, AmountType } from '../utils/numbers';
 import fieldHelp from '../data/fieldhelp.json';
 import {
-  flourTotal,
-  saltPc,
-  saltTotal,
+  flourTotalStore,
+  saltPcStore,
+  saltTotalStore,
   setFlourLeft,
   setFlourTotal,
   setSaltLeft,
@@ -15,18 +15,18 @@ import {
   setWaterLeft,
   setWaterPc,
   setWaterTotal,
-  waterPc,
-  waterTotal,
+  waterPcStore,
+  waterTotalStore,
 } from '../service/state';
 
 const stateItems = ['flourTotal', 'waterTotal', 'waterPc', 'saltTotal', 'saltPc'];
 
 function CalcStart() {
-  const flourTotalS = useStore(flourTotal);
-  const waterTotalS = useStore(waterTotal);
-  const waterPcS = useStore(waterPc);
-  const saltTotalS = useStore(saltTotal);
-  const saltPcS = useStore(saltPc);
+  const flourTotal = useStore(flourTotalStore);
+  const waterTotal = useStore(waterTotalStore);
+  const waterPc = useStore(waterPcStore);
+  const saltTotal = useStore(saltTotalStore);
+  const saltPc = useStore(saltPcStore);
 
   const inputs = new Map();
   stateItems.forEach((item) => {
@@ -42,10 +42,10 @@ function CalcStart() {
     }
     setFlourTotal(amount);
     setFlourLeft(amount);
-    const water = (amount * waterPcS) / 100;
+    const water = (amount * waterPc) / 100;
     setWaterTotal(water);
     setWaterLeft(water);
-    const salt = (amount * saltPcS) / 100;
+    const salt = (amount * saltPc) / 100;
     setSaltTotal(salt);
     setSaltLeft(salt);
   };
@@ -57,13 +57,13 @@ function CalcStart() {
     let waterPc = 0;
     let waterTotal = 0;
     if (type === AmountType.PERCENT) {
-      if (flourTotalS !== 0) {
-        waterTotal = (flourTotalS * value) / 100;
+      if (flourTotal !== 0) {
+        waterTotal = (flourTotal * value) / 100;
       }
       waterPc = value;
     } else if (type === AmountType.TOTAL) {
-      if (flourTotalS !== 0) {
-        waterPc = (value / flourTotalS) * 100;
+      if (flourTotal !== 0) {
+        waterPc = (value / flourTotal) * 100;
       }
       waterTotal = value;
     }
@@ -79,13 +79,13 @@ function CalcStart() {
     let saltPc = 0;
     let saltTotal = 0;
     if (type === AmountType.PERCENT) {
-      if (flourTotalS !== 0) {
-        saltTotal = (flourTotalS * value) / 100;
+      if (flourTotal !== 0) {
+        saltTotal = (flourTotal * value) / 100;
       }
       saltPc = value;
     } else if (type === AmountType.TOTAL) {
-      if (flourTotalS !== 0) {
-        saltPc = (value / flourTotalS) * 100;
+      if (flourTotal !== 0) {
+        saltPc = (value / flourTotal) * 100;
       }
       saltTotal = value;
     }
@@ -114,7 +114,7 @@ function CalcStart() {
                 id={inputs.get('flourTotal')}
                 type="number"
                 inputMode="numeric"
-                value={flourTotalS}
+                value={flourTotal}
                 onInput={setFlour}
                 required
               />
@@ -135,7 +135,7 @@ function CalcStart() {
                     type="number"
                     step="1"
                     inputMode="numeric"
-                    value={Math.round(waterTotalS)}
+                    value={Math.round(waterTotal)}
                     onInput={(e) =>
                       // @ts-ignore
                       calcWater(parseFloat(e.target.value), AmountType.TOTAL)
@@ -151,7 +151,7 @@ function CalcStart() {
                     type="number"
                     step="0.1"
                     inputMode="numeric"
-                    value={round(waterPcS, 1)}
+                    value={round(waterPc, 1)}
                     onInput={(e) =>
                       // @ts-ignore
                       calcWater(parseFloat(e.target.value), AmountType.PERCENT)
@@ -176,7 +176,7 @@ function CalcStart() {
                     type="number"
                     step="1"
                     inputMode="numeric"
-                    value={Math.round(saltTotalS)}
+                    value={Math.round(saltTotal)}
                     onInput={(e) =>
                       // @ts-ignore
                       calcSalt(parseFloat(e.target.value), AmountType.TOTAL)
@@ -192,7 +192,7 @@ function CalcStart() {
                     type="number"
                     step="0.1"
                     inputMode="numeric"
-                    value={round(saltPcS, 1)}
+                    value={round(saltPc, 1)}
                     onInput={(e) =>
                       // @ts-ignore
                       calcSalt(parseFloat(e.target.value), AmountType.PERCENT)
