@@ -8,23 +8,22 @@ import { actions } from '../service/state';
 import leavenText from '../data/leaven.json';
 
 function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
-
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
 
-  const recalcAmount = ((value, type) => {
+  const recalcAmount = (value, type) => {
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
-      amtWeight = flourTotal * value / 100;
+      amtWeight = (flourTotal * value) / 100;
       amtPc = value;
     } else if (type === AmountType.TOTAL) {
       amtWeight = value;
-      amtPc = value / flourTotal * 100;
+      amtPc = (value / flourTotal) * 100;
     }
     setAmtWeight(amtWeight);
     setAmtPc(amtPc);
     setLeavenFlourWeight(amtWeight);
-  });
+  };
 
   return (
     <div class="row X--middle X--around">
@@ -38,9 +37,7 @@ function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
             max={flourTotal}
             value={amtWeight}
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            onBlur={
-              (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
-            }
+            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
           />
         </label>
       </div>
@@ -54,9 +51,7 @@ function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
             max="100"
             value={amtPc}
             onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            onBlur={
-              (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
-            }
+            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
           />
         </label>
       </div>
@@ -65,23 +60,22 @@ function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
 }
 
 function LeavenWaterWeight({ leavenFlourTotal, changeWaterHandler }) {
-
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
 
-  const recalcAmount = ((value, type) => {
+  const recalcAmount = (value, type) => {
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
       amtPc = value;
-      amtWeight = leavenFlourTotal * value / 100;
+      amtWeight = (leavenFlourTotal * value) / 100;
     } else if (type === AmountType.TOTAL) {
-      amtPc = value / leavenFlourTotal * 100;
+      amtPc = (value / leavenFlourTotal) * 100;
       amtWeight = value;
     }
     setAmtPc(amtPc);
     setAmtWeight(amtWeight);
     changeWaterHandler(amtWeight);
-  });
+  };
 
   return (
     <div class="row X--middle X--around">
@@ -115,10 +109,14 @@ function LeavenWaterWeight({ leavenFlourTotal, changeWaterHandler }) {
   );
 }
 
-function LeavenFlourItem(
-  { item, flourLeft, flourTotal, removeItemHandler, changeItemHandler, listId }
-) {
-
+function LeavenFlourItem({
+  item,
+  flourLeft,
+  flourTotal,
+  removeItemHandler,
+  changeItemHandler,
+  listId,
+}) {
   const [uid, setUid] = useState('');
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
@@ -138,38 +136,38 @@ function LeavenFlourItem(
     }
   }, [item]);
 
-  const nameChange = ((name) => {
+  const nameChange = (name) => {
     setName(name);
     item.set('name', name);
-  });
+  };
 
-  const recalcAmount = ((value, type) => {
+  const recalcAmount = (value, type) => {
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
-      amtWeight = flourTotal * value / 100;
+      amtWeight = (flourTotal * value) / 100;
       amtPc = value;
     } else if (type === AmountType.TOTAL) {
       amtWeight = value;
-      amtPc = value / flourTotal * 100;
+      amtPc = (value / flourTotal) * 100;
     }
     setAmtWeight(amtWeight);
     item.set('amtWeight', amtWeight);
     setAmtPc(amtPc);
     item.set('amtPc', amtPc);
     changeItemHandler(amtWeight);
-  });
+  };
 
-  const makeReadOnly = (() => {
+  const makeReadOnly = () => {
     setReadOnly(true);
-  });
+  };
 
-  const makeEditable = (() => {
+  const makeEditable = () => {
     setReadOnly(false);
-  });
+  };
 
-  const removeItem = (() => {
+  const removeItem = () => {
     removeItemHandler(uid, amtWeight);
-  });
+  };
 
   return (
     <div class="row X--middle">
@@ -196,9 +194,7 @@ function LeavenFlourItem(
             max={flourLeft}
             value={amtWeight}
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            onBlur={
-              (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
-            }
+            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
             readOnly={readOnly}
           />
         </label>
@@ -213,19 +209,17 @@ function LeavenFlourItem(
             max="100"
             value={amtPc}
             onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            onBlur={
-              (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
-            }
+            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
             readOnly={readOnly}
           />
         </label>
       </div>
       <div class="M1 center">
-        {
-          readOnly
-            ? <UnlockButton actionHandler={makeEditable} />
-            : <LockButton actionHandler={makeReadOnly} />
-        }
+        {readOnly ? (
+          <UnlockButton actionHandler={makeEditable} />
+        ) : (
+          <LockButton actionHandler={makeReadOnly} />
+        )}
       </div>
       <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
@@ -234,12 +228,14 @@ function LeavenFlourItem(
   );
 }
 
-function LeavenFlourItems(
-  {
-    items, flourItemsListId, flourTotal, flourLeft,
-    changeItemHandler, removeItemHandler,
-  }
-) {
+function LeavenFlourItems({
+  items,
+  flourItemsListId,
+  flourTotal,
+  flourLeft,
+  changeItemHandler,
+  removeItemHandler,
+}) {
   return (
     <>
       {items.map((item) => (
@@ -258,16 +254,25 @@ function LeavenFlourItems(
 }
 
 const leavenStateItems = [
-  'leaven', 'flourTotal', 'waterTotal', 'flourLeft', 'waterLeft', 'dryIngredients',
+  'leaven',
+  'flourTotal',
+  'waterTotal',
+  'flourLeft',
+  'waterLeft',
+  'dryIngredients',
 ];
 
-function LeavenBase(
-  {
-    leaven, flourTotal, waterTotal, flourLeft, waterLeft, dryIngredients,
-    setLeaven, setFlourLeft, setWaterLeft,
-  }
-) {
-
+function LeavenBase({
+  leaven,
+  flourTotal,
+  waterTotal,
+  flourLeft,
+  waterLeft,
+  dryIngredients,
+  setLeaven,
+  setFlourLeft,
+  setWaterLeft,
+}) {
   const [canAddItem, setCanAddItem] = useState(true);
   const [canAddWater, setCanAddWater] = useState(false);
   const [isFull, setIsFull] = useState(false);
@@ -295,53 +300,56 @@ function LeavenBase(
   }, [leavenFlourTotal]);
 
   useEffect(() => {
-    const names = dryIngredients.map((item) => (
-      { name: item.get('name'), value: item.get('uid') }
-    ));
+    const names = dryIngredients.map((item) => ({
+      name: item.get('name'),
+      value: item.get('uid'),
+    }));
     setAvailableFlourItems(names);
   }, [dryIngredients]);
 
-  const setLeavenFlourWeight = ((flourWeight) => {
+  const setLeavenFlourWeight = (flourWeight) => {
     setLeavenFlourTotal(flourWeight);
     setLeavenFlourLeft(flourWeight);
-  });
+  };
 
-  const addItemHandler = (() => {
+  const addItemHandler = () => {
     const items = [...leavenFlourItems, new Map([['uid', uid(16)]])];
     setLeavenFlourItems(items);
-  });
+  };
 
-  const updateLeaven = (() => {
+  const updateLeaven = () => {
     const leaven = {
-      flour: leavenFlourItems, water: leavenWater, sourdough: leavenSourdough
+      flour: leavenFlourItems,
+      water: leavenWater,
+      sourdough: leavenSourdough,
     };
     setLeaven(leaven);
-  });
+  };
 
-  const changeWaterHandler = ((amtWater) => {
+  const changeWaterHandler = (amtWater) => {
     setLeavenWater(amtWater);
     setWaterLeft(waterLeft - amtWater);
     updateLeaven();
-  });
+  };
 
-  const changeFlourItemHandler = ((amtFlour) => {
+  const changeFlourItemHandler = (amtFlour) => {
     setLeavenFlourTotal(leavenFlourTotal + amtFlour);
     setLeavenFlourLeft(leavenFlourLeft - amtFlour);
     setFlourLeft(flourLeft - amtFlour);
     updateLeaven();
-  });
+  };
 
-  const removeFlourItemHandler = ((uid, amtFlour) => {
+  const removeFlourItemHandler = (uid, amtFlour) => {
     const items = leavenFlourItems.filter((item) => item.get('uid') !== uid);
     setLeavenFlourItems(items);
     setLeavenFlourLeft(leavenFlourLeft + amtFlour);
     setFlourLeft(flourLeft + amtFlour);
     updateLeaven();
-  });
+  };
 
   const flourItemsListId = 'leaven-flour-items';
 
-  const LeavenIngredients = (() => {
+  const LeavenIngredients = () => {
     if (isFull) {
       return null;
     }
@@ -360,24 +368,30 @@ function LeavenBase(
         </div>
       </>
     );
-  });
+  };
 
   return (
     <>
       <p>{leavenText.text}</p>
       <datalist id={flourItemsListId}>
         {availableFlourItems.map((item) => (
-          <option value={item.uid} key={item.uid}>{item.name}</option>
+          <option value={item.uid} key={item.uid}>
+            {item.name}
+          </option>
         ))}
       </datalist>
-      {canAddItem && <LeavenFlourWeight
-        flourTotal={flourTotal}
-        setLeavenFlourWeight={setLeavenFlourWeight}
-      />}
-      {canAddWater && <LeavenWaterWeight
-        changeWaterHandler={changeWaterHandler}
-        leavenFlourTotal={leavenFlourTotal}
-      />}
+      {canAddItem && (
+        <LeavenFlourWeight
+          flourTotal={flourTotal}
+          setLeavenFlourWeight={setLeavenFlourWeight}
+        />
+      )}
+      {canAddWater && (
+        <LeavenWaterWeight
+          changeWaterHandler={changeWaterHandler}
+          leavenFlourTotal={leavenFlourTotal}
+        />
+      )}
       <LeavenIngredients />
       {isFull && <p class="error">{leavenText.full}</p>}
     </>

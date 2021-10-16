@@ -3,17 +3,18 @@ import { connect } from 'unistore/preact';
 import { uid } from 'uid';
 
 import { actions } from '../service/state';
-import {
-  AddItemButton, RemoveItemButton, LockButton, UnlockButton,
-} from './misc';
+import { AddItemButton, RemoveItemButton, LockButton, UnlockButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
 import dryingredients from '../data/dryingredients.json';
 
-function DryIngredientItem(
-  { item, flourLeft, flourTotal, removeItemHandler, changeItemHandler }
-) {
-
+function DryIngredientItem({
+  item,
+  flourLeft,
+  flourTotal,
+  removeItemHandler,
+  changeItemHandler,
+}) {
   const [uid, setUid] = useState('');
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
@@ -33,41 +34,41 @@ function DryIngredientItem(
     }
   }, [item]);
 
-  const nameChange = ((name) => {
+  const nameChange = (name) => {
     setName(name);
     item.set('name', name);
-  });
+  };
 
-  const recalcAmount = ((value, type) => {
+  const recalcAmount = (value, type) => {
     if (isNaN(value)) {
       return;
     }
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
-      amtWeight = flourTotal * value / 100;
+      amtWeight = (flourTotal * value) / 100;
       amtPc = value;
     } else if (type === AmountType.TOTAL) {
       amtWeight = value;
-      amtPc = value / flourTotal * 100;
+      amtPc = (value / flourTotal) * 100;
     }
     setAmtWeight(amtWeight);
     item.set('amtWeight', amtWeight);
     setAmtPc(amtPc);
     item.set('amtPc', amtPc);
     changeItemHandler(amtWeight);
-  });
+  };
 
-  const makeReadOnly = (() => {
+  const makeReadOnly = () => {
     setReadOnly(true);
-  });
+  };
 
-  const makeEditable = (() => {
+  const makeEditable = () => {
     setReadOnly(false);
-  });
+  };
 
-  const removeItem = (() => {
+  const removeItem = () => {
     removeItemHandler(uid, amtWeight);
-  });
+  };
 
   return (
     <div class="row X--middle">
@@ -93,9 +94,7 @@ function DryIngredientItem(
             max={flourLeft}
             value={amtWeight}
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            onBlur={
-              (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
-            }
+            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
             readOnly={readOnly}
           />
         </label>
@@ -110,19 +109,17 @@ function DryIngredientItem(
             max="100"
             value={amtPc}
             onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            onBlur={
-              (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
-            }
+            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
             readOnly={readOnly}
           />
         </label>
       </div>
       <div class="M1 center">
-        {
-          readOnly
-            ? <UnlockButton actionHandler={makeEditable} />
-            : <LockButton actionHandler={makeReadOnly} />
-        }
+        {readOnly ? (
+          <UnlockButton actionHandler={makeEditable} />
+        ) : (
+          <LockButton actionHandler={makeReadOnly} />
+        )}
       </div>
       <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
@@ -133,10 +130,13 @@ function DryIngredientItem(
 
 const dryIngredientsStateItems = ['flourTotal', 'flourLeft', 'dryIngredients'];
 
-function DryIngredientsBase(
-  { flourTotal, flourLeft, dryIngredients, setDryIngredients, setFlourLeft }
-) {
-
+function DryIngredientsBase({
+  flourTotal,
+  flourLeft,
+  dryIngredients,
+  setDryIngredients,
+  setFlourLeft,
+}) {
   const [canAddItem, setCanAddItem] = useState(true);
   const [warnFull, setWarnFull] = useState(false);
 
@@ -145,24 +145,24 @@ function DryIngredientsBase(
     setWarnFull(flourLeft <= 0 && flourTotal > 0);
   }, [flourTotal, flourLeft, dryIngredients]);
 
-  const addItemHandler = (() => {
+  const addItemHandler = () => {
     const items = [...dryIngredients, new Map([['uid', uid(16)]])];
     setDryIngredients(items);
-  });
+  };
 
-  const removeItemHandler = ((uid, amount) => {
+  const removeItemHandler = (uid, amount) => {
     const items = dryIngredients.filter((item) => item.get('uid') !== uid);
     setDryIngredients(items);
     if (!isNaN(amount)) {
       setFlourLeft(flourLeft + amount);
     }
-  });
+  };
 
-  const changeItemHandler = ((amount) => {
+  const changeItemHandler = (amount) => {
     if (!isNaN(amount)) {
       setFlourLeft(flourLeft - amount);
     }
-  });
+  };
 
   return (
     <>

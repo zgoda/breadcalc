@@ -9,7 +9,6 @@ import { AmountType } from '../utils/numbers';
 import dryadjuncts from '../data/dryadjuncts.json';
 
 function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
-
   const [uid, setUid] = useState('');
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
@@ -29,37 +28,37 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
     }
   }, [item]);
 
-  const nameChange = ((name) => {
+  const nameChange = (name) => {
     setName(name);
     item.set('name', name);
-  });
+  };
 
-  const recalcAmount = ((value, type) => {
+  const recalcAmount = (value, type) => {
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
-      amtWeight = flourTotal * value / 100;
+      amtWeight = (flourTotal * value) / 100;
       amtPc = value;
     } else if (type === AmountType.TOTAL) {
       amtWeight = value;
-      amtPc = value / flourTotal * 100;
+      amtPc = (value / flourTotal) * 100;
     }
     setAmtWeight(amtWeight);
     item.set('amtWeight', amtWeight);
     setAmtPc(amtPc);
     item.set('amtPc', amtPc);
-  });
+  };
 
-  const makeReadOnly = (() => {
+  const makeReadOnly = () => {
     setReadOnly(true);
-  });
+  };
 
-  const makeEditable = (() => {
+  const makeEditable = () => {
     setReadOnly(false);
-  });
+  };
 
-  const removeItem = (() => {
+  const removeItem = () => {
     removeItemHandler(uid, amtWeight);
-  });
+  };
 
   return (
     <div class="row X--middle">
@@ -83,9 +82,7 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
             inputMode="numeric"
             step="1"
             value={amtWeight}
-            onBlur={
-              (e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
-            }
+            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
@@ -100,20 +97,18 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
             step="0.1"
             max="100"
             value={amtPc}
-            onBlur={
-              (e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
-            }
+            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
             onInput={(e) => setAmtPc(parseFloat(e.target.value))}
             readOnly={readOnly}
           />
         </label>
       </div>
       <div class="M1 center">
-        {
-          readOnly
-            ? <UnlockButton actionHandler={makeEditable} />
-            : <LockButton actionHandler={makeReadOnly} />
-        }
+        {readOnly ? (
+          <UnlockButton actionHandler={makeEditable} />
+        ) : (
+          <LockButton actionHandler={makeReadOnly} />
+        )}
       </div>
       <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
@@ -125,22 +120,21 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
 const dryAdjunctsStateItems = ['flourTotal', 'dryAdjuncts'];
 
 function DryAdjunctsBase({ flourTotal, dryAdjuncts, setDryAdjuncts }) {
-
   const [canAddItem, setCanAddItem] = useState(true);
 
   useEffect(() => {
     setCanAddItem(flourTotal > 0);
   }, [flourTotal]);
 
-  const addItemHandler = (() => {
+  const addItemHandler = () => {
     const items = [...dryAdjuncts, new Map([['uid', uid(16)]])];
     setDryAdjuncts(items);
-  });
+  };
 
-  const removeItemHandler = ((uid) => {
+  const removeItemHandler = (uid) => {
     const items = dryAdjuncts.filter((item) => item.get('uid') !== uid);
     setDryAdjuncts(items);
-  });
+  };
 
   return (
     <>

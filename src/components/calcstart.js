@@ -7,20 +7,27 @@ import fieldHelp from '../data/fieldhelp.json';
 
 const stateItems = ['flourTotal', 'waterTotal', 'waterPc', 'saltTotal', 'saltPc'];
 
-function CalcStartBase(
-  {
-    flourTotal, waterTotal, waterPc, saltTotal, saltPc,
-    setFlourTotal, setWaterTotal, setWaterPc, setSaltTotal, setSaltPc,
-    setFlourLeft, setWaterLeft, setSaltLeft,
-  }
-) {
-
+function CalcStartBase({
+  flourTotal,
+  waterTotal,
+  waterPc,
+  saltTotal,
+  saltPc,
+  setFlourTotal,
+  setWaterTotal,
+  setWaterPc,
+  setSaltTotal,
+  setSaltPc,
+  setFlourLeft,
+  setWaterLeft,
+  setSaltLeft,
+}) {
   const inputs = new Map();
   stateItems.forEach((item) => {
     inputs.set(item, `input-${item}`);
   });
 
-  const setFlour = ((e) => {
+  const setFlour = (e) => {
     e.preventDefault();
     const amount = parseFloat(e.target.value);
     if (isNaN(amount)) {
@@ -28,15 +35,15 @@ function CalcStartBase(
     }
     setFlourTotal(amount);
     setFlourLeft(amount);
-    const water = amount * waterPc / 100;
+    const water = (amount * waterPc) / 100;
     setWaterTotal(water);
     setWaterLeft(water);
-    const salt = amount * saltPc / 100;
+    const salt = (amount * saltPc) / 100;
     setSaltTotal(salt);
     setSaltLeft(salt);
-  });
+  };
 
-  const calcWater = ((value, type) => {
+  const calcWater = (value, type) => {
     if (isNaN(value)) {
       return;
     }
@@ -44,21 +51,21 @@ function CalcStartBase(
     let waterTotal = 0;
     if (type === AmountType.PERCENT) {
       if (flourTotal !== 0) {
-        waterTotal = flourTotal * value / 100;
+        waterTotal = (flourTotal * value) / 100;
       }
       waterPc = value;
     } else if (type === AmountType.TOTAL) {
       if (flourTotal !== 0) {
-        waterPc = value / flourTotal * 100;
+        waterPc = (value / flourTotal) * 100;
       }
       waterTotal = value;
     }
     setWaterPc(waterPc);
     setWaterTotal(waterTotal);
     setWaterLeft(waterTotal);
-  });
+  };
 
-  const calcSalt = ((value, type) => {
+  const calcSalt = (value, type) => {
     if (isNaN(value)) {
       return;
     }
@@ -66,24 +73,26 @@ function CalcStartBase(
     let saltTotal = 0;
     if (type === AmountType.PERCENT) {
       if (flourTotal !== 0) {
-        saltTotal = flourTotal * value / 100;
+        saltTotal = (flourTotal * value) / 100;
       }
       saltPc = value;
     } else if (type === AmountType.TOTAL) {
       if (flourTotal !== 0) {
-        saltPc = value / flourTotal * 100;
+        saltPc = (value / flourTotal) * 100;
       }
       saltTotal = value;
     }
     setSaltTotal(saltTotal);
     setSaltPc(saltPc);
     setSaltLeft(saltTotal);
-  });
+  };
 
   return (
     <>
       <h2 id="calc">Początek wyliczeń</h2>
-      <p><a href="#home">Początek</a></p>
+      <p>
+        <a href="#home">Początek</a>
+      </p>
       <p>Zawsze zaczyna się od mąki, wody i soli.</p>
       <form>
         <fieldset>
@@ -120,10 +129,8 @@ function CalcStartBase(
                     step="1"
                     inputMode="numeric"
                     value={Math.round(waterTotal)}
-                    onInput={
-                      (e) => calcWater(
-                        parseFloat(e.target.value), AmountType.TOTAL
-                      )
+                    onInput={(e) =>
+                      calcWater(parseFloat(e.target.value), AmountType.TOTAL)
                     }
                   />
                 </div>
@@ -137,10 +144,8 @@ function CalcStartBase(
                     step="0.1"
                     inputMode="numeric"
                     value={round(waterPc, 1)}
-                    onInput={
-                      (e) => calcWater(
-                        parseFloat(e.target.value), AmountType.PERCENT
-                      )
+                    onInput={(e) =>
+                      calcWater(parseFloat(e.target.value), AmountType.PERCENT)
                     }
                   />
                 </div>
@@ -163,10 +168,8 @@ function CalcStartBase(
                     step="1"
                     inputMode="numeric"
                     value={Math.round(saltTotal)}
-                    onInput={
-                      (e) => calcSalt(
-                        parseFloat(e.target.value), AmountType.TOTAL
-                      )
+                    onInput={(e) =>
+                      calcSalt(parseFloat(e.target.value), AmountType.TOTAL)
                     }
                   />
                 </div>
@@ -180,10 +183,8 @@ function CalcStartBase(
                     step="0.1"
                     inputMode="numeric"
                     value={round(saltPc, 1)}
-                    onInput={
-                      (e) => calcSalt(
-                        parseFloat(e.target.value), AmountType.PERCENT
-                      )
+                    onInput={(e) =>
+                      calcSalt(parseFloat(e.target.value), AmountType.PERCENT)
                     }
                   />
                 </div>

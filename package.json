@@ -4,65 +4,37 @@
     "start": "nollup -c --environment NODE_ENV:development",
     "build": "npm run clean && rollup -c --environment NODE_ENV:production"
   },
-  "eslintConfig": {
-    "extends": [
-      "preact"
-    ],
-    "ignorePatterns": [
-      "build/",
-      "dist/"
-    ],
-    "rules": {
-      "max-len": [
-        "error",
-        88,
-        2
-      ],
-      "quotes": [
-        "error",
-        "single"
-      ],
-      "semi": [
-        "error",
-        "always",
-        {
-          "omitLastInOneLineBlock": true
-        }
-      ],
-      "object-curly-spacing": [
-        "error",
-        "always"
-      ]
-    }
-  },
   "dependencies": {
     "milligram": "^1.4.1",
-    "preact": "^10.5.14",
+    "preact": "^10.5.15",
     "preact-feather": "^4.2.1",
     "uid": "^2.0.0",
     "unistore": "^3.5.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
+    "@babel/core": "^7.15.8",
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@prefresh/nollup": "^3.0.1",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-node-resolve": "^13.0.5",
     "@rollup/plugin-replace": "^3.0.0",
     "eslint": "^7.32.0",
     "eslint-config-preact": "^1.1.4",
-    "nollup": "^0.18.2",
-    "pwa-asset-generator": "^4.3.6",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nollup": "^0.18.5",
+    "prettier": "^2.4.1",
+    "pwa-asset-generator": "^5.0.0",
     "react-refresh": "^0.10.0",
-    "rollup": "^2.56.2",
+    "rollup": "^2.58.0",
     "rollup-plugin-commonjs-alternate": "^0.8.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-hot-css": "^0.5.1",
     "rollup-plugin-static-files": "^0.2.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-workbox": "^6.2.0",
-    "sass": "^1.38.0",
+    "sass": "^1.43.2",
     "shx": "^0.3.3",
     "sirv-cli": "^1.0.14"
   }

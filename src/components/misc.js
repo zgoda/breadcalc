@@ -1,19 +1,24 @@
 import {
-  HelpCircle, PlusCircle, CheckCircle, Edit3, MinusCircle, Lock, Unlock,
+  HelpCircle,
+  PlusCircle,
+  CheckCircle,
+  Edit3,
+  MinusCircle,
+  Lock,
+  Unlock,
 } from 'preact-feather';
 import { useState, useRef } from 'preact/hooks';
 
 function HelpButton({ text }) {
-
   const [helpVisible, setHelpVisible] = useState(false);
 
   const buttonRef = useRef(null);
 
-  const handleButtonClick = ((e) => {
+  const handleButtonClick = (e) => {
     e.preventDefault();
     setHelpVisible(!helpVisible);
     buttonRef.current && buttonRef.current.blur();
-  });
+  };
 
   return (
     <>
@@ -31,16 +36,15 @@ function HelpButton({ text }) {
 }
 
 function ActionButton({ actionHandler, actionType, text, size, small = true }) {
-
   const buttonRef = useRef(null);
 
-  const handleButtonClick = ((e) => {
+  const handleButtonClick = (e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
-  });
+  };
 
-  const ActionTypeIcon = (() => {
+  const ActionTypeIcon = () => {
     const typeIcons = new Map(
       ['add', PlusCircle],
       ['save', CheckCircle],
@@ -57,7 +61,7 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
       return <TypeIcon />;
     }
     return null;
-  });
+  };
 
   const buttonClasses = ['button'];
   if (small || (size != null && size < 32)) {
@@ -79,18 +83,16 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
       {text && `${text}`}
     </button>
   );
-
 }
 
 function AddItemButton({ actionHandler, size = 32 }) {
-
   const buttonRef = useRef(null);
 
-  const handleButtonClick = ((e) => {
+  const handleButtonClick = (e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
-  });
+  };
 
   return (
     <button
@@ -105,14 +107,13 @@ function AddItemButton({ actionHandler, size = 32 }) {
 }
 
 function SaveItemButton({ actionHandler }) {
-
   const buttonRef = useRef(null);
 
-  const handleButtonClick = ((e) => {
+  const handleButtonClick = (e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
-  });
+  };
 
   return (
     <button
@@ -127,14 +128,13 @@ function SaveItemButton({ actionHandler }) {
 }
 
 function EditItemButton({ actionHandler }) {
-
   const buttonRef = useRef(null);
 
-  const handleButtonClick = ((e) => {
+  const handleButtonClick = (e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
-  });
+  };
 
   return (
     <button
@@ -149,14 +149,13 @@ function EditItemButton({ actionHandler }) {
 }
 
 function RemoveItemButton({ actionHandler }) {
-
   const buttonRef = useRef(null);
 
-  const handleButtonClick = ((e) => {
+  const handleButtonClick = (e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
-  });
+  };
 
   return (
     <button
@@ -171,14 +170,13 @@ function RemoveItemButton({ actionHandler }) {
 }
 
 function LockButton({ actionHandler }) {
-
   const buttonRef = useRef(null);
 
-  const handleButtonClick = ((e) => {
+  const handleButtonClick = (e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
-  });
+  };
 
   return (
     <button
@@ -193,14 +191,13 @@ function LockButton({ actionHandler }) {
 }
 
 function UnlockButton({ actionHandler }) {
-
   const buttonRef = useRef(null);
 
-  const handleButtonClick = ((e) => {
+  const handleButtonClick = (e) => {
     e.preventDefault();
     actionHandler && actionHandler();
     buttonRef.current && buttonRef.current.blur();
-  });
+  };
 
   return (
     <button
@@ -215,6 +212,12 @@ function UnlockButton({ actionHandler }) {
 }
 
 export {
-  HelpButton, AddItemButton, SaveItemButton, EditItemButton, RemoveItemButton,
-  LockButton, UnlockButton, ActionButton,
+  HelpButton,
+  AddItemButton,
+  SaveItemButton,
+  EditItemButton,
+  RemoveItemButton,
+  LockButton,
+  UnlockButton,
+  ActionButton,
 };

@@ -31,12 +31,12 @@ function Application() {
   );
 }
 
-const App = (() => {
+const App = () => {
   return (
     <Provider store={store}>
       <Application />
     </Provider>
   );
-});
+};
 
 export { App };
