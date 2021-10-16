@@ -10,6 +10,9 @@ import { WetAdjuncts } from './components/wetadjuncts';
 import { Leaven } from './components/leaven';
 import { About } from './components/about';
 
+// @ts-ignore
+import swURL from 'sw:./sw.js';
+
 import './style/index.scss';
 
 export function App() {
@@ -34,6 +37,13 @@ export function App() {
 
 hydrate(<App />);
 
+/**
+ * @param {import("preact").JSX.IntrinsicAttributes} data
+ */
 export async function prerender(data) {
   return await ssr(<App {...data} />);
+}
+
+if (navigator) {
+  navigator.serviceWorker.register(swURL);
 }

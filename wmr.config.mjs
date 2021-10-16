@@ -1,10 +1,9 @@
 import { defineConfig } from 'wmr';
 
-// Full list of options: https://wmr.dev/docs/configuration
-export default defineConfig({
-  /* Your configuration here */
-  alias: {
-    react: 'preact/compat',
-    'react-dom': 'preact/compat',
-  },
+import swPlugin from '@wmrjs/service-worker';
+
+export default defineConfig((options) => {
+  if (options.mode === 'build') {
+    swPlugin(options);
+  }
 });
