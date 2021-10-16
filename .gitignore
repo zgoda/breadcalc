@@ -1,15 +1,6 @@
+.cache
 node_modules
 package-lock.json
-/build
-/dist
-/*.log
-size-plugin.json
-
-# Service Worker
-**/workbox*
-**/sw*
-
-# include VS Code debugging configuration
-!.vscode/
-.vscode/*
-!.vscode/launch.json
+dist
+stats.html
+.vscode

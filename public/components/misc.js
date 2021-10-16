@@ -45,14 +45,14 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
   };
 
   const ActionTypeIcon = () => {
-    const typeIcons = new Map(
+    const typeIcons = new Map([
       ['add', PlusCircle],
       ['save', CheckCircle],
       ['edit', Edit3],
       ['remove', MinusCircle],
       ['lock', Lock],
       ['unlock', Unlock],
-    );
+    ]);
     const TypeIcon = typeIcons.get(actionType);
     if (TypeIcon != null) {
       if (size != null) {

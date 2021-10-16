@@ -1,62 +1,69 @@
-import { connect } from 'unistore/preact';
+import { useStore } from 'nanostores/preact';
 
-import { actions } from '../service/state';
 import { HelpButton } from './misc';
 import { round, AmountType } from '../utils/numbers';
 import fieldHelp from '../data/fieldhelp.json';
+import {
+  flourTotal,
+  saltPc,
+  saltTotal,
+  setFlourLeft,
+  setFlourTotal,
+  setSaltLeft,
+  setSaltPc,
+  setSaltTotal,
+  setWaterLeft,
+  setWaterPc,
+  setWaterTotal,
+  waterPc,
+  waterTotal,
+} from '../service/state';
 
 const stateItems = ['flourTotal', 'waterTotal', 'waterPc', 'saltTotal', 'saltPc'];
 
-function CalcStartBase({
-  flourTotal,
-  waterTotal,
-  waterPc,
-  saltTotal,
-  saltPc,
-  setFlourTotal,
-  setWaterTotal,
-  setWaterPc,
-  setSaltTotal,
-  setSaltPc,
-  setFlourLeft,
-  setWaterLeft,
-  setSaltLeft,
-}) {
+function CalcStart() {
+  const flourTotalS = useStore(flourTotal);
+  const waterTotalS = useStore(waterTotal);
+  const waterPcS = useStore(waterPc);
+  const saltTotalS = useStore(saltTotal);
+  const saltPcS = useStore(saltPc);
+
   const inputs = new Map();
   stateItems.forEach((item) => {
     inputs.set(item, `input-${item}`);
   });
 
-  const setFlour = (e) => {
+  const setFlour = (/** @type {{ preventDefault: () => void }} */ e) => {
     e.preventDefault();
+    // @ts-ignore
     const amount = parseFloat(e.target.value);
     if (isNaN(amount)) {
       return;
     }
     setFlourTotal(amount);
     setFlourLeft(amount);
-    const water = (amount * waterPc) / 100;
+    const water = (amount * waterPcS) / 100;
     setWaterTotal(water);
     setWaterLeft(water);
-    const salt = (amount * saltPc) / 100;
+    const salt = (amount * saltPcS) / 100;
     setSaltTotal(salt);
     setSaltLeft(salt);
   };
 
-  const calcWater = (value, type) => {
+  const calcWater = (/** @type {number} */ value, /** @type {string} */ type) => {
     if (isNaN(value)) {
       return;
     }
     let waterPc = 0;
     let waterTotal = 0;
     if (type === AmountType.PERCENT) {
-      if (flourTotal !== 0) {
-        waterTotal = (flourTotal * value) / 100;
+      if (flourTotalS !== 0) {
+        waterTotal = (flourTotalS * value) / 100;
       }
       waterPc = value;
     } else if (type === AmountType.TOTAL) {
-      if (flourTotal !== 0) {
-        waterPc = (value / flourTotal) * 100;
+      if (flourTotalS !== 0) {
+        waterPc = (value / flourTotalS) * 100;
       }
       waterTotal = value;
     }
@@ -65,20 +72,20 @@ function CalcStartBase({
     setWaterLeft(waterTotal);
   };
 
-  const calcSalt = (value, type) => {
+  const calcSalt = (/** @type {number} */ value, /** @type {string} */ type) => {
     if (isNaN(value)) {
       return;
     }
     let saltPc = 0;
     let saltTotal = 0;
     if (type === AmountType.PERCENT) {
-      if (flourTotal !== 0) {
-        saltTotal = (flourTotal * value) / 100;
+      if (flourTotalS !== 0) {
+        saltTotal = (flourTotalS * value) / 100;
       }
       saltPc = value;
     } else if (type === AmountType.TOTAL) {
-      if (flourTotal !== 0) {
-        saltPc = (value / flourTotal) * 100;
+      if (flourTotalS !== 0) {
+        saltPc = (value / flourTotalS) * 100;
       }
       saltTotal = value;
     }
@@ -107,7 +114,7 @@ function CalcStartBase({
                 id={inputs.get('flourTotal')}
                 type="number"
                 inputMode="numeric"
-                value={flourTotal}
+                value={flourTotalS}
                 onInput={setFlour}
                 required
               />
@@ -128,8 +135,9 @@ function CalcStartBase({
                     type="number"
                     step="1"
                     inputMode="numeric"
-                    value={Math.round(waterTotal)}
+                    value={Math.round(waterTotalS)}
                     onInput={(e) =>
+                      // @ts-ignore
                       calcWater(parseFloat(e.target.value), AmountType.TOTAL)
                     }
                   />
@@ -143,8 +151,9 @@ function CalcStartBase({
                     type="number"
                     step="0.1"
                     inputMode="numeric"
-                    value={round(waterPc, 1)}
+                    value={round(waterPcS, 1)}
                     onInput={(e) =>
+                      // @ts-ignore
                       calcWater(parseFloat(e.target.value), AmountType.PERCENT)
                     }
                   />
@@ -167,8 +176,9 @@ function CalcStartBase({
                     type="number"
                     step="1"
                     inputMode="numeric"
-                    value={Math.round(saltTotal)}
+                    value={Math.round(saltTotalS)}
                     onInput={(e) =>
+                      // @ts-ignore
                       calcSalt(parseFloat(e.target.value), AmountType.TOTAL)
                     }
                   />
@@ -182,8 +192,9 @@ function CalcStartBase({
                     type="number"
                     step="0.1"
                     inputMode="numeric"
-                    value={round(saltPc, 1)}
+                    value={round(saltPcS, 1)}
                     onInput={(e) =>
+                      // @ts-ignore
                       calcSalt(parseFloat(e.target.value), AmountType.PERCENT)
                     }
                   />
@@ -199,7 +210,5 @@ function CalcStartBase({
     </>
   );
 }
-
-const CalcStart = connect(stateItems, actions)(CalcStartBase);
 
 export { CalcStart };

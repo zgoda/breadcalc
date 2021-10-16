@@ -1,11 +1,23 @@
+import { createElement } from 'preact';
+
 import json from '../data/pageinfo.json';
 
+/**
+ * @typedef {object} SectionTitleProps
+ * @property {string} title
+ * @property {number} level
+ * @property {string} [id]
+ *
+ * @param {SectionTitleProps} props
+ * @returns {JSX.Element}
+ */
 function SectionTitle({ title, level, id }) {
-  const Tag = `h${level}`;
+  const tag = `h${level}`;
+  const props = {};
   if (id != null) {
-    return <Tag id={id}>{title}</Tag>;
+    props.id = id;
   }
-  return <Tag>{title}</Tag>;
+  return createElement(tag, props, title);
 }
 
 function PageInfo({ title }) {

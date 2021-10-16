@@ -1,6 +1,5 @@
-import { Provider } from 'unistore/preact';
+import { hydrate, prerender as ssr } from 'preact-iso';
 
-import { store } from './service/state';
 import { Navigation } from './components/navigation';
 import { PageInfo, SectionTitle } from './components/pageinfo';
 import { CalcStart } from './components/calcstart';
@@ -11,7 +10,9 @@ import { WetAdjuncts } from './components/wetadjuncts';
 import { Leaven } from './components/leaven';
 import { About } from './components/about';
 
-function Application() {
+import './style/index.scss';
+
+export function App() {
   return (
     <div class="container">
       <Navigation />
@@ -31,12 +32,8 @@ function Application() {
   );
 }
 
-const App = () => {
-  return (
-    <Provider store={store}>
-      <Application />
-    </Provider>
-  );
-};
+hydrate(<App />);
 
-export { App };
+export async function prerender(data) {
+  return await ssr(<App {...data} />);
+}
