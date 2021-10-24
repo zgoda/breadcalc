@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { uid } from 'uid';
-import { useStore } from 'nanostores/preact';
+import { useStore } from '@nanostores/preact';
 
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';

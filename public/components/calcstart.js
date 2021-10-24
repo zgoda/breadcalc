@@ -1,4 +1,4 @@
-import { useStore } from 'nanostores/preact';
+import { useStore } from '@nanostores/preact';
 
 import { HelpButton } from './misc';
 import { round, AmountType } from '../utils/numbers';

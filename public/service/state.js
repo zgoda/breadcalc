@@ -1,121 +1,145 @@
-import { createStore, update } from 'nanostores';
+import { action, atom } from 'nanostores';
 
 /** @type {import('nanostores').WritableStore<number>} */
-export const flourTotalStore = createStore(() => flourTotalStore.set(0));
+export const flourTotalStore = atom(0);
 /** @type {import('nanostores').WritableStore<number>} */
-export const waterTotalStore = createStore(() => waterTotalStore.set(0));
+export const waterTotalStore = atom(0);
 /** @type {import('nanostores').WritableStore<number>} */
-export const waterPcStore = createStore(() => waterPcStore.set(0));
+export const waterPcStore = atom(0);
 /** @type {import('nanostores').WritableStore<Array<Map<string, string|number>>>} */
-export const dryIngredientsStore = createStore(() => dryIngredientsStore.set([]));
+export const dryIngredientsStore = atom([]);
 /** @type {import('nanostores').WritableStore<Array<Map<string, string|number>>>} */
-export const wetIngredientsStore = createStore(() => wetIngredientsStore.set([]));
+export const wetIngredientsStore = atom([]);
 /** @type {import('nanostores').WritableStore<Array<Map<string, string|number>>>} */
-export const dryAdjunctsStore = createStore(() => dryAdjunctsStore.set([]));
+export const dryAdjunctsStore = atom([]);
 /** @type {import('nanostores').WritableStore<Array<Map<string, string|number>>>} */
-export const wetAdjunctsStore = createStore(() => wetAdjunctsStore.set([]));
+export const wetAdjunctsStore = atom([]);
 /** @type {import('nanostores').WritableStore<number>} */
-export const saltTotalStore = createStore(() => saltTotalStore.set(0));
+export const saltTotalStore = atom(0);
 /** @type {import('nanostores').WritableStore<number>} */
-export const saltPcStore = createStore(() => saltPcStore.set(0));
+export const saltPcStore = atom(0);
 /** @type {import('nanostores').WritableStore<number>} */
-export const flourLeftStore = createStore(() => flourLeftStore.set(0));
+export const flourLeftStore = atom(0);
 /** @type {import('nanostores').WritableStore<number>} */
-export const waterLeftStore = createStore(() => waterLeftStore.set(0));
+export const waterLeftStore = atom(0);
 /** @type {import('nanostores').WritableStore<number>} */
-export const saltLeftStore = createStore(() => saltLeftStore.set(0));
+export const saltLeftStore = atom(0);
 /** @type {import('nanostores').WritableStore<import('../..').Leaven>} */
-export const leavenStore = createStore(() =>
-  leavenStore.set({ flour: [], water: 0, sourdough: 0 }),
+export const leavenStore = atom({ flour: [], water: 0, sourdough: 0 });
+
+export const setFlourTotal = action(
+  flourTotalStore,
+  'set',
+  (store, /** @type {number} */ value) => {
+    store.set(value);
+    return store.get();
+  },
 );
 
-/**
- * @param {number} value
- */
-export function setFlourTotal(value) {
-  update(flourTotalStore, (_current) => value);
-}
+export const setWaterTotal = action(
+  waterTotalStore,
+  'set',
+  (store, /** @type {number} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {number} value
- */
-export function setWaterTotal(value) {
-  update(waterTotalStore, (_current) => value);
-}
+export const setWaterPc = action(
+  waterPcStore,
+  'set',
+  (store, /** @type {number} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {number} value
- */
-export function setWaterPc(value) {
-  update(waterPcStore, (_current) => value);
-}
+export const setDryIngredients = action(
+  dryIngredientsStore,
+  'set',
+  (store, /** @type {Array<Map<string, string | number>>} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {Array<Map<string, string | number>>} value
- */
-export function setDryIngredients(value) {
-  update(dryIngredientsStore, (_current) => value);
-}
+export const setWetIngredients = action(
+  wetIngredientsStore,
+  'set',
+  (store, /** @type {Array<Map<string, string | number>>} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {Array<Map<string, string | number>>} value
- */
-export function setWetIngredients(value) {
-  update(wetIngredientsStore, (_current) => value);
-}
+export const setDryAdjuncts = action(
+  dryAdjunctsStore,
+  'set',
+  (store, /** @type {Array<Map<string, string | number>>} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {Array<Map<string, string | number>>} value
- */
-export function setDryAdjuncts(value) {
-  update(dryAdjunctsStore, (_current) => value);
-}
+export const setWetAdjuncts = action(
+  wetAdjunctsStore,
+  'set',
+  (store, /** @type {Array<Map<string, string | number>>} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {Array<Map<string, string | number>>} value
- */
-export function setWetAdjuncts(value) {
-  update(wetAdjunctsStore, (_current) => value);
-}
+export const setSaltTotal = action(
+  saltTotalStore,
+  'set',
+  (store, /** @type {number} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {number} value
- */
-export function setSaltTotal(value) {
-  update(saltTotalStore, (_current) => value);
-}
+export const setSaltPc = action(
+  saltPcStore,
+  'set',
+  (store, /** @type {number} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {number} value
- */
-export function setSaltPc(value) {
-  update(saltPcStore, (_current) => value);
-}
+export const setFlourLeft = action(
+  flourLeftStore,
+  'set',
+  (store, /** @type {number} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {number} value
- */
-export function setFlourLeft(value) {
-  update(flourLeftStore, (_current) => value);
-}
+export const setWaterLeft = action(
+  waterLeftStore,
+  'set',
+  (store, /** @type {number} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {number} value
- */
-export function setWaterLeft(value) {
-  update(waterLeftStore, (_current) => value);
-}
+export const setSaltLeft = action(
+  saltLeftStore,
+  'set',
+  (store, /** @type {number} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
 
-/**
- * @param {number} value
- */
-export function setSaltLeft(value) {
-  update(saltLeftStore, (_current) => value);
-}
-
-/**
- * @param {import('../..').Leaven} value
- */
-export function setLeaven(value) {
-  update(leavenStore, (_current) => value);
-}
+export const setLeaven = action(
+  leavenStore,
+  'set',
+  (store, /** @type {import('../..').Leaven} */ value) => {
+    store.set(value);
+    return store.get();
+  },
+);
