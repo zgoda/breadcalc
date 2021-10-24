@@ -1,3 +1,9 @@
+# 3rd Party Licenses
+
+This software bundles other free software. See their licenses below.
+
+## FlexBoxGrid by Bogdan Plieshka
+
 The MIT License (MIT)
 
 Copyright (c) 2015 Bogdan Plieshka

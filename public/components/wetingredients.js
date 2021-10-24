@@ -122,7 +122,7 @@ function WetIngredientItem({
     <div class="row X--middle">
       <div class="M6">
         <label>
-          Nazwa <span class="label-required">*</span>
+          {wetingredients.form.fields.name.label} <span class="label-required">*</span>
           <input
             type="text"
             value={name}
@@ -135,7 +135,7 @@ function WetIngredientItem({
       </div>
       <div class="M2">
         <label>
-          Składnik wagowo
+          {wetingredients.form.fields.ingByWeight.label}
           <input
             type="number"
             inputMode="numeric"
@@ -150,7 +150,7 @@ function WetIngredientItem({
           />
         </label>
         <label>
-          Składnik procentowo
+          {wetingredients.form.fields.ingByPercent.label}
           <input
             type="number"
             inputMode="numeric"
@@ -167,7 +167,7 @@ function WetIngredientItem({
       </div>
       <div class="M2">
         <label>
-          Woda wagowo
+          {wetingredients.form.fields.waterByWeight.label}
           <input
             type="number"
             inputMode="numeric"
@@ -182,7 +182,7 @@ function WetIngredientItem({
           />
         </label>
         <label>
-          Woda procentowo
+          {wetingredients.form.fields.waterByPercent.label}
           <input
             type="number"
             inputMode="numeric"
@@ -252,7 +252,7 @@ function WetIngredients() {
 
   return (
     <>
-      <SectionTitle title={'Mąka i składniki namaczane'} level={3} />
+      <SectionTitle title={wetingredients.title} level={3} />
       <p dangerouslySetInnerHTML={{ __html: wetingredients.text }} />
       {warnFull && <p class="error">{wetingredients.full}</p>}
       <form>
