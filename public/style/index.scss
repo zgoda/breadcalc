@@ -7,28 +7,15 @@ $color-tertiary: #E9C46A !default;
 $color-quaternary: #F4A261 !default;
 $color-quinary: #E76F51 !default;
 
-@import '../../node_modules/milligram/src/_Color.sass';
-@import '../../node_modules/milligram/src/_Base.sass';
-@import '../../node_modules/milligram/src/_Blockquote.sass';
-@import '../../node_modules/milligram/src/_Button.sass';
-@import '../../node_modules/milligram/src/_Code.sass';
-@import '../../node_modules/milligram/src/_Divider.sass';
-@import '../../node_modules/milligram/src/_Form.sass';
-@import '../../node_modules/milligram/src/_Link.sass';
-@import '../../node_modules/milligram/src/_List.sass';
-@import '../../node_modules/milligram/src/_Spacing.sass';
-@import '../../node_modules/milligram/src/_Table.sass';
-@import '../../node_modules/milligram/src/_Typography.sass';
-@import '../../node_modules/milligram/src/_Image.sass';
-@import '../../node_modules/milligram/src/_Utility.sass';
+@import '../../node_modules/milligram/src/milligram.sass';
 
-@import './flexboxgrid/index.scss';
+/* @import './flexboxgrid/index.scss'; */
 
 @import './fonts.css';
  
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Lato, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font-family: Lato, sans-serif;
 }
 
 .container {
@@ -41,6 +28,10 @@ body {
 
 .center {
   text-align: center;
+}
+
+.column-center {
+  align-self: center;
 }
 
 .label-required {
@@ -90,4 +81,21 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(22ch, 1fr));
     gap: 1rem;
   }  
+}
+
+.section-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-wrapper > :last-child {
+  flex-basis: 20rem;
+  flex-grow: 1;
+}
+
+.section-wrapper > :first-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-width: 66%;
 }
