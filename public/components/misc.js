@@ -9,6 +9,13 @@ import {
 } from 'preact-feather';
 import { useState, useRef } from 'preact/hooks';
 
+/**
+ * @typedef {object} HelpButtonProps
+ * @property {string} text
+ *
+ * @param {HelpButtonProps} props
+ * @returns
+ */
 function HelpButton({ text }) {
   const [helpVisible, setHelpVisible] = useState(false);
 
@@ -67,7 +74,7 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
   if (small || (size != null && size < 32)) {
     buttonClasses.push('button-icon-small');
   }
-  if (text === null || text === undefined) {
+  if (text == null) {
     buttonClasses.push('button-clear');
   }
   const buttonClassesStr = buttonClasses.join(' ');

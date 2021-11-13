@@ -5,7 +5,7 @@ import { useStore } from '@nanostores/preact';
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
-import dryadjuncts from '../data/dryadjuncts.json';
+import dryadjuncts from './dryadjuncts.json';
 import { dryAdjunctsStore, flourTotalStore, setDryAdjuncts } from '../service/state';
 
 /**

@@ -5,7 +5,7 @@ import { useStore } from '@nanostores/preact';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
-import wetadjuncts from '../data/wetadjuncts.json';
+import wetadjuncts from './wetadjuncts.json';
 import {
   flourTotalStore,
   setWaterLeft,

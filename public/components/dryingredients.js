@@ -5,7 +5,7 @@ import { useStore } from '@nanostores/preact';
 import { AddItemButton, RemoveItemButton, LockButton, UnlockButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
-import dryingredients from '../data/dryingredients.json';
+import dryingredients from './dryingredients.json';
 import {
   dryIngredientsStore,
   flourLeftStore,

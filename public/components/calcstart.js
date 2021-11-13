@@ -2,7 +2,7 @@ import { useStore } from '@nanostores/preact';
 
 import { HelpButton } from './misc';
 import { round, AmountType } from '../utils/numbers';
-import fieldHelp from '../data/fieldhelp.json';
+import fieldHelp from './calcstart.json';
 import {
   flourTotalStore,
   saltPcStore,

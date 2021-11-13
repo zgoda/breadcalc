@@ -6,7 +6,7 @@ import { useStore } from '@nanostores/preact';
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
-import wetingredients from '../data/wetingredients.json';
+import wetingredients from './wetingredients.json';
 import {
   dryIngredientsStore,
   flourLeftStore,

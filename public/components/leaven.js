@@ -4,7 +4,7 @@ import { useStore } from '@nanostores/preact';
 
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
-import leavenText from '../data/leaven.json';
+import leavenText from './leaven.json';
 import {
   dryIngredientsStore,
   flourLeftStore,

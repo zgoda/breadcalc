@@ -1,6 +1,13 @@
 import { SectionTitle } from './pageinfo';
-import json from '../data/about.json';
+import json from './about.json';
 
+/**
+ * @typedef {object} Props
+ * @property {string} title
+ *
+ * @param {Props} props
+ * @returns
+ */
 function About({ title }) {
   return (
     <>

@@ -32,7 +32,7 @@ export const setFlourTotal = action(
   'set',
   (store, /** @type {number} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -41,7 +41,7 @@ export const setWaterTotal = action(
   'set',
   (store, /** @type {number} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -50,7 +50,7 @@ export const setWaterPc = action(
   'set',
   (store, /** @type {number} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -59,7 +59,7 @@ export const setDryIngredients = action(
   'set',
   (store, /** @type {Array<Map<string, string | number>>} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -68,7 +68,7 @@ export const setWetIngredients = action(
   'set',
   (store, /** @type {Array<Map<string, string | number>>} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -77,7 +77,7 @@ export const setDryAdjuncts = action(
   'set',
   (store, /** @type {Array<Map<string, string | number>>} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -86,7 +86,7 @@ export const setWetAdjuncts = action(
   'set',
   (store, /** @type {Array<Map<string, string | number>>} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -95,7 +95,7 @@ export const setSaltTotal = action(
   'set',
   (store, /** @type {number} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -104,7 +104,7 @@ export const setSaltPc = action(
   'set',
   (store, /** @type {number} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -113,7 +113,7 @@ export const setFlourLeft = action(
   'set',
   (store, /** @type {number} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -122,7 +122,7 @@ export const setWaterLeft = action(
   'set',
   (store, /** @type {number} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -131,7 +131,7 @@ export const setSaltLeft = action(
   'set',
   (store, /** @type {number} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );
 
@@ -140,6 +140,6 @@ export const setLeaven = action(
   'set',
   (store, /** @type {import('../..').Leaven} */ value) => {
     store.set(value);
-    return store.get();
+    return value;
   },
 );

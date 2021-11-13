@@ -1,6 +1,6 @@
 import { createElement } from 'preact';
 
-import json from '../data/pageinfo.json';
+import json from './pageinfo.json';
 
 /**
  * @typedef {object} SectionTitleProps
