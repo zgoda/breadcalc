@@ -70,8 +70,8 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
   };
 
   return (
-    <div class="row X--middle">
-      <div class="M6">
+    <div class="section-wrapper">
+      <div>
         <label>
           Nazwa <span class="label-required">*</span>
           <input
@@ -83,8 +83,6 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
             readOnly={readOnly}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
           Ilość (g)
           <input
@@ -99,8 +97,6 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
             readOnly={readOnly}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
           Ilość (%)
           <input
@@ -117,14 +113,12 @@ function DryAdjunctItem({ item, flourTotal, removeItemHandler }) {
           />
         </label>
       </div>
-      <div class="M1 center">
+      <div class="column-center center">
         {readOnly ? (
           <UnlockButton actionHandler={makeEditable} />
         ) : (
           <LockButton actionHandler={makeReadOnly} />
         )}
-      </div>
-      <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
@@ -152,25 +146,23 @@ function DryAdjuncts() {
   };
 
   return (
-    <>
+    <section>
       <SectionTitle title="Dodatki suche" level={3} />
       <p>{dryadjuncts.text}</p>
       <form>
-        <fieldset>
-          {dryAdjuncts.map((item) => (
-            <DryAdjunctItem
-              item={item}
-              key={item.get('uid')}
-              flourTotal={flourTotal}
-              removeItemHandler={removeItemHandler}
-            />
-          ))}
-        </fieldset>
+        {dryAdjuncts.map((item) => (
+          <DryAdjunctItem
+            item={item}
+            key={item.get('uid')}
+            flourTotal={flourTotal}
+            removeItemHandler={removeItemHandler}
+          />
+        ))}
       </form>
       <div class="center">
         {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
       </div>
-    </>
+    </section>
   );
 }
 

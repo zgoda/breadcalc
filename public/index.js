@@ -23,7 +23,6 @@ export function App() {
       <WetIngredients />
       <DryAdjuncts />
       <WetAdjuncts />
-      <SectionTitle title={'Zaczyn'} level={2} />
       <Leaven />
       <SectionTitle title={'Ciasto właściwe'} level={2} />
       <hr />

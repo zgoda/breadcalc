@@ -113,8 +113,8 @@ function WetAdjunctItem({
   };
 
   return (
-    <div class="row X--middle">
-      <div class="M6">
+    <div class="section-wrapper">
+      <div>
         <label>
           Nazwa <span class="label-required">*</span>
           <input
@@ -126,8 +126,6 @@ function WetAdjunctItem({
             readOnly={readOnly}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
           Składnik wagowo
           <input
@@ -156,8 +154,6 @@ function WetAdjunctItem({
             readOnly={readOnly}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
           Woda wagowo
           <input
@@ -188,14 +184,12 @@ function WetAdjunctItem({
           />
         </label>
       </div>
-      <div class="M1 center">
+      <div class="column-center center">
         {readOnly ? (
           <UnlockButton actionHandler={makeEditable} />
         ) : (
           <LockButton actionHandler={makeReadOnly} />
         )}
-      </div>
-      <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
@@ -234,28 +228,26 @@ function WetAdjuncts() {
   };
 
   return (
-    <>
+    <section>
       <SectionTitle title={'Dodatki namaczane'} level={3} />
       <p>{wetadjuncts.text}</p>
       {warnFull && <p class="error">{wetadjuncts.full}</p>}
       <form>
-        <fieldset>
-          {wetAdjuncts.map((item) => (
-            <WetAdjunctItem
-              item={item}
-              key={item.get('uid')}
-              waterLeft={waterLeft}
-              flourTotal={flourTotal}
-              removeItemHandler={removeItemHandler}
-              changeItemHandler={changeItemHandler}
-            />
-          ))}
-        </fieldset>
+        {wetAdjuncts.map((item) => (
+          <WetAdjunctItem
+            item={item}
+            key={item.get('uid')}
+            waterLeft={waterLeft}
+            flourTotal={flourTotal}
+            removeItemHandler={removeItemHandler}
+            changeItemHandler={changeItemHandler}
+          />
+        ))}
       </form>
       <div class="center">
         {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
       </div>
-    </>
+    </section>
   );
 }
 

@@ -18,6 +18,7 @@ import {
   waterPcStore,
   waterTotalStore,
 } from '../service/state';
+import { SectionTitle } from './pageinfo';
 
 function CalcStart() {
   const flourTotal = useStore(flourTotalStore);
@@ -89,7 +90,7 @@ function CalcStart() {
 
   return (
     <section>
-      <h2 id="calc">Początek wyliczeń</h2>
+      <SectionTitle level={2} title="Początek wyliczeń" id="calc" />
       <p>
         <a href="#home">Początek</a>
       </p>

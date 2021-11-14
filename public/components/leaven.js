@@ -3,6 +3,7 @@ import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
 
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
+import { SectionTitle } from './pageinfo';
 import { AmountType } from '../utils/numbers';
 import leavenText from './leaven.json';
 import {
@@ -44,8 +45,8 @@ function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
   };
 
   return (
-    <div class="row X--middle X--around">
-      <div class="M3">
+    <div class="section-wrapper">
+      <div>
         <label>
           Waga mąki w zaczynie (g)
           <input
@@ -60,8 +61,6 @@ function LeavenFlourWeight({ flourTotal, setLeavenFlourWeight }) {
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
           />
         </label>
-      </div>
-      <div class="M3">
         <label>
           Jako % całkowitej ilości mąki
           <input
@@ -108,8 +107,8 @@ function LeavenWaterWeight({ leavenFlourTotal, changeWaterHandler }) {
   };
 
   return (
-    <div class="row X--middle X--around">
-      <div class="M3">
+    <div class="section-wrapper">
+      <div>
         <label>
           Waga wody w zaczynie (g)
           <input
@@ -123,8 +122,6 @@ function LeavenWaterWeight({ leavenFlourTotal, changeWaterHandler }) {
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
           />
         </label>
-      </div>
-      <div class="M3">
         <label>
           Jako % ilości mąki w zaczynie
           <input
@@ -216,8 +213,8 @@ function LeavenFlourItem({
   };
 
   return (
-    <div class="row X--middle">
-      <div class="M6">
+    <div class="section-wrapper">
+      <div>
         <label>
           Nazwa <span class="label-required">*</span>
           <input
@@ -230,8 +227,6 @@ function LeavenFlourItem({
             list={listId}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
           Ilość (g)
           <input
@@ -247,8 +242,6 @@ function LeavenFlourItem({
             readOnly={readOnly}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
           Ilość (%)
           <input
@@ -265,14 +258,12 @@ function LeavenFlourItem({
           />
         </label>
       </div>
-      <div class="M1 center">
+      <div class="column-center center">
         {readOnly ? (
           <UnlockButton actionHandler={makeEditable} />
         ) : (
           <LockButton actionHandler={makeReadOnly} />
         )}
-      </div>
-      <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
@@ -425,7 +416,8 @@ function Leaven() {
   };
 
   return (
-    <>
+    <section>
+      <SectionTitle title="Zaczyn" level={2} />
       <p>{leavenText.text}</p>
       <datalist id={flourItemsListId}>
         {availableFlourItems.map((item) => (
@@ -448,7 +440,7 @@ function Leaven() {
       )}
       <LeavenIngredients />
       {isFull && <p class="error">{leavenText.full}</p>}
-    </>
+    </section>
   );
 }
 

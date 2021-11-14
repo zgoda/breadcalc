@@ -119,8 +119,8 @@ function WetIngredientItem({
   };
 
   return (
-    <div class="row X--middle">
-      <div class="M6">
+    <div class="section-wrapper">
+      <div>
         <label>
           {wetingredients.form.fields.name.label} <span class="label-required">*</span>
           <input
@@ -132,8 +132,6 @@ function WetIngredientItem({
             readOnly={readOnly}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
           {wetingredients.form.fields.ingByWeight.label}
           <input
@@ -164,8 +162,6 @@ function WetIngredientItem({
             readOnly={readOnly}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
           {wetingredients.form.fields.waterByWeight.label}
           <input
@@ -196,14 +192,12 @@ function WetIngredientItem({
           />
         </label>
       </div>
-      <div class="M1 center">
+      <div class="column-center center">
         {readOnly ? (
           <UnlockButton actionHandler={makeEditable} />
         ) : (
           <LockButton actionHandler={makeReadOnly} />
         )}
-      </div>
-      <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
@@ -251,29 +245,27 @@ function WetIngredients() {
   };
 
   return (
-    <>
+    <section>
       <SectionTitle title={wetingredients.title} level={3} />
       <p dangerouslySetInnerHTML={{ __html: wetingredients.text }} />
       {warnFull && <p class="error">{wetingredients.full}</p>}
       <form>
-        <fieldset>
-          {wetIngredients.map((item) => (
-            <WetIngredientItem
-              item={item}
-              key={item.get('uid')}
-              flourLeft={flourLeft}
-              flourTotal={flourTotal}
-              waterLeft={waterLeft}
-              removeItemHandler={removeItemHandler}
-              changeItemHandler={changeItemHandler}
-            />
-          ))}
-        </fieldset>
+        {wetIngredients.map((item) => (
+          <WetIngredientItem
+            item={item}
+            key={item.get('uid')}
+            flourLeft={flourLeft}
+            flourTotal={flourTotal}
+            waterLeft={waterLeft}
+            removeItemHandler={removeItemHandler}
+            changeItemHandler={changeItemHandler}
+          />
+        ))}
       </form>
       <div class="center">
         {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
       </div>
-    </>
+    </section>
   );
 }
 

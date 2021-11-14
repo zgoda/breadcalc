@@ -88,8 +88,8 @@ function DryIngredientItem({
   };
 
   return (
-    <div class="row X--middle">
-      <div class="M6">
+    <div class="section-wrapper">
+      <div>
         <label>
           Nazwa <span class="label-required">*</span>
           <input
@@ -101,8 +101,6 @@ function DryIngredientItem({
             readOnly={readOnly}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
           Ilość (g)
           <input
@@ -118,8 +116,6 @@ function DryIngredientItem({
             readOnly={readOnly}
           />
         </label>
-      </div>
-      <div class="M2">
         <label>
           Ilość (%)
           <input
@@ -136,14 +132,12 @@ function DryIngredientItem({
           />
         </label>
       </div>
-      <div class="M1 center">
+      <div class="column-center center">
         {readOnly ? (
           <UnlockButton actionHandler={makeEditable} />
         ) : (
           <LockButton actionHandler={makeReadOnly} />
         )}
-      </div>
-      <div class="M1 center">
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
@@ -188,28 +182,26 @@ function DryIngredients() {
   };
 
   return (
-    <>
+    <section>
       <SectionTitle title={'Mąka i składniki suche'} level={3} />
       <p>{dryingredients.text}</p>
       {warnFull && <p class="error">{dryingredients.full}</p>}
       <form>
-        <fieldset>
-          {dryIngredients.map((item) => (
-            <DryIngredientItem
-              item={item}
-              key={item.get('uid')}
-              flourLeft={flourLeft}
-              flourTotal={flourTotal}
-              removeItemHandler={removeItemHandler}
-              changeItemHandler={changeItemHandler}
-            />
-          ))}
-        </fieldset>
+        {dryIngredients.map((item) => (
+          <DryIngredientItem
+            item={item}
+            key={item.get('uid')}
+            flourLeft={flourLeft}
+            flourTotal={flourTotal}
+            removeItemHandler={removeItemHandler}
+            changeItemHandler={changeItemHandler}
+          />
+        ))}
       </form>
       <div class="center">
         {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
       </div>
-    </>
+    </section>
   );
 }
 
