@@ -1,9 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "start": "wmr",
-    "build": "wmr build --prerender",
-    "serve": "wmr serve"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "cross-env PORT=8443 serve dist",
+    "start": "npm run build && npm run serve",
+    "test": "jest",
+    "test:ci": "jest --runInBand"
   },
   "types": "./index.d.ts",
   "browserslist": [
@@ -13,22 +16,29 @@
   ],
   "dependencies": {
     "@nanostores/preact": "^0.1.2",
-    "@wmrjs/service-worker": "^0.3.1",
     "milligram": "^1.4.1",
     "nanostores": "^0.5.6",
     "preact": "^10.5.15",
     "preact-feather": "^4.2.1",
-    "preact-iso": "^2.3.0",
     "uid": "^2.0.0"
   },
   "devDependencies": {
+    "@preact/preset-vite": "^2.1.5",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/preact": "^2.0.1",
+    "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-preact": "^1.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "https-localhost": "^4.7.0",
+    "jest": "^27.3.1",
+    "jest-preset-preact": "^4.0.5",
     "prettier": "^2.4.1",
     "sass": "^1.43.4",
-    "wmr": "^3.7.2",
-    "workbox-recipes": "^6.3.0"
+    "vite": "^2.6.14",
+    "vite-plugin-handlebars": "^1.6.0",
+    "vite-plugin-pwa": "^0.11.3",
+    "workbox-window": "^6.3.0"
   }
 }

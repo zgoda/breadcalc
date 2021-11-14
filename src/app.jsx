@@ -1,5 +1,3 @@
-import { hydrate, prerender as ssr } from 'preact-iso';
-
 import { Navigation } from './components/navigation';
 import { PageInfo, SectionTitle } from './components/pageinfo';
 import { CalcStart } from './components/calcstart';
@@ -29,13 +27,4 @@ export function App() {
       <About title="O programie" />
     </div>
   );
-}
-
-hydrate(<App />);
-
-/**
- * @param {import("preact").JSX.IntrinsicAttributes} data
- */
-export async function prerender(data) {
-  return await ssr(<App {...data} />);
 }
