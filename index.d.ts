@@ -1,11 +1,11 @@
-export interface DryIngredient {
+export interface DryItem {
   id: string;
   name: string;
   amount: number;
   percentage: number;
 }
 
-export interface WetIngredient {
+export interface WetItem {
   id: string;
   name: string;
   amount: number;
@@ -15,7 +15,7 @@ export interface WetIngredient {
 }
 
 export interface Leaven {
-  flour: Array<DryIngredient>;
+  flour: Array<DryItem>;
   water: number;
   sourdough: number;
 }

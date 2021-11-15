@@ -7,53 +7,38 @@ import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
 import dryingredients from './dryingredients.json';
 import {
+  addDryIngredient,
   dryIngredientsStore,
   flourLeftStore,
   flourTotalStore,
-  setDryIngredients,
-  setFlourLeft,
+  removeDryIngredient,
+  updateDryIngredient,
 } from '../service/state';
 
 /**
  * @typedef {object} DryIngredientItemProps
- * @property {Map<string, string|number>} item
+ * @property {import('../..').DryItem} item
  * @property {number} flourLeft
  * @property {number} flourTotal
- * @property {(arg0: string, arg1: number) => void} removeItemHandler
- * @property {(arg0: number) => void} changeItemHandler
  *
  * @param {DryIngredientItemProps} props
  * @returns {JSX.Element}
  */
-function DryIngredientItem({
-  item,
-  flourLeft,
-  flourTotal,
-  removeItemHandler,
-  changeItemHandler,
-}) {
-  const [uid, setUid] = useState('');
+function DryIngredientItem({ item, flourLeft, flourTotal }) {
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
-    setUid(item.get('uid').toString());
-    if (item.has('name')) {
-      setName(item.get('name').toString());
-    }
-    if (item.has('amtWeight')) {
-      setAmtWeight(Number(item.get('amtWeight')));
-    }
-    if (item.has('amtPc')) {
-      setAmtPc(Number(item.get('amtPc')));
-    }
+    setName(item.name);
+    setAmtWeight(item.amount);
+    setAmtPc(item.percentage);
   }, [item]);
 
   const nameChange = (/** @type {string} */ name) => {
     setName(name);
-    item.set('name', name);
+    item.name = name;
   };
 
   const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
@@ -69,10 +54,10 @@ function DryIngredientItem({
       amtPc = (value / flourTotal) * 100;
     }
     setAmtWeight(amtWeight);
-    item.set('amtWeight', amtWeight);
+    item.amount = amtWeight;
     setAmtPc(amtPc);
-    item.set('amtPc', amtPc);
-    changeItemHandler(amtWeight);
+    item.percentage = amtPc;
+    updateDryIngredient(item);
   };
 
   const makeReadOnly = () => {
@@ -83,9 +68,7 @@ function DryIngredientItem({
     setReadOnly(false);
   };
 
-  const removeItem = () => {
-    removeItemHandler(uid, amtWeight);
-  };
+  const removeItem = () => removeDryIngredient(item.id);
 
   return (
     <div class="section-wrapper">
@@ -157,29 +140,8 @@ function DryIngredients() {
     setWarnFull(flourLeft <= 0 && flourTotal > 0);
   }, [flourTotal, flourLeft, dryIngredients]);
 
-  const addItemHandler = () => {
-    const items = [...dryIngredients, new Map([['uid', uid(16)]])];
-    setDryIngredients(items);
-  };
-
-  const removeItemHandler = (
-    /** @type {string} */ uid,
-    /** @type {number} */ amount,
-  ) => {
-    const items = dryIngredients.filter(
-      (/** @type {Map<string, string|number>} */ item) => item.get('uid') !== uid,
-    );
-    setDryIngredients(items);
-    if (!isNaN(amount)) {
-      setFlourLeft(flourLeft + amount);
-    }
-  };
-
-  const changeItemHandler = (/** @type {number} */ amount) => {
-    if (!isNaN(amount)) {
-      setFlourLeft(flourLeft - amount);
-    }
-  };
+  const addItemHandler = () =>
+    addDryIngredient({ id: uid(16), name: '', amount: 0, percentage: 0 });
 
   return (
     <section>
@@ -190,11 +152,9 @@ function DryIngredients() {
         {dryIngredients.map((item) => (
           <DryIngredientItem
             item={item}
-            key={item.get('uid')}
+            key={item.id}
             flourLeft={flourLeft}
             flourTotal={flourTotal}
-            removeItemHandler={removeItemHandler}
-            changeItemHandler={changeItemHandler}
           />
         ))}
       </form>

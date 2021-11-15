@@ -1,51 +1,39 @@
-import { action, atom, map, mapTemplate } from 'nanostores';
+import { action, atom, map } from 'nanostores';
 
-/** @type {import('nanostores').WritableStore<number>} */
+/** @type {import('nanostores').WritableAtom<number>} */
 export const flourTotalStore = atom(0);
 
-/** @type {import('nanostores').WritableStore<number>} */
+/** @type {import('nanostores').WritableAtom<number>} */
 export const waterTotalStore = atom(0);
 
-/** @type {import('nanostores').WritableStore<number>} */
+/** @type {import('nanostores').WritableAtom<number>} */
 export const waterPcStore = atom(0);
 
-/** @type {import('nanostores').WritableStore<Array<Map<string, string|number>>>} */
+/** @type {import('nanostores').WritableAtom<Array<import('../..').DryItem>>} */
 export const dryIngredientsStore = atom([]);
 
-export const DryIngredient = mapTemplate(
-  (
-    /** @type {import('nanostores').MapStore<import('../..').DryIngredient>} */ newIngredient,
-    id,
-  ) => {
-    newIngredient.setKey('id', id);
-    newIngredient.setKey('name', '');
-    newIngredient.setKey('amount', 0);
-    newIngredient.setKey('percentage', 0);
-  },
-);
-
-/** @type {import('nanostores').WritableStore<Array<Map<string, string|number>>>} */
+/** @type {import('nanostores').WritableAtom<Array<import('../..').WetItem>>} */
 export const wetIngredientsStore = atom([]);
 
-/** @type {import('nanostores').WritableStore<Array<Map<string, string|number>>>} */
+/** @type {import('nanostores').WritableAtom<Array<import('../..').DryItem>>} */
 export const dryAdjunctsStore = atom([]);
 
-/** @type {import('nanostores').WritableStore<Array<Map<string, string|number>>>} */
+/** @type {import('nanostores').WritableAtom<Array<import('../..').WetItem>>} */
 export const wetAdjunctsStore = atom([]);
 
-/** @type {import('nanostores').WritableStore<number>} */
+/** @type {import('nanostores').WritableAtom<number>} */
 export const saltTotalStore = atom(0);
 
-/** @type {import('nanostores').WritableStore<number>} */
+/** @type {import('nanostores').WritableAtom<number>} */
 export const saltPcStore = atom(0);
 
-/** @type {import('nanostores').WritableStore<number>} */
+/** @type {import('nanostores').WritableAtom<number>} */
 export const flourLeftStore = atom(0);
 
-/** @type {import('nanostores').WritableStore<number>} */
+/** @type {import('nanostores').WritableAtom<number>} */
 export const waterLeftStore = atom(0);
 
-/** @type {import('nanostores').WritableStore<number>} */
+/** @type {import('nanostores').WritableAtom<number>} */
 export const saltLeftStore = atom(0);
 
 /** @type {import('nanostores').MapStore<import('../..').Leaven>} */
@@ -81,16 +69,65 @@ export const setWaterPc = action(
 export const setDryIngredients = action(
   dryIngredientsStore,
   'set',
-  (store, /** @type {Array<Map<string, string | number>>} */ value) => {
+  (store, /** @type {Array<import('../..').DryItem>} */ value) => {
     store.set(value);
     return value;
+  },
+);
+
+export const addDryIngredient = action(
+  dryIngredientsStore,
+  'add',
+  (store, /** @type {import('../..').DryItem} */ item) => {
+    const newContent = [...store.get(), item];
+    store.set(newContent);
+    setFlourLeft(flourLeftStore.get() - item.amount);
+    return newContent;
+  },
+);
+
+export const removeDryIngredient = action(
+  dryIngredientsStore,
+  'remove',
+  (store, /** @type {string} */ itemId) => {
+    let toAddBack = 0;
+    const newContent = store.get().filter((item) => {
+      if (item.id === itemId) {
+        toAddBack = item.amount;
+      } else {
+        return item;
+      }
+    });
+    store.set(newContent);
+    setFlourLeft(flourLeftStore.get() + toAddBack);
+    return newContent;
+  },
+);
+
+export const updateDryIngredient = action(
+  dryIngredientsStore,
+  'update',
+  (store, /** @type {import('../..').DryItem} */ item) => {
+    let amountChange = 0;
+    const newContent = store.get().map((ingredient) => {
+      if (ingredient.id === item.id) {
+        if (ingredient.amount !== item.amount) {
+          amountChange = ingredient.amount - item.amount;
+        }
+        return item;
+      }
+      return ingredient;
+    });
+    store.set(newContent);
+    setFlourLeft(flourLeftStore.get() + amountChange);
+    return newContent;
   },
 );
 
 export const setWetIngredients = action(
   wetIngredientsStore,
   'set',
-  (store, /** @type {Array<Map<string, string | number>>} */ value) => {
+  (store, /** @type {Array<import('../..').WetItem>} */ value) => {
     store.set(value);
     return value;
   },
@@ -99,7 +136,7 @@ export const setWetIngredients = action(
 export const setDryAdjuncts = action(
   dryAdjunctsStore,
   'set',
-  (store, /** @type {Array<Map<string, string | number>>} */ value) => {
+  (store, /** @type {Array<import('../..').DryItem>} */ value) => {
     store.set(value);
     return value;
   },
@@ -108,7 +145,7 @@ export const setDryAdjuncts = action(
 export const setWetAdjuncts = action(
   wetAdjunctsStore,
   'set',
-  (store, /** @type {Array<Map<string, string | number>>} */ value) => {
+  (store, /** @type {Array<import('../..').WetItem>} */ value) => {
     store.set(value);
     return value;
   },
