@@ -24,7 +24,7 @@ export function App() {
       <Leaven />
       <SectionTitle title={'Ciasto właściwe'} level={2} />
       <hr />
-      <About title="O programie" />
+      <About />
     </div>
   );
 }

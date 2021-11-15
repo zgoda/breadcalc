@@ -43,7 +43,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        // about: resolve(__dirname, 'about/index.html'),
+        about: resolve(__dirname, 'pages/about.html'),
         // privacy: resolve(__dirname, 'privacy/index.html'),
         // contact: resolve(__dirname, 'contact/index.html'),
       },

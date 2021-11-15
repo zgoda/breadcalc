@@ -1,17 +1,8 @@
-import { SectionTitle } from './pageinfo';
 import json from './about.json';
 
-/**
- * @typedef {object} Props
- * @property {string} title
- *
- * @param {Props} props
- * @returns
- */
-function About({ title }) {
+function About() {
   return (
     <>
-      <SectionTitle title={title} level={2} id="about" />
       {json.text.map((line, index) => (
         <p key={`about-line-${index}`}>{line}</p>
       ))}
