@@ -10,13 +10,11 @@ import {
   dryIngredientsStore,
   flourLeftStore,
   flourTotalStore,
-  setFlourLeft,
-  setWaterLeft,
-  setWetIngredients,
   waterLeftStore,
   waterTotalStore,
   wetIngredientsStore,
-} from '../service/state';
+} from '../state/stores';
+import { setFlourLeft, setWaterLeft, setWetIngredients } from '../state/actions';
 
 /**
  * @typedef {object} WetIngredientItemProps

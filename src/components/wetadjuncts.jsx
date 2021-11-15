@@ -14,7 +14,7 @@ import {
   waterTotalStore,
   wetAdjunctsStore,
   wetIngredientsStore,
-} from '../service/state';
+} from '../state/stores';
 
 /**
  * @typedef {object} WetAdjunctItemProps

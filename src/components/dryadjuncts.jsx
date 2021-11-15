@@ -6,7 +6,8 @@ import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import dryadjuncts from './dryadjuncts.json';
-import { dryAdjunctsStore, flourTotalStore, setDryAdjuncts } from '../service/state';
+import { dryAdjunctsStore, flourTotalStore } from '../state/stores';
+import { setDryAdjuncts } from '../state/actions';
 
 /**
  * @typedef {object} DryAdjunctItemProps

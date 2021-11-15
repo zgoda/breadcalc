@@ -7,6 +7,11 @@ import {
   flourTotalStore,
   saltPcStore,
   saltTotalStore,
+  waterPcStore,
+  waterTotalStore,
+} from '../state/stores';
+import { SectionTitle } from './pageinfo';
+import {
   setFlourLeft,
   setFlourTotal,
   setSaltLeft,
@@ -15,10 +20,7 @@ import {
   setWaterLeft,
   setWaterPc,
   setWaterTotal,
-  waterPcStore,
-  waterTotalStore,
-} from '../service/state';
-import { SectionTitle } from './pageinfo';
+} from '../state/actions';
 
 function CalcStart() {
   const flourTotal = useStore(flourTotalStore);

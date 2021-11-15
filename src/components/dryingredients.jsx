@@ -6,14 +6,8 @@ import { AddItemButton, RemoveItemButton, LockButton, UnlockButton } from './mis
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
 import dryingredients from './dryingredients.json';
-import {
-  addDryIngredient,
-  dryIngredientsStore,
-  flourLeftStore,
-  flourTotalStore,
-  removeDryIngredient,
-  updateDryIngredient,
-} from '../service/state';
+import { dryIngredientsStore, flourLeftStore, flourTotalStore } from '../state/stores';
+import { dryIngredientsActions } from '../state/actions';
 
 /**
  * @typedef {object} DryIngredientItemProps
@@ -57,7 +51,7 @@ function DryIngredientItem({ item, flourLeft, flourTotal }) {
     item.amount = amtWeight;
     setAmtPc(amtPc);
     item.percentage = amtPc;
-    updateDryIngredient(item);
+    dryIngredientsActions.update(item);
   };
 
   const makeReadOnly = () => {
@@ -68,7 +62,7 @@ function DryIngredientItem({ item, flourLeft, flourTotal }) {
     setReadOnly(false);
   };
 
-  const removeItem = () => removeDryIngredient(item.id);
+  const removeItem = () => dryIngredientsActions.remove(item.id);
 
   return (
     <div class="section-wrapper">
@@ -141,7 +135,7 @@ function DryIngredients() {
   }, [flourTotal, flourLeft, dryIngredients]);
 
   const addItemHandler = () =>
-    addDryIngredient({ id: uid(16), name: '', amount: 0, percentage: 0 });
+    dryIngredientsActions.add({ id: uid(16), name: '', amount: 0, percentage: 0 });
 
   return (
     <section>

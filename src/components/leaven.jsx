@@ -11,12 +11,10 @@ import {
   flourLeftStore,
   flourTotalStore,
   leavenStore,
-  setFlourLeft,
-  setLeaven,
-  setWaterLeft,
   waterLeftStore,
   waterTotalStore,
-} from '../service/state';
+} from '../state/stores';
+import { setFlourLeft, setLeaven, setWaterLeft } from '../state/actions';
 
 /**
  * @typedef {object} LeavenFlourWeightProps
