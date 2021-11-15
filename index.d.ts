@@ -1,5 +1,12 @@
+export interface Ingredient {
+  id: string;
+  name: string;
+  amount: number;
+  percentage: number;
+}
+
 export interface Leaven {
-  flour: Array<Map<string, string | number>>;
+  flour: Array<Ingredient>;
   water: number;
   sourdough: number;
 }
