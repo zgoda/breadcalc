@@ -1,5 +1,5 @@
 {
-  "text": "W tej sekcji wyliczone zostaną ilości składników dostarczających skrobi, które wymagają namoczenia i przez to wpływają na ilość wody, jaka pozostanie do dodania do ciasta właściwego. W każdym wierszu wystarczy wypełnić jedno z pól ilości składnika (w gramach lub w procentach piekarniczych - względem całkowitej wagi mąki), druga wartość zostanie wyliczona automatycznie. Ilość wody należy również podać w gramach (ml) lub w procentach, ale uwaga!, <strong>wyrażonych względem wagi składnika</strong> - np przy 100 gramach składnika i nawodnieniu 300% wody będzie 300g.",
+  "text": "W tej sekcji wyliczone zostaną ilości składników dostarczających skrobi, które wymagają namoczenia i przez to wpływają na ilość wody, jaka pozostanie do dodania do ciasta właściwego. W każdym wierszu wystarczy wypełnić jedno z pól ilości składnika (w gramach lub w procentach piekarniczych - względem całkowitej wagi mąki), druga wartość zostanie wyliczona automatycznie. Ilość wody należy również podać w gramach (ml) lub w procentach, wyrażonych względem wagi składnika - np przy 100 gramach składnika i nawodnieniu 300% wody będzie 300g.",
   "full": "Cała dostępna ilość wody lub składników dostarczających skrobi została już wykorzystana.",
   "title": "Mąka i składniki namaczane",
   "form": {

@@ -183,7 +183,7 @@ function DryIngredients() {
 
   return (
     <section>
-      <SectionTitle title={'Mąka i składniki suche'} level={3} />
+      <SectionTitle title="Mąka i składniki suche" level={3} />
       <p>{dryingredients.text}</p>
       {warnFull && <p class="error">{dryingredients.full}</p>}
       <form>

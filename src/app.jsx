@@ -15,13 +15,13 @@ export function App() {
       <div class="container">
         <PageInfo title="Kalkulator ciasta chlebowego" />
         <CalcStart />
-        <SectionTitle title={'Składniki'} level={2} />
+        <SectionTitle title="Składniki" level={2} />
         <DryIngredients />
         <WetIngredients />
         <DryAdjuncts />
         <WetAdjuncts />
         <Leaven />
-        <SectionTitle title={'Ciasto właściwe'} level={2} />
+        <SectionTitle title="Ciasto właściwe" level={2} />
         <hr />
       </div>
       <About />

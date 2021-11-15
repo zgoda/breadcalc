@@ -229,7 +229,7 @@ function WetAdjuncts() {
 
   return (
     <section>
-      <SectionTitle title={'Dodatki namaczane'} level={3} />
+      <SectionTitle title="Dodatki namaczane" level={3} />
       <p>{wetadjuncts.text}</p>
       {warnFull && <p class="error">{wetadjuncts.full}</p>}
       <form>

@@ -90,10 +90,7 @@ function CalcStart() {
 
   return (
     <section>
-      <SectionTitle level={2} title="Początek wyliczeń" id="calc" />
-      <p>
-        <a href="#home">Początek</a>
-      </p>
+      <SectionTitle level={2} title="Początek wyliczeń" />
       <p>Zawsze zaczyna się od mąki, wody i soli.</p>
       <form>
         <fieldset>

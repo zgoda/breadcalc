@@ -1,4 +1,3 @@
-/* eslint-disable react/no-danger */
 import { useState, useEffect } from 'preact/hooks';
 import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
@@ -247,7 +246,7 @@ function WetIngredients() {
   return (
     <section>
       <SectionTitle title={wetingredients.title} level={3} />
-      <p dangerouslySetInnerHTML={{ __html: wetingredients.text }} />
+      <p>{wetingredients.text}</p>
       {warnFull && <p class="error">{wetingredients.full}</p>}
       <form>
         {wetIngredients.map((item) => (

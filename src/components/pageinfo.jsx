@@ -6,18 +6,12 @@ import json from './pageinfo.json';
  * @typedef {object} SectionTitleProps
  * @property {string} title
  * @property {number} level
- * @property {string} [id]
  *
  * @param {SectionTitleProps} props
  * @returns {JSX.Element}
  */
-function SectionTitle({ title, level, id }) {
-  const tag = `h${level}`;
-  const props = {};
-  if (id != null) {
-    props.id = id;
-  }
-  return createElement(tag, props, title);
+function SectionTitle({ title, level }) {
+  return createElement(`h${level}`, {}, title);
 }
 
 /**
@@ -30,7 +24,7 @@ function SectionTitle({ title, level, id }) {
 function PageInfo({ title }) {
   return (
     <>
-      <SectionTitle title={title} level={1} id="home" />
+      <SectionTitle title={title} level={1} />
       {json.text.map((line, index) => (
         <p key={`appinfo-line-${index}`}>{line}</p>
       ))}

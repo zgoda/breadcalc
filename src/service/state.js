@@ -12,12 +12,17 @@ export const waterPcStore = atom(0);
 /** @type {import('nanostores').WritableStore<Array<Map<string, string|number>>>} */
 export const dryIngredientsStore = atom([]);
 
-/** @type {import('nanostores').MapTemplate<import('../..').Ingredient>} */
-export const DryIngredient = mapTemplate((newIngredient, id) => {
-  newIngredient.setKey('name', '');
-  newIngredient.setKey('amount', 0);
-  newIngredient.setKey('percentage', 0);
-});
+export const DryIngredient = mapTemplate(
+  (
+    /** @type {import('nanostores').MapStore<import('../..').DryIngredient>} */ newIngredient,
+    id,
+  ) => {
+    newIngredient.setKey('id', id);
+    newIngredient.setKey('name', '');
+    newIngredient.setKey('amount', 0);
+    newIngredient.setKey('percentage', 0);
+  },
+);
 
 /** @type {import('nanostores').WritableStore<Array<Map<string, string|number>>>} */
 export const wetIngredientsStore = atom([]);
