@@ -3,8 +3,6 @@
     "Copyright: © 2021, Jarek Zgoda. Wolne oprogramowanie na licencji BSD."
   ],
   "links": [
-    ["kod", "https://github.com/zgoda/breadcalc"],
-    ["blog autora", "https://devlog.zgodowie.org/"],
-    ["icon by brgfx", "https://www.freepik.com/vectors/food"]
+    ["O aplikacji", "/pages/about.html"]
   ]
 }
