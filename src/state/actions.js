@@ -57,16 +57,16 @@ export const dryIngredientsActions = {
     dryIngredientsStore,
     'remove',
     (store, /** @type {string} */ itemId) => {
-      let toAddBack = 0;
+      let extraFlour = 0;
       const newContent = store.get().filter((item) => {
         if (item.id === itemId) {
-          toAddBack = item.amount;
+          extraFlour = item.amount;
         } else {
           return item;
         }
       });
       store.set(newContent);
-      setFlourLeft(flourLeftStore.get() + toAddBack);
+      setFlourLeft(flourLeftStore.get() + extraFlour);
       return newContent;
     },
   ),
@@ -74,31 +74,80 @@ export const dryIngredientsActions = {
     dryIngredientsStore,
     'update',
     (store, /** @type {import('../..').DryItem} */ item) => {
-      let amountChange = 0;
+      let extraFlour = 0;
       const newContent = store.get().map((ingredient) => {
         if (ingredient.id === item.id) {
           if (ingredient.amount !== item.amount) {
-            amountChange = ingredient.amount - item.amount;
+            extraFlour = ingredient.amount - item.amount;
           }
           return item;
         }
         return ingredient;
       });
       store.set(newContent);
-      setFlourLeft(flourLeftStore.get() + amountChange);
+      setFlourLeft(flourLeftStore.get() + extraFlour);
       return newContent;
     },
   ),
 };
 
-export const setWetIngredients = action(
-  wetIngredientsStore,
-  'set',
-  (store, /** @type {Array<import('../..').WetItem>} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
+export const wetIngredientsActions = {
+  add: action(
+    wetIngredientsStore,
+    'add',
+    (store, /** @type {import('../..').WetItem} */ item) => {
+      const newContent = [...store.get(), item];
+      store.set(newContent);
+      setFlourLeft(flourLeftStore.get() - item.amount);
+      setWaterLeft(waterLeftStore.get() - item.waterAmount);
+      return newContent;
+    },
+  ),
+  remove: action(
+    wetIngredientsStore,
+    'remove',
+    (store, /** @type {string} */ itemId) => {
+      let extraWater = 0;
+      let extraFlour = 0;
+      const newContent = store.get().filter((item) => {
+        if (item.id === itemId) {
+          extraFlour = item.amount;
+          extraWater = item.waterAmount;
+        } else {
+          return item;
+        }
+      });
+      store.set(newContent);
+      setFlourLeft(flourLeftStore.get() + extraFlour);
+      setWaterLeft(waterLeftStore.get() + extraWater);
+      return newContent;
+    },
+  ),
+  update: action(
+    wetIngredientsStore,
+    'update',
+    (store, /** @type {import('../..').WetItem} */ item) => {
+      let extraFlour = 0;
+      let extraWater = 0;
+      const newContent = store.get().map((ingredient) => {
+        if (item.id === ingredient.id) {
+          if (item.amount !== ingredient.amount) {
+            extraFlour = ingredient.amount - item.amount;
+          }
+          if (item.waterAmount !== ingredient.waterAmount) {
+            extraWater = ingredient.waterAmount - item.waterAmount;
+          }
+          return item;
+        }
+        return ingredient;
+      });
+      store.set(newContent);
+      setFlourLeft(flourLeftStore.get() + extraFlour);
+      setWaterLeft(waterLeftStore.get() + extraWater);
+      return newContent;
+    },
+  ),
+};
 
 export const setDryAdjuncts = action(
   dryAdjunctsStore,
