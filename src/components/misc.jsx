@@ -1,12 +1,4 @@
-import {
-  HelpCircle,
-  PlusCircle,
-  CheckCircle,
-  Edit3,
-  MinusCircle,
-  Lock,
-  Unlock,
-} from 'preact-feather';
+import { HelpCircle, PlusCircle, MinusCircle, Lock, Unlock } from 'preact-feather';
 import { useState, useRef } from 'preact/hooks';
 
 /**
@@ -14,7 +6,7 @@ import { useState, useRef } from 'preact/hooks';
  * @property {string} text
  *
  * @param {HelpButtonProps} props
- * @returns
+ * @returns {JSX.Element}
  */
 function HelpButton({ text }) {
   const [helpVisible, setHelpVisible] = useState(false);
@@ -42,6 +34,17 @@ function HelpButton({ text }) {
   );
 }
 
+/**
+ * @typedef {Object} ActionButtonProps
+ * @property {() => void} actionHandler
+ * @property {string} actionType
+ * @property {string} [text]
+ * @property {number} [size]
+ * @property {boolean} [small=true]
+ *
+ * @param {ActionButtonProps} props
+ * @returns {JSX.Element}
+ */
 function ActionButton({ actionHandler, actionType, text, size, small = true }) {
   const buttonRef = useRef(null);
 
@@ -54,8 +57,6 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
   const ActionTypeIcon = () => {
     const typeIcons = new Map([
       ['add', PlusCircle],
-      ['save', CheckCircle],
-      ['edit', Edit3],
       ['remove', MinusCircle],
       ['lock', Lock],
       ['unlock', Unlock],
@@ -93,138 +94,19 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
 }
 
 function AddItemButton({ actionHandler, size = 32 }) {
-  const buttonRef = useRef(null);
-
-  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
-    e.preventDefault();
-    actionHandler && actionHandler();
-    buttonRef.current && buttonRef.current.blur();
-  };
-
-  return (
-    <button
-      class="button button-clear"
-      type="button"
-      ref={buttonRef}
-      onClick={handleButtonClick}
-    >
-      <PlusCircle size={size} />
-    </button>
-  );
-}
-
-function SaveItemButton({ actionHandler }) {
-  const buttonRef = useRef(null);
-
-  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
-    e.preventDefault();
-    actionHandler && actionHandler();
-    buttonRef.current && buttonRef.current.blur();
-  };
-
-  return (
-    <button
-      class="button button-clear button-icon-small"
-      type="button"
-      ref={buttonRef}
-      onClick={handleButtonClick}
-    >
-      <CheckCircle />
-    </button>
-  );
-}
-
-function EditItemButton({ actionHandler }) {
-  const buttonRef = useRef(null);
-
-  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
-    e.preventDefault();
-    actionHandler && actionHandler();
-    buttonRef.current && buttonRef.current.blur();
-  };
-
-  return (
-    <button
-      class="button button-clear button-icon-small"
-      type="button"
-      ref={buttonRef}
-      onClick={handleButtonClick}
-    >
-      <Edit3 />
-    </button>
-  );
+  return <ActionButton actionHandler={actionHandler} actionType="add" size={size} />;
 }
 
 function RemoveItemButton({ actionHandler }) {
-  const buttonRef = useRef(null);
-
-  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
-    e.preventDefault();
-    actionHandler && actionHandler();
-    buttonRef.current && buttonRef.current.blur();
-  };
-
-  return (
-    <button
-      class="button button-clear button-icon-small"
-      type="button"
-      ref={buttonRef}
-      onClick={handleButtonClick}
-    >
-      <MinusCircle />
-    </button>
-  );
+  return <ActionButton actionHandler={actionHandler} actionType="remove" />;
 }
 
 function LockButton({ actionHandler }) {
-  const buttonRef = useRef(null);
-
-  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
-    e.preventDefault();
-    actionHandler && actionHandler();
-    buttonRef.current && buttonRef.current.blur();
-  };
-
-  return (
-    <button
-      class="button button-clear button-icon-small"
-      type="button"
-      ref={buttonRef}
-      onClick={handleButtonClick}
-    >
-      <Lock />
-    </button>
-  );
+  return <ActionButton actionHandler={actionHandler} actionType="lock" />;
 }
 
 function UnlockButton({ actionHandler }) {
-  const buttonRef = useRef(null);
-
-  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
-    e.preventDefault();
-    actionHandler && actionHandler();
-    buttonRef.current && buttonRef.current.blur();
-  };
-
-  return (
-    <button
-      class="button button-clear button-icon-small"
-      type="button"
-      ref={buttonRef}
-      onClick={handleButtonClick}
-    >
-      <Unlock />
-    </button>
-  );
+  return <ActionButton actionHandler={actionHandler} actionType="unlock" />;
 }
 
-export {
-  HelpButton,
-  AddItemButton,
-  SaveItemButton,
-  EditItemButton,
-  RemoveItemButton,
-  LockButton,
-  UnlockButton,
-  ActionButton,
-};
+export { HelpButton, AddItemButton, RemoveItemButton, LockButton, UnlockButton };
