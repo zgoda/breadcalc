@@ -14,6 +14,7 @@ export default defineConfig({
       base: '/',
       includeAssets: ['favicon.svg'],
       manifest: {
+        lang: 'pl',
         name: 'Kalkulator ciasta chlebowego',
         short_name: 'Kalkulator ciasta chlebowego',
         description: 'Kalkulator ciasta do pieczywa na zakwasie wg J. Hamelmana',
@@ -44,8 +45,8 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         about: resolve(__dirname, 'pages/about.html'),
-        // privacy: resolve(__dirname, 'privacy/index.html'),
-        // contact: resolve(__dirname, 'contact/index.html'),
+        privacy: resolve(__dirname, 'pages/privacy.html'),
+        contact: resolve(__dirname, 'pages/contact.html'),
       },
     },
   },
