@@ -149,14 +149,40 @@ export const wetIngredientsActions = {
   ),
 };
 
-export const setDryAdjuncts = action(
-  dryAdjunctsStore,
-  'set',
-  (store, /** @type {Array<import('../..').DryItem>} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
+export const dryAdjunctsActions = {
+  add: action(
+    dryAdjunctsStore,
+    'add',
+    (store, /** @type {import('../..').DryItem} */ item) => {
+      const newContent = [...store.get(), item];
+      store.set(newContent);
+      return newContent;
+    },
+  ),
+  remove: action(dryAdjunctsStore, 'remove', (store, /** @type {string} */ itemId) => {
+    const newContent = store.get().filter((adjunct) => {
+      if (adjunct.id !== itemId) {
+        return adjunct;
+      }
+    });
+    store.set(newContent);
+    return newContent;
+  }),
+  update: action(
+    dryAdjunctsStore,
+    'update',
+    (store, /** @type {import('../..').DryItem} */ item) => {
+      const newContent = store.get().map((ingredient) => {
+        if (item.id === ingredient.id) {
+          return item;
+        }
+        return ingredient;
+      });
+      store.set(newContent);
+      return newContent;
+    },
+  ),
+};
 
 export const wetAdjunctsActions = {
   add: action(
