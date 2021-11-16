@@ -158,14 +158,50 @@ export const setDryAdjuncts = action(
   },
 );
 
-export const setWetAdjuncts = action(
-  wetAdjunctsStore,
-  'set',
-  (store, /** @type {Array<import('../..').WetItem>} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
+export const wetAdjunctsActions = {
+  add: action(
+    wetAdjunctsStore,
+    'add',
+    (store, /** @type {import('../..').WetItem} */ item) => {
+      const newContent = [...store.get(), item];
+      store.set(newContent);
+      setWaterLeft(waterLeftStore.get() - item.waterAmount);
+      return newContent;
+    },
+  ),
+  remove: action(wetAdjunctsStore, 'remove', (store, /** @type {string} */ itemId) => {
+    let extraWater = 0;
+    const newContent = store.get().filter((item) => {
+      if (item.id === itemId) {
+        extraWater = item.waterAmount;
+      } else {
+        return item;
+      }
+    });
+    store.set(newContent);
+    setWaterLeft(waterLeftStore.get() + extraWater);
+    return newContent;
+  }),
+  update: action(
+    wetAdjunctsStore,
+    'update',
+    (store, /** @type {import('../..').WetItem} */ item) => {
+      let extraWater = 0;
+      const newContent = store.get().map((ingredient) => {
+        if (item.id === ingredient.id) {
+          if (item.waterAmount !== ingredient.waterAmount) {
+            extraWater = ingredient.waterAmount - item.waterAmount;
+          }
+          return item;
+        }
+        return ingredient;
+      });
+      store.set(newContent);
+      setWaterLeft(waterLeftStore.get() + extraWater);
+      return newContent;
+    },
+  ),
+};
 
 export const setSaltTotal = action(
   saltTotalStore,

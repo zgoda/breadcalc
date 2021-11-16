@@ -8,33 +8,23 @@ import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './mis
 import wetadjuncts from './wetadjuncts.json';
 import {
   flourTotalStore,
-  setWaterLeft,
-  setWetAdjuncts,
   waterLeftStore,
   waterTotalStore,
   wetAdjunctsStore,
   wetIngredientsStore,
 } from '../state/stores';
+import { wetAdjunctsActions } from '../state/actions';
 
 /**
  * @typedef {object} WetAdjunctItemProps
- * @property {Map<string, string|number>} item
+ * @property {import('../..').WetItem} item
  * @property {number} waterLeft
  * @property {number} flourTotal
- * @property {(arg0: string) => void} removeItemHandler
- * @property {(arg0: number) => void} changeItemHandler
  *
  * @param {WetAdjunctItemProps} props
  * @returns {JSX.Element}
  */
-function WetAdjunctItem({
-  item,
-  waterLeft,
-  flourTotal,
-  removeItemHandler,
-  changeItemHandler,
-}) {
-  const [uid, setUid] = useState('');
+function WetAdjunctItem({ item, waterLeft, flourTotal }) {
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
@@ -43,27 +33,17 @@ function WetAdjunctItem({
   const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
-    setUid(item.get('uid').toString());
-    if (item.has('name')) {
-      setName(item.get('name').toString());
-    }
-    if (item.has('amtWeight')) {
-      setAmtWeight(Number(item.get('amtWeight')));
-    }
-    if (item.has('amtPc')) {
-      setAmtPc(Number(item.get('amtPc')));
-    }
-    if (item.has('waterWeight')) {
-      setWaterWeight(Number(item.get('waterWeight')));
-    }
-    if (item.has('waterPc')) {
-      setWaterPc(Number(item.get('waterPc')));
-    }
+    setName(item.name);
+    setAmtWeight(item.amount);
+    setAmtPc(item.percentage);
+    setWaterWeight(item.waterAmount);
+    setWaterPc(item.waterPercentage);
   }, [item]);
 
   const nameChange = (/** @type {string} */ name) => {
     setName(name);
-    item.set('name', name);
+    item.name = name;
+    wetAdjunctsActions.update(item);
   };
 
   const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
@@ -76,9 +56,10 @@ function WetAdjunctItem({
       amtPc = (value / flourTotal) * 100;
     }
     setAmtWeight(amtWeight);
-    item.set('amtWeight', amtWeight);
+    item.amount = amtWeight;
     setAmtPc(amtPc);
-    item.set('amtPc', amtPc);
+    item.percentage = amtPc;
+    wetAdjunctsActions.update(item);
   };
 
   const recalcWater = (/** @type {number} */ value, /** @type {string} */ type) => {
@@ -94,10 +75,10 @@ function WetAdjunctItem({
       waterPc = (value / amtWeight) * 100;
     }
     setWaterWeight(waterWeight);
-    item.set('waterWeight', waterWeight);
+    item.waterAmount = waterWeight;
     setWaterPc(waterPc);
-    item.set('waterPc', waterPc);
-    changeItemHandler(waterWeight);
+    item.waterPercentage = waterPc;
+    wetAdjunctsActions.update(item);
   };
 
   const makeReadOnly = () => {
@@ -109,7 +90,7 @@ function WetAdjunctItem({
   };
 
   const removeItem = () => {
-    removeItemHandler(uid);
+    wetAdjunctsActions.remove(item.id);
   };
 
   return (
@@ -211,21 +192,15 @@ function WetAdjuncts() {
     setWarnFull(waterLeft <= 0 && waterTotal > 0);
   }, [flourTotal, waterTotal, waterLeft, wetAdjuncts, wetIngredients]);
 
-  const addItemHandler = () => {
-    const items = [...wetAdjuncts, new Map([['uid', uid(16)]])];
-    setWetAdjuncts(items);
-  };
-
-  const removeItemHandler = (/** @type {string} */ uid) => {
-    const items = wetAdjuncts.filter(
-      (/** @type {Map<string, string|number>} */ item) => item.get('uid') !== uid,
-    );
-    setWetAdjuncts(items);
-  };
-
-  const changeItemHandler = (/** @type {number} */ amtWater) => {
-    setWaterLeft(waterLeft + amtWater);
-  };
+  const addItemHandler = () =>
+    wetAdjunctsActions.add({
+      id: uid(16),
+      name: '',
+      amount: 0,
+      percentage: 0,
+      waterAmount: 0,
+      waterPercentage: 0,
+    });
 
   return (
     <section>
@@ -236,11 +211,9 @@ function WetAdjuncts() {
         {wetAdjuncts.map((item) => (
           <WetAdjunctItem
             item={item}
-            key={item.get('uid')}
+            key={item.id}
             waterLeft={waterLeft}
             flourTotal={flourTotal}
-            removeItemHandler={removeItemHandler}
-            changeItemHandler={changeItemHandler}
           />
         ))}
       </form>
