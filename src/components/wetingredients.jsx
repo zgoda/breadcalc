@@ -8,10 +8,8 @@ import { AmountType } from '../utils/numbers';
 import wetingredients from './wetingredients.json';
 import {
   dryIngredientsStore,
-  flourLeftStore,
-  flourTotalStore,
-  waterLeftStore,
-  waterTotalStore,
+  flourStore,
+  waterStore,
   wetIngredientsStore,
 } from '../state/stores';
 import { wetIngredientsActions } from '../state/actions';
@@ -19,20 +17,20 @@ import { wetIngredientsActions } from '../state/actions';
 /**
  * @typedef {object} WetIngredientItemProps
  * @property {import('../..').WetItem} item
- * @property {number} flourLeft
- * @property {number} waterLeft
- * @property {number} flourTotal
  *
  * @param {WetIngredientItemProps} props
  * @returns {JSX.Element}
  */
-function WetIngredientItem({ item, flourLeft, waterLeft, flourTotal }) {
+function WetIngredientItem({ item }) {
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
   const [waterWeight, setWaterWeight] = useState(0);
   const [waterPc, setWaterPc] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
+
+  const flour = useStore(flourStore);
+  const water = useStore(waterStore);
 
   useEffect(() => {
     setName(item.name);
@@ -51,11 +49,11 @@ function WetIngredientItem({ item, flourLeft, waterLeft, flourTotal }) {
   const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
-      amtWeight = (flourTotal * value) / 100;
+      amtWeight = (flour.total * value) / 100;
       amtPc = value;
     } else if (type === AmountType.TOTAL) {
       amtWeight = value;
-      amtPc = (value / flourTotal) * 100;
+      amtPc = (value / flour.total) * 100;
     }
     setAmtWeight(amtWeight);
     item.amount = amtWeight;
@@ -113,7 +111,7 @@ function WetIngredientItem({ item, flourLeft, waterLeft, flourTotal }) {
             type="number"
             inputMode="numeric"
             step="1"
-            max={flourLeft}
+            max={flour.left}
             value={amtWeight}
             // @ts-ignore
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
@@ -143,7 +141,7 @@ function WetIngredientItem({ item, flourLeft, waterLeft, flourTotal }) {
             type="number"
             inputMode="numeric"
             step="1"
-            max={waterLeft}
+            max={water.left}
             value={waterWeight}
             // @ts-ignore
             onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)}
@@ -183,17 +181,19 @@ function WetIngredients() {
   const [canAddItem, setCanAddItem] = useState(true);
   const [warnFull, setWarnFull] = useState(false);
 
-  const flourLeft = useStore(flourLeftStore);
-  const flourTotal = useStore(flourTotalStore);
-  const waterLeft = useStore(waterLeftStore);
-  const waterTotal = useStore(waterTotalStore);
+  const flour = useStore(flourStore);
+  const water = useStore(waterStore);
   const dryIngredients = useStore(dryIngredientsStore);
   const wetIngredients = useStore(wetIngredientsStore);
 
   useEffect(() => {
-    setCanAddItem(flourLeft > 0 && flourTotal > 0 && waterLeft > 0 && waterTotal > 0);
-    setWarnFull(flourLeft <= 0 && flourTotal > 0 && waterLeft <= 0 && waterTotal > 0);
-  }, [flourTotal, flourLeft, waterTotal, waterLeft, dryIngredients, wetIngredients]);
+    setCanAddItem(
+      flour.left > 0 && flour.total > 0 && water.left > 0 && water.total > 0,
+    );
+    setWarnFull(
+      flour.left <= 0 && flour.total > 0 && water.left <= 0 && water.total > 0,
+    );
+  }, [flour, water, dryIngredients, wetIngredients]);
 
   const addItemHandler = () =>
     wetIngredientsActions.add({
@@ -212,13 +212,7 @@ function WetIngredients() {
       {warnFull && <p class="error">{wetingredients.full}</p>}
       <form>
         {wetIngredients.map((item) => (
-          <WetIngredientItem
-            item={item}
-            key={item.id}
-            flourLeft={flourLeft}
-            flourTotal={flourTotal}
-            waterLeft={waterLeft}
-          />
+          <WetIngredientItem item={item} key={item.id} />
         ))}
       </form>
       <div class="center">

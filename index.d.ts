@@ -19,3 +19,20 @@ export interface Leaven {
   water: number;
   sourdough: number;
 }
+
+export interface WaterData {
+  total: number;
+  percentage: number;
+  left: number;
+}
+
+export interface FlourData {
+  total: number;
+  left: number;
+}
+
+export interface SaltData {
+  total: number;
+  percentage: number;
+  left: number;
+}

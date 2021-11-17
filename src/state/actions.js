@@ -2,45 +2,102 @@ import { action } from 'nanostores';
 import {
   dryAdjunctsStore,
   dryIngredientsStore,
-  flourLeftStore,
-  flourTotalStore,
+  flourStore,
   leavenStore,
-  saltLeftStore,
-  saltPcStore,
-  saltTotalStore,
-  waterLeftStore,
-  waterPcStore,
-  waterTotalStore,
+  saltStore,
+  waterStore,
   wetAdjunctsStore,
   wetIngredientsStore,
 } from './stores';
 
-export const setFlourTotal = action(
-  flourTotalStore,
-  'set',
-  (store, /** @type {number} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
+export const flourActions = {
+  set: action(flourStore, 'set', (store, /** @type {number} */ amount) => {
+    const newContent = {
+      total: amount,
+      left: amount,
+    };
+    store.set(newContent);
+    return newContent;
+  }),
+  use: action(flourStore, 'use', (store, /** @type {number} */ amount) => {
+    const prevContent = store.get();
+    store.setKey('left', prevContent.left - amount);
+    return store.get();
+  }),
+  return: action(flourStore, 'return', (store, /** @type {number} */ value) => {
+    const prevContent = store.get();
+    store.setKey('left', prevContent.left + value);
+    return store.get();
+  }),
+};
 
-export const setWaterTotal = action(
-  waterTotalStore,
-  'set',
-  (store, /** @type {number} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
+export const waterActions = {
+  setAmount: action(waterStore, 'setAmount', (store, /** @type {number} */ value) => {
+    const flourTotal = flourStore.get().total;
+    const newContent = {
+      total: value,
+      left: value,
+      percentage: (value / flourTotal) * 100,
+    };
+    store.set(newContent);
+    return newContent;
+  }),
+  setPercent: action(waterStore, 'setPercent', (store, /** @type {number} */ value) => {
+    const flourTotal = flourStore.get().total;
+    const total = (flourTotal * value) / 100;
+    const newContent = {
+      percentage: value,
+      total,
+      left: total,
+    };
+    store.set(newContent);
+    return newContent;
+  }),
+  use: action(waterStore, 'use', (store, /** @type {number} */ value) => {
+    const prevLeft = store.get().left;
+    store.setKey('left', prevLeft - value);
+    return store.get();
+  }),
+  return: action(waterStore, 'return', (store, /** @type {number} */ value) => {
+    const prevLeft = store.get().left;
+    store.setKey('left', prevLeft + value);
+    return store.get();
+  }),
+};
 
-export const setWaterPc = action(
-  waterPcStore,
-  'set',
-  (store, /** @type {number} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
+export const saltActions = {
+  setAmount: action(saltStore, 'setAmount', (store, /** @type {number} */ value) => {
+    const flourTotal = flourStore.get().total;
+    const newContent = {
+      total: value,
+      left: value,
+      percentage: (value / flourTotal) * 100,
+    };
+    store.set(newContent);
+    return newContent;
+  }),
+  setPercent: action(saltStore, 'setPercent', (store, /** @type {number} */ value) => {
+    const flourTotal = flourStore.get().total;
+    const total = (flourTotal * value) / 100;
+    const newContent = {
+      percentage: value,
+      total,
+      left: total,
+    };
+    store.set(newContent);
+    return newContent;
+  }),
+  use: action(saltStore, 'use', (store, /** @type {number} */ value) => {
+    const prevLeft = store.get().left;
+    store.setKey('left', prevLeft - value);
+    return store.get();
+  }),
+  return: action(saltStore, 'return', (store, /** @type {number} */ value) => {
+    const prevLeft = store.get().left;
+    store.setKey('left', prevLeft + value);
+    return store.get();
+  }),
+};
 
 export const dryIngredientsActions = {
   add: action(
@@ -49,7 +106,7 @@ export const dryIngredientsActions = {
     (store, /** @type {import('../..').DryItem} */ item) => {
       const newContent = [...store.get(), item];
       store.set(newContent);
-      setFlourLeft(flourLeftStore.get() - item.amount);
+      flourActions.use(item.amount);
       return newContent;
     },
   ),
@@ -66,7 +123,7 @@ export const dryIngredientsActions = {
         }
       });
       store.set(newContent);
-      setFlourLeft(flourLeftStore.get() + extraFlour);
+      flourActions.return(extraFlour);
       return newContent;
     },
   ),
@@ -85,7 +142,7 @@ export const dryIngredientsActions = {
         return ingredient;
       });
       store.set(newContent);
-      setFlourLeft(flourLeftStore.get() + extraFlour);
+      flourActions.return(extraFlour);
       return newContent;
     },
   ),
@@ -98,8 +155,8 @@ export const wetIngredientsActions = {
     (store, /** @type {import('../..').WetItem} */ item) => {
       const newContent = [...store.get(), item];
       store.set(newContent);
-      setFlourLeft(flourLeftStore.get() - item.amount);
-      setWaterLeft(waterLeftStore.get() - item.waterAmount);
+      flourActions.use(item.amount);
+      waterActions.use(item.waterAmount);
       return newContent;
     },
   ),
@@ -118,8 +175,8 @@ export const wetIngredientsActions = {
         }
       });
       store.set(newContent);
-      setFlourLeft(flourLeftStore.get() + extraFlour);
-      setWaterLeft(waterLeftStore.get() + extraWater);
+      flourActions.return(extraFlour);
+      waterActions.return(extraWater);
       return newContent;
     },
   ),
@@ -142,8 +199,8 @@ export const wetIngredientsActions = {
         return ingredient;
       });
       store.set(newContent);
-      setFlourLeft(flourLeftStore.get() + extraFlour);
-      setWaterLeft(waterLeftStore.get() + extraWater);
+      flourActions.return(extraFlour);
+      waterActions.return(extraWater);
       return newContent;
     },
   ),
@@ -191,7 +248,7 @@ export const wetAdjunctsActions = {
     (store, /** @type {import('../..').WetItem} */ item) => {
       const newContent = [...store.get(), item];
       store.set(newContent);
-      setWaterLeft(waterLeftStore.get() - item.waterAmount);
+      waterActions.use(item.waterAmount);
       return newContent;
     },
   ),
@@ -205,7 +262,7 @@ export const wetAdjunctsActions = {
       }
     });
     store.set(newContent);
-    setWaterLeft(waterLeftStore.get() + extraWater);
+    waterActions.return(extraWater);
     return newContent;
   }),
   update: action(
@@ -223,56 +280,11 @@ export const wetAdjunctsActions = {
         return ingredient;
       });
       store.set(newContent);
-      setWaterLeft(waterLeftStore.get() + extraWater);
+      waterActions.return(extraWater);
       return newContent;
     },
   ),
 };
-
-export const setSaltTotal = action(
-  saltTotalStore,
-  'set',
-  (store, /** @type {number} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
-
-export const setSaltPc = action(
-  saltPcStore,
-  'set',
-  (store, /** @type {number} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
-
-export const setFlourLeft = action(
-  flourLeftStore,
-  'set',
-  (store, /** @type {number} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
-
-export const setWaterLeft = action(
-  waterLeftStore,
-  'set',
-  (store, /** @type {number} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
-
-export const setSaltLeft = action(
-  saltLeftStore,
-  'set',
-  (store, /** @type {number} */ value) => {
-    store.set(value);
-    return value;
-  },
-);
 
 export const setLeaven = action(
   leavenStore,

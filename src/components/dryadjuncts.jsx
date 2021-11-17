@@ -5,23 +5,24 @@ import { useStore } from '@nanostores/preact';
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
-import dryadjuncts from './dryadjuncts.json';
-import { dryAdjunctsStore, flourTotalStore } from '../state/stores';
+import { text } from './dryadjuncts.json';
+import { dryAdjunctsStore, flourStore } from '../state/stores';
 import { dryAdjunctsActions } from '../state/actions';
 
 /**
  * @typedef {object} DryAdjunctItemProps
  * @property {import('../..').DryItem} item
- * @property {number} flourTotal
  *
  * @param {DryAdjunctItemProps} props
  * @returns {JSX.Element}
  */
-function DryAdjunctItem({ item, flourTotal }) {
+function DryAdjunctItem({ item }) {
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
+
+  const flour = useStore(flourStore);
 
   useEffect(() => {
     setName(item.name);
@@ -38,11 +39,11 @@ function DryAdjunctItem({ item, flourTotal }) {
   const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
-      amtWeight = (flourTotal * value) / 100;
+      amtWeight = (flour.total * value) / 100;
       amtPc = value;
     } else if (type === AmountType.TOTAL) {
       amtWeight = value;
-      amtPc = (value / flourTotal) * 100;
+      amtPc = (value / flour.total) * 100;
     }
     setAmtWeight(amtWeight);
     item.amount = amtWeight;
@@ -119,12 +120,12 @@ function DryAdjunctItem({ item, flourTotal }) {
 function DryAdjuncts() {
   const [canAddItem, setCanAddItem] = useState(true);
 
-  const flourTotal = useStore(flourTotalStore);
+  const flour = useStore(flourStore);
   const dryAdjuncts = useStore(dryAdjunctsStore);
 
   useEffect(() => {
-    setCanAddItem(flourTotal > 0);
-  }, [flourTotal]);
+    setCanAddItem(flour.total > 0);
+  }, [flour]);
 
   const addItemHandler = () =>
     dryAdjunctsActions.add({ id: uid(16), name: '', amount: 0, percentage: 0 });
@@ -132,10 +133,10 @@ function DryAdjuncts() {
   return (
     <section>
       <SectionTitle title="Dodatki suche" level={3} />
-      <p>{dryadjuncts.text}</p>
+      <p>{text}</p>
       <form>
         {dryAdjuncts.map((item) => (
-          <DryAdjunctItem item={item} key={item.id} flourTotal={flourTotal} />
+          <DryAdjunctItem item={item} key={item.id} />
         ))}
       </form>
       <div class="center">

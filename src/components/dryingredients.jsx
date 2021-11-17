@@ -6,23 +6,23 @@ import { AddItemButton, RemoveItemButton, LockButton, UnlockButton } from './mis
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
 import dryingredients from './dryingredients.json';
-import { dryIngredientsStore, flourLeftStore, flourTotalStore } from '../state/stores';
+import { dryIngredientsStore, flourStore } from '../state/stores';
 import { dryIngredientsActions } from '../state/actions';
 
 /**
  * @typedef {object} DryIngredientItemProps
  * @property {import('../..').DryItem} item
- * @property {number} flourLeft
- * @property {number} flourTotal
  *
  * @param {DryIngredientItemProps} props
  * @returns {JSX.Element}
  */
-function DryIngredientItem({ item, flourLeft, flourTotal }) {
+function DryIngredientItem({ item }) {
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
+
+  const flour = useStore(flourStore);
 
   useEffect(() => {
     setName(item.name);
@@ -41,11 +41,11 @@ function DryIngredientItem({ item, flourLeft, flourTotal }) {
     }
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
-      amtWeight = (flourTotal * value) / 100;
+      amtWeight = (flour.total * value) / 100;
       amtPc = value;
     } else if (type === AmountType.TOTAL) {
       amtWeight = value;
-      amtPc = (value / flourTotal) * 100;
+      amtPc = (value / flour.total) * 100;
     }
     setAmtWeight(amtWeight);
     item.amount = amtWeight;
@@ -84,7 +84,7 @@ function DryIngredientItem({ item, flourLeft, flourTotal }) {
             type="number"
             inputMode="numeric"
             step="1"
-            max={flourLeft}
+            max={flour.left}
             value={amtWeight}
             // @ts-ignore
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
@@ -125,14 +125,13 @@ function DryIngredients() {
   const [canAddItem, setCanAddItem] = useState(true);
   const [warnFull, setWarnFull] = useState(false);
 
-  const flourTotal = useStore(flourTotalStore);
-  const flourLeft = useStore(flourLeftStore);
+  const flour = useStore(flourStore);
   const dryIngredients = useStore(dryIngredientsStore);
 
   useEffect(() => {
-    setCanAddItem(flourLeft > 0 && flourTotal > 0);
-    setWarnFull(flourLeft <= 0 && flourTotal > 0);
-  }, [flourTotal, flourLeft, dryIngredients]);
+    setCanAddItem(flour.left > 0 && flour.total > 0);
+    setWarnFull(flour.left <= 0 && flour.total > 0);
+  }, [flour, dryIngredients]);
 
   const addItemHandler = () =>
     dryIngredientsActions.add({ id: uid(16), name: '', amount: 0, percentage: 0 });
@@ -144,12 +143,7 @@ function DryIngredients() {
       {warnFull && <p class="error">{dryingredients.full}</p>}
       <form>
         {dryIngredients.map((item) => (
-          <DryIngredientItem
-            item={item}
-            key={item.id}
-            flourLeft={flourLeft}
-            flourTotal={flourTotal}
-          />
+          <DryIngredientItem item={item} key={item.id} />
         ))}
       </form>
       <div class="center">

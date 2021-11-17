@@ -7,9 +7,8 @@ import { SectionTitle } from './pageinfo';
 import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
 import wetadjuncts from './wetadjuncts.json';
 import {
-  flourTotalStore,
-  waterLeftStore,
-  waterTotalStore,
+  flourStore,
+  waterStore,
   wetAdjunctsStore,
   wetIngredientsStore,
 } from '../state/stores';
@@ -18,19 +17,20 @@ import { wetAdjunctsActions } from '../state/actions';
 /**
  * @typedef {object} WetAdjunctItemProps
  * @property {import('../..').WetItem} item
- * @property {number} waterLeft
- * @property {number} flourTotal
  *
  * @param {WetAdjunctItemProps} props
  * @returns {JSX.Element}
  */
-function WetAdjunctItem({ item, waterLeft, flourTotal }) {
+function WetAdjunctItem({ item }) {
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
   const [waterWeight, setWaterWeight] = useState(0);
   const [waterPc, setWaterPc] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
+
+  const flour = useStore(flourStore);
+  const water = useStore(waterStore);
 
   useEffect(() => {
     setName(item.name);
@@ -49,11 +49,11 @@ function WetAdjunctItem({ item, waterLeft, flourTotal }) {
   const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
-      amtWeight = (flourTotal * value) / 100;
+      amtWeight = (flour.total * value) / 100;
       amtPc = value;
     } else if (type === AmountType.TOTAL) {
       amtWeight = value;
-      amtPc = (value / flourTotal) * 100;
+      amtPc = (value / flour.total) * 100;
     }
     setAmtWeight(amtWeight);
     item.amount = amtWeight;
@@ -141,7 +141,7 @@ function WetAdjunctItem({ item, waterLeft, flourTotal }) {
             type="number"
             inputMode="numeric"
             step="1"
-            max={waterLeft}
+            max={water.left}
             value={waterWeight}
             // @ts-ignore
             onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)}
@@ -181,16 +181,15 @@ function WetAdjuncts() {
   const [canAddItem, setCanAddItem] = useState(true);
   const [warnFull, setWarnFull] = useState(false);
 
-  const waterTotal = useStore(waterTotalStore);
-  const waterLeft = useStore(waterLeftStore);
-  const flourTotal = useStore(flourTotalStore);
+  const water = useStore(waterStore);
+  const flour = useStore(flourStore);
   const wetAdjuncts = useStore(wetAdjunctsStore);
   const wetIngredients = useStore(wetIngredientsStore);
 
   useEffect(() => {
-    setCanAddItem(waterLeft > 0 && waterTotal > 0);
-    setWarnFull(waterLeft <= 0 && waterTotal > 0);
-  }, [flourTotal, waterTotal, waterLeft, wetAdjuncts, wetIngredients]);
+    setCanAddItem(water.left > 0 && water.total > 0);
+    setWarnFull(water.left <= 0 && water.total > 0);
+  }, [flour, water, wetAdjuncts, wetIngredients]);
 
   const addItemHandler = () =>
     wetAdjunctsActions.add({
@@ -209,12 +208,7 @@ function WetAdjuncts() {
       {warnFull && <p class="error">{wetadjuncts.full}</p>}
       <form>
         {wetAdjuncts.map((item) => (
-          <WetAdjunctItem
-            item={item}
-            key={item.id}
-            waterLeft={waterLeft}
-            flourTotal={flourTotal}
-          />
+          <WetAdjunctItem item={item} key={item.id} />
         ))}
       </form>
       <div class="center">
