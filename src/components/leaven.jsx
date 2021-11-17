@@ -12,16 +12,9 @@ import {
   leavenStore,
   waterStore,
 } from '../state/stores';
-import { flourActions, setLeaven, waterActions } from '../state/actions';
+import { flourActions, leavenActions, waterActions } from '../state/actions';
 
-/**
- * @typedef {object} LeavenFlourWeightProps
- * @property {(arg0: number) => void} setLeavenFlourWeight
- *
- * @param {LeavenFlourWeightProps} props
- * @returns {JSX.Element}
- */
-function LeavenFlourWeight({ setLeavenFlourWeight }) {
+function LeavenFlourWeight() {
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
 
@@ -38,7 +31,7 @@ function LeavenFlourWeight({ setLeavenFlourWeight }) {
     }
     setAmtWeight(amtWeight);
     setAmtPc(amtPc);
-    setLeavenFlourWeight(amtWeight);
+    leavenActions.setFlourTotal(amtWeight);
   };
 
   return (
@@ -139,12 +132,11 @@ function LeavenWaterWeight({ leavenFlourTotal, changeWaterHandler }) {
 
 /**
  * @typedef {object} LeavenFlourItemProps
- * @property {Map<string, string|number>} item
+ * @property {import('../..').DryItem} item
  * @property {number} leavenFlourLeft
  * @property {number} leavenFlourTotal
  * @property {(arg0: string, arg1: number) => void} removeItemHandler
  * @property {(arg0: number) => void} changeItemHandler
- * @property {string} listId
  *
  * @param {LeavenFlourItemProps} props
  * @returns {JSX.Element}
@@ -155,30 +147,21 @@ function LeavenFlourItem({
   leavenFlourLeft,
   removeItemHandler,
   changeItemHandler,
-  listId,
 }) {
-  const [uid, setUid] = useState('');
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
-    setUid(item.get('uid').toString());
-    if (item.has('name')) {
-      setName(item.get('name').toString());
-    }
-    if (item.has('amtWeight')) {
-      setAmtWeight(Number(item.get('amtWeight')));
-    }
-    if (item.has('amtPc')) {
-      setAmtPc(Number(item.get('amtPc')));
-    }
+    setName(item.name);
+    setAmtWeight(item.amount);
+    setAmtPc(item.percentage);
   }, [item]);
 
   const nameChange = (/** @type {string} */ name) => {
     setName(name);
-    item.set('name', name);
+    item.name = name;
   };
 
   const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
@@ -191,9 +174,9 @@ function LeavenFlourItem({
       amtPc = (value / leavenFlourTotal) * 100;
     }
     setAmtWeight(amtWeight);
-    item.set('amtWeight', amtWeight);
+    item.amount = amtWeight;
     setAmtPc(amtPc);
-    item.set('amtPc', amtPc);
+    item.percentage = amtPc;
     changeItemHandler(amtWeight);
   };
 
@@ -206,7 +189,7 @@ function LeavenFlourItem({
   };
 
   const removeItem = () => {
-    removeItemHandler(uid, amtWeight);
+    removeItemHandler(item.id, item.amount);
   };
 
   return (
@@ -221,7 +204,6 @@ function LeavenFlourItem({
             onInput={(e) => nameChange(e.target.value)}
             required
             readOnly={readOnly}
-            list={listId}
           />
         </label>
         <label>
@@ -269,8 +251,7 @@ function LeavenFlourItem({
 
 /**
  * @typedef {object} LeavenFlourItemsProps
- * @property {Array<Map<string, string|number>>} items
- * @property {string} flourItemsListId
+ * @property {Array<import('../..').DryItem>} items
  * @property {number} leavenFlourTotal
  * @property {number} leavenFlourLeft
  * @property {(arg0: number) => void} changeItemHandler
@@ -281,7 +262,6 @@ function LeavenFlourItem({
  */
 function LeavenFlourItems({
   items,
-  flourItemsListId,
   leavenFlourTotal,
   leavenFlourLeft,
   changeItemHandler,
@@ -291,9 +271,8 @@ function LeavenFlourItems({
     <>
       {items.map((item) => (
         <LeavenFlourItem
-          key={`leaven-flour-item-${item.get('uid')}`}
+          key={`leaven-flour-item-${item.id}`}
           item={item}
-          listId={flourItemsListId}
           leavenFlourTotal={leavenFlourTotal}
           leavenFlourLeft={leavenFlourLeft}
           changeItemHandler={changeItemHandler}
@@ -310,7 +289,6 @@ function Leaven() {
   const [isFull, setIsFull] = useState(false);
   const [leavenFlourTotal, setLeavenFlourTotal] = useState(0);
   const [leavenFlourLeft, setLeavenFlourLeft] = useState(0);
-  const [availableFlourItems, setAvailableFlourItems] = useState([]);
   const [leavenFlourItems, setLeavenFlourItems] = useState([]);
   const [leavenWater, setLeavenWater] = useState(0);
   const [leavenSourdough, setLeavenSourdough] = useState(0);
@@ -321,7 +299,7 @@ function Leaven() {
   const dryIngredients = useStore(dryIngredientsStore);
 
   useEffect(() => {
-    setLeavenFlourItems(leaven.flour);
+    setLeavenFlourItems(leaven.flourItems);
     setLeavenWater(leaven.water);
     setLeavenSourdough(leaven.sourdough);
   }, [leaven]);
@@ -336,31 +314,21 @@ function Leaven() {
     setCanAddWater(leavenFlourTotal > 0);
   }, [leavenFlourTotal]);
 
-  useEffect(() => {
-    const names = dryIngredients.map((item) => ({
-      name: item.name,
-      value: item.id,
-    }));
-    setAvailableFlourItems(names);
-  }, [dryIngredients]);
-
-  const setLeavenFlourWeight = (/** @type {number} */ flourWeight) => {
-    setLeavenFlourTotal(flourWeight);
-    setLeavenFlourLeft(flourWeight);
-  };
-
   const addItemHandler = () => {
     const items = [...leavenFlourItems, new Map([['uid', uid(16)]])];
     setLeavenFlourItems(items);
   };
 
   const updateLeaven = () => {
+    /** @type {import('../..').Leaven} */
     const leaven = {
-      flour: leavenFlourItems,
+      flourItems: leavenFlourItems,
+      flourTotal: leavenFlourTotal,
+      flourLeft: leavenFlourTotal,
       water: leavenWater,
       sourdough: leavenSourdough,
     };
-    setLeaven(leaven);
+    leavenActions.set(leaven);
   };
 
   const changeWaterHandler = (/** @type {number} */ amtWater) => {
@@ -387,8 +355,6 @@ function Leaven() {
     updateLeaven();
   };
 
-  const flourItemsListId = 'leaven-flour-items';
-
   const LeavenIngredients = () => {
     if (isFull) {
       return null;
@@ -397,7 +363,6 @@ function Leaven() {
       <>
         <LeavenFlourItems
           items={leavenFlourItems}
-          flourItemsListId={flourItemsListId}
           leavenFlourTotal={leavenFlourTotal}
           leavenFlourLeft={leavenFlourLeft}
           changeItemHandler={changeFlourItemHandler}
@@ -414,14 +379,7 @@ function Leaven() {
     <section>
       <SectionTitle title="Zaczyn" level={2} />
       <p>{leavenText.text}</p>
-      <datalist id={flourItemsListId}>
-        {availableFlourItems.map((item) => (
-          <option value={item.uid} key={item.uid}>
-            {item.name}
-          </option>
-        ))}
-      </datalist>
-      {canAddItem && <LeavenFlourWeight setLeavenFlourWeight={setLeavenFlourWeight} />}
+      {canAddItem && <LeavenFlourWeight />}
       {canAddWater && (
         <LeavenWaterWeight
           changeWaterHandler={changeWaterHandler}

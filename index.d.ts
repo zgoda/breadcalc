@@ -15,7 +15,9 @@ export interface WetItem {
 }
 
 export interface Leaven {
-  flour: Array<DryItem>;
+  flourItems: Array<DryItem>;
+  flourTotal: number;
+  flourLeft: number;
   water: number;
   sourdough: number;
 }
