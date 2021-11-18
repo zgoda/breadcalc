@@ -93,18 +93,47 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
   );
 }
 
+/**
+ * @typedef {Object} AddItemButtonProps
+ * @property {() => void} actionHandler
+ * @property {number} [size=32]
+ *
+ * @param {AddItemButtonProps} props
+ * @returns {JSX.Element}
+ */
 function AddItemButton({ actionHandler, size = 32 }) {
   return <ActionButton actionHandler={actionHandler} actionType="add" size={size} />;
 }
 
+/**
+ * @typedef {Object} RemoveItemButtonProps
+ * @property {() => void} actionHandler
+ *
+ * @param {RemoveItemButtonProps} props
+ * @returns {JSX.Element}
+ */
 function RemoveItemButton({ actionHandler }) {
   return <ActionButton actionHandler={actionHandler} actionType="remove" />;
 }
 
+/**
+ * @typedef {Object} LockButtonProps
+ * @property {() => void} actionHandler
+ *
+ * @param {LockButtonProps} props
+ * @returns {JSX.Element}
+ */
 function LockButton({ actionHandler }) {
   return <ActionButton actionHandler={actionHandler} actionType="lock" />;
 }
 
+/**
+ * @typedef {Object} UnlockButtonProps
+ * @property {() => void} actionHandler
+ *
+ * @param {UnlockButtonProps} props
+ * @returns {JSX.Element}
+ */
 function UnlockButton({ actionHandler }) {
   return <ActionButton actionHandler={actionHandler} actionType="unlock" />;
 }
