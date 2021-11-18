@@ -3,9 +3,9 @@ import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
 
 import { SectionTitle } from './pageinfo';
-import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
+import { AddItemButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
-import wetingredients from './wetingredients.json';
+import { text } from './wetingredients.json';
 import {
   dryIngredientsStore,
   flourStore,
@@ -27,7 +27,6 @@ function WetIngredientItem({ item }) {
   const [amtPc, setAmtPc] = useState(0);
   const [waterWeight, setWaterWeight] = useState(0);
   const [waterPc, setWaterPc] = useState(0);
-  const [readOnly, setReadOnly] = useState(false);
 
   const flour = useStore(flourStore);
   const water = useStore(waterStore);
@@ -41,7 +40,6 @@ function WetIngredientItem({ item }) {
   }, [item]);
 
   const nameChange = (/** @type {string} */ name) => {
-    setName(name);
     item.name = name;
     wetIngredientsActions.update(item);
   };
@@ -81,96 +79,90 @@ function WetIngredientItem({ item }) {
     wetIngredientsActions.update(item);
   };
 
-  const makeReadOnly = () => {
-    setReadOnly(true);
-  };
-
-  const makeEditable = () => {
-    setReadOnly(false);
-  };
-
   const removeItem = () => wetIngredientsActions.remove(item.id);
 
   return (
     <div class="section-wrapper">
-      <div>
-        <label>
-          {wetingredients.form.fields.name.label} <span class="label-required">*</span>
-          <input
-            type="text"
-            value={name}
-            // @ts-ignore
-            onInput={(e) => nameChange(e.target.value)}
-            required
-            readOnly={readOnly}
-          />
-        </label>
-        <label>
-          {wetingredients.form.fields.ingByWeight.label}
-          <input
-            type="number"
-            inputMode="numeric"
-            step="1"
-            max={flour.left}
-            value={amtWeight}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
-            // @ts-ignore
-            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            readOnly={readOnly}
-          />
-        </label>
-        <label>
-          {wetingredients.form.fields.ingByPercent.label}
-          <input
-            type="number"
-            inputMode="numeric"
-            step="0.1"
-            max="100"
-            value={amtPc}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
-            // @ts-ignore
-            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            readOnly={readOnly}
-          />
-        </label>
-        <label>
-          {wetingredients.form.fields.waterByWeight.label}
-          <input
-            type="number"
-            inputMode="numeric"
-            step="1"
-            max={water.left}
-            value={waterWeight}
-            // @ts-ignore
-            onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)}
-            // @ts-ignore
-            onInput={(e) => setWaterWeight(parseFloat(e.target.value))}
-            readOnly={readOnly}
-          />
-        </label>
-        <label>
-          {wetingredients.form.fields.waterByPercent.label}
-          <input
-            type="number"
-            inputMode="numeric"
-            step="0.1"
-            value={waterPc}
-            // @ts-ignore
-            onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.PERCENT)}
-            // @ts-ignore
-            onInput={(e) => setWaterPc(parseFloat(e.target.value))}
-            readOnly={readOnly}
-          />
-        </label>
+      <div class="row">
+        <div class="column">
+          <label>
+            {text.form.fields.name.label} <span class="label-required">*</span>
+            <input
+              type="text"
+              value={name}
+              // @ts-ignore
+              onInput={(e) => setName(e.target.value)}
+              // @ts-ignore
+              onBlur={(e) => nameChange(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div class="column">
+          <label>
+            {text.form.fields.ingByWeight.label}
+            <input
+              type="number"
+              inputMode="numeric"
+              step="1"
+              max={flour.left}
+              value={amtWeight}
+              // @ts-ignore
+              onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
+              // @ts-ignore
+              onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+            />
+          </label>
+          <label>
+            {text.form.fields.ingByPercent.label}
+            <input
+              type="number"
+              inputMode="numeric"
+              step="0.1"
+              max="100"
+              value={amtPc}
+              onBlur={(e) =>
+                // @ts-ignore
+                recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
+              }
+              // @ts-ignore
+              onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+            />
+          </label>
+        </div>
+        <div class="column">
+          <label>
+            {text.form.fields.waterByWeight.label}
+            <input
+              type="number"
+              inputMode="numeric"
+              step="1"
+              max={water.left}
+              value={waterWeight}
+              // @ts-ignore
+              onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)}
+              // @ts-ignore
+              onInput={(e) => setWaterWeight(parseFloat(e.target.value))}
+            />
+          </label>
+          <label>
+            {text.form.fields.waterByPercent.label}
+            <input
+              type="number"
+              inputMode="numeric"
+              step="0.1"
+              value={waterPc}
+              onBlur={(e) =>
+                // @ts-ignore
+                recalcWater(parseFloat(e.target.value), AmountType.PERCENT)
+              }
+              // @ts-ignore
+              onInput={(e) => setWaterPc(parseFloat(e.target.value))}
+            />
+          </label>
+        </div>
       </div>
       <div class="column-center center">
-        {readOnly ? (
-          <UnlockButton actionHandler={makeEditable} />
-        ) : (
-          <LockButton actionHandler={makeReadOnly} />
-        )}
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
@@ -191,7 +183,7 @@ function WetIngredients() {
       flour.left > 0 && flour.total > 0 && water.left > 0 && water.total > 0,
     );
     setWarnFull(
-      flour.left <= 0 && flour.total > 0 && water.left <= 0 && water.total > 0,
+      (flour.left <= 0 && flour.total > 0) || (water.left <= 0 && water.total > 0),
     );
   }, [flour, water, dryIngredients, wetIngredients]);
 
@@ -207,9 +199,9 @@ function WetIngredients() {
 
   return (
     <section>
-      <SectionTitle title={wetingredients.title} level={3} />
-      <p>{wetingredients.text}</p>
-      {warnFull && <p class="error">{wetingredients.full}</p>}
+      <SectionTitle title={text.title} level={3} />
+      <p>{text.intro}</p>
+      {warnFull && <p class="error">{text.full}</p>}
       <form>
         {wetIngredients.map((item) => (
           <WetIngredientItem item={item} key={item.id} />

@@ -3,7 +3,7 @@ import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
 
 import { SectionTitle } from './pageinfo';
-import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
+import { AddItemButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { text } from './dryadjuncts.json';
 import { dryAdjunctsStore, flourStore } from '../state/stores';
@@ -20,7 +20,6 @@ function DryAdjunctItem({ item }) {
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
-  const [readOnly, setReadOnly] = useState(false);
 
   const flour = useStore(flourStore);
 
@@ -51,14 +50,6 @@ function DryAdjunctItem({ item }) {
     item.percentage = amtPc;
   };
 
-  const makeReadOnly = () => {
-    setReadOnly(true);
-  };
-
-  const makeEditable = () => {
-    setReadOnly(false);
-  };
-
   const removeItem = () => dryAdjunctsActions.remove(item.id);
 
   return (
@@ -72,7 +63,6 @@ function DryAdjunctItem({ item }) {
             // @ts-ignore
             onInput={(e) => nameChange(e.target.value)}
             required
-            readOnly={readOnly}
           />
         </label>
         <label>
@@ -86,7 +76,6 @@ function DryAdjunctItem({ item }) {
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
             // @ts-ignore
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            readOnly={readOnly}
           />
         </label>
         <label>
@@ -101,16 +90,10 @@ function DryAdjunctItem({ item }) {
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
             // @ts-ignore
             onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            readOnly={readOnly}
           />
         </label>
       </div>
       <div class="column-center center">
-        {readOnly ? (
-          <UnlockButton actionHandler={makeEditable} />
-        ) : (
-          <LockButton actionHandler={makeReadOnly} />
-        )}
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>

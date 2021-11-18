@@ -4,7 +4,7 @@ import { useStore } from '@nanostores/preact';
 
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
-import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
+import { AddItemButton, RemoveItemButton } from './misc';
 import wetadjuncts from './wetadjuncts.json';
 import {
   flourStore,
@@ -27,7 +27,6 @@ function WetAdjunctItem({ item }) {
   const [amtPc, setAmtPc] = useState(0);
   const [waterWeight, setWaterWeight] = useState(0);
   const [waterPc, setWaterPc] = useState(0);
-  const [readOnly, setReadOnly] = useState(false);
 
   const flour = useStore(flourStore);
   const water = useStore(waterStore);
@@ -81,14 +80,6 @@ function WetAdjunctItem({ item }) {
     wetAdjunctsActions.update(item);
   };
 
-  const makeReadOnly = () => {
-    setReadOnly(true);
-  };
-
-  const makeEditable = () => {
-    setReadOnly(false);
-  };
-
   const removeItem = () => {
     wetAdjunctsActions.remove(item.id);
   };
@@ -104,7 +95,6 @@ function WetAdjunctItem({ item }) {
             // @ts-ignore
             onInput={(e) => nameChange(e.target.value)}
             required
-            readOnly={readOnly}
           />
         </label>
         <label>
@@ -118,7 +108,6 @@ function WetAdjunctItem({ item }) {
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
             // @ts-ignore
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            readOnly={readOnly}
           />
         </label>
         <label>
@@ -132,7 +121,6 @@ function WetAdjunctItem({ item }) {
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
             // @ts-ignore
             onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            readOnly={readOnly}
           />
         </label>
         <label>
@@ -147,7 +135,6 @@ function WetAdjunctItem({ item }) {
             onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)}
             // @ts-ignore
             onInput={(e) => setWaterWeight(parseFloat(e.target.value))}
-            readOnly={readOnly}
           />
         </label>
         <label>
@@ -161,16 +148,10 @@ function WetAdjunctItem({ item }) {
             onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.PERCENT)}
             // @ts-ignore
             onInput={(e) => setWaterPc(parseFloat(e.target.value))}
-            readOnly={readOnly}
           />
         </label>
       </div>
       <div class="column-center center">
-        {readOnly ? (
-          <UnlockButton actionHandler={makeEditable} />
-        ) : (
-          <LockButton actionHandler={makeReadOnly} />
-        )}
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>

@@ -63,6 +63,11 @@ export const waterActions = {
     store.setKey('left', prevLeft - value);
     return store.get();
   }),
+  setUsed: action(waterStore, 'setUsed', (store, /** @type {number} */ amount) => {
+    const prevContent = store.get();
+    store.setKey('left', prevContent.total - amount);
+    return store.get();
+  }),
   return: action(waterStore, 'return', (store, /** @type {number} */ value) => {
     const prevLeft = store.get().left;
     store.setKey('left', prevLeft + value);
@@ -137,6 +142,7 @@ export const dryIngredientsActions = {
     'update',
     (store, /** @type {import('../..').DryItem} */ item) => {
       let usedFlour = 0;
+      wetIngredientsStore.get().forEach((ing) => (usedFlour += ing.amount));
       const newContent = store.get().map((ingredient) => {
         if (ingredient.id === item.id) {
           usedFlour += item.amount;
@@ -188,19 +194,23 @@ export const wetIngredientsActions = {
     wetIngredientsStore,
     'update',
     (store, /** @type {import('../..').WetItem} */ item) => {
-      let extraFlour = 0;
-      let extraWater = 0;
+      let usedFlour = 0;
+      let usedWater = 0;
+      dryIngredientsStore.get().forEach((ing) => (usedFlour += ing.amount));
+      wetAdjunctsStore.get().forEach((adj) => (usedWater += adj.waterAmount));
       const newContent = store.get().map((ingredient) => {
         if (item.id === ingredient.id) {
-          extraFlour = ingredient.amount - item.amount;
-          extraWater = ingredient.waterAmount - item.waterAmount;
+          usedFlour += item.amount;
+          usedWater += item.waterAmount;
           return item;
         }
+        usedFlour += ingredient.amount;
+        usedWater += ingredient.waterAmount;
         return ingredient;
       });
       store.set(newContent);
-      flourActions.return(extraFlour);
-      waterActions.return(extraWater);
+      flourActions.setUsed(usedFlour);
+      waterActions.setUsed(usedWater);
       return newContent;
     },
   ),

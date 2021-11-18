@@ -1,4 +1,4 @@
-import { HelpCircle, PlusCircle, MinusCircle, Lock, Unlock } from 'preact-feather';
+import { HelpCircle, PlusCircle, MinusCircle } from 'preact-feather';
 import { useState, useRef } from 'preact/hooks';
 
 /**
@@ -58,8 +58,6 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
     const typeIcons = new Map([
       ['add', PlusCircle],
       ['remove', MinusCircle],
-      ['lock', Lock],
-      ['unlock', Unlock],
     ]);
     const TypeIcon = typeIcons.get(actionType);
     if (TypeIcon != null) {
@@ -116,26 +114,4 @@ function RemoveItemButton({ actionHandler }) {
   return <ActionButton actionHandler={actionHandler} actionType="remove" />;
 }
 
-/**
- * @typedef {Object} LockButtonProps
- * @property {() => void} actionHandler
- *
- * @param {LockButtonProps} props
- * @returns {JSX.Element}
- */
-function LockButton({ actionHandler }) {
-  return <ActionButton actionHandler={actionHandler} actionType="lock" />;
-}
-
-/**
- * @typedef {Object} UnlockButtonProps
- * @property {() => void} actionHandler
- *
- * @param {UnlockButtonProps} props
- * @returns {JSX.Element}
- */
-function UnlockButton({ actionHandler }) {
-  return <ActionButton actionHandler={actionHandler} actionType="unlock" />;
-}
-
-export { HelpButton, AddItemButton, RemoveItemButton, LockButton, UnlockButton };
+export { HelpButton, AddItemButton, RemoveItemButton };

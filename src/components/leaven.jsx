@@ -2,7 +2,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
 
-import { AddItemButton, LockButton, UnlockButton, RemoveItemButton } from './misc';
+import { AddItemButton, RemoveItemButton } from './misc';
 import { SectionTitle } from './pageinfo';
 import { AmountType } from '../utils/numbers';
 import leavenText from './leaven.json';
@@ -151,7 +151,6 @@ function LeavenFlourItem({
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
-  const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
     setName(item.name);
@@ -180,14 +179,6 @@ function LeavenFlourItem({
     changeItemHandler(amtWeight);
   };
 
-  const makeReadOnly = () => {
-    setReadOnly(true);
-  };
-
-  const makeEditable = () => {
-    setReadOnly(false);
-  };
-
   const removeItem = () => {
     removeItemHandler(item.id, item.amount);
   };
@@ -203,7 +194,6 @@ function LeavenFlourItem({
             // @ts-ignore
             onInput={(e) => nameChange(e.target.value)}
             required
-            readOnly={readOnly}
           />
         </label>
         <label>
@@ -218,7 +208,6 @@ function LeavenFlourItem({
             onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
             // @ts-ignore
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
-            readOnly={readOnly}
           />
         </label>
         <label>
@@ -233,16 +222,10 @@ function LeavenFlourItem({
             onInput={(e) => setAmtPc(parseFloat(e.target.value))}
             // @ts-ignore
             onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
-            readOnly={readOnly}
           />
         </label>
       </div>
       <div class="column-center center">
-        {readOnly ? (
-          <UnlockButton actionHandler={makeEditable} />
-        ) : (
-          <LockButton actionHandler={makeReadOnly} />
-        )}
         <RemoveItemButton actionHandler={removeItem} />
       </div>
     </div>
