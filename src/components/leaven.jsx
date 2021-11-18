@@ -73,7 +73,7 @@ function LeavenFlourWeight() {
 /**
  * @typedef {object} LeavenWaterWeightProps
  * @property {number} leavenFlourTotal
- * @property {(arg0: number) => void} changeWaterHandler
+ * @property {(amount: number) => void} changeWaterHandler
  *
  * @param {LeavenWaterWeightProps} props
  * @returns {JSX.Element}
@@ -135,8 +135,8 @@ function LeavenWaterWeight({ leavenFlourTotal, changeWaterHandler }) {
  * @property {import('../..').DryItem} item
  * @property {number} leavenFlourLeft
  * @property {number} leavenFlourTotal
- * @property {(arg0: string, arg1: number) => void} removeItemHandler
- * @property {(arg0: number) => void} changeItemHandler
+ * @property {(itemId: string, amount: number) => void} removeItemHandler
+ * @property {(amount: number) => void} changeItemHandler
  *
  * @param {LeavenFlourItemProps} props
  * @returns {JSX.Element}
@@ -254,8 +254,8 @@ function LeavenFlourItem({
  * @property {Array<import('../..').DryItem>} items
  * @property {number} leavenFlourTotal
  * @property {number} leavenFlourLeft
- * @property {(arg0: number) => void} changeItemHandler
- * @property {(arg0: string, arg1: number) => void} removeItemHandler
+ * @property {(amount: number) => void} changeItemHandler
+ * @property {(itemId: string, amount: number) => void} removeItemHandler
  *
  * @param {LeavenFlourItemsProps} props
  * @returns {JSX.Element}
@@ -289,6 +289,12 @@ function Leaven() {
   const [isFull, setIsFull] = useState(false);
   const [leavenFlourTotal, setLeavenFlourTotal] = useState(0);
   const [leavenFlourLeft, setLeavenFlourLeft] = useState(0);
+  /**
+   * @typedef {Array<import('../..').DryItem>} TLeavenFlourItems
+   * @typedef {import('preact/hooks').StateUpdater<Array<import('../..').DryItem>>} TLeavenFlourItemsSetter
+   *
+   * @type {[TLeavenFlourItems, TLeavenFlourItemsSetter]}
+   */
   const [leavenFlourItems, setLeavenFlourItems] = useState([]);
   const [leavenWater, setLeavenWater] = useState(0);
   const [leavenSourdough, setLeavenSourdough] = useState(0);
@@ -315,7 +321,10 @@ function Leaven() {
   }, [leavenFlourTotal]);
 
   const addItemHandler = () => {
-    const items = [...leavenFlourItems, new Map([['uid', uid(16)]])];
+    const items = [
+      ...leavenFlourItems,
+      { id: uid(16), name: '', amount: 0, percentage: 0 },
+    ];
     setLeavenFlourItems(items);
   };
 
@@ -345,10 +354,10 @@ function Leaven() {
   };
 
   const removeFlourItemHandler = (
-    /** @type {string} */ uid,
+    /** @type {string} */ itemId,
     /** @type {number} */ amtFlour,
   ) => {
-    const items = leavenFlourItems.filter((item) => item.get('uid') !== uid);
+    const items = leavenFlourItems.filter((item) => item.id !== itemId);
     setLeavenFlourItems(items);
     setLeavenFlourLeft(leavenFlourLeft + amtFlour);
     flourActions.return(amtFlour);
