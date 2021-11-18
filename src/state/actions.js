@@ -24,6 +24,11 @@ export const flourActions = {
     store.setKey('left', prevContent.left - amount);
     return store.get();
   }),
+  setUsed: action(flourStore, 'setUsed', (store, /** @type {number} */ amount) => {
+    const prevContent = store.get();
+    store.setKey('left', prevContent.total - amount);
+    return store.get();
+  }),
   return: action(flourStore, 'return', (store, /** @type {number} */ amount) => {
     const prevContent = store.get();
     store.setKey('left', prevContent.left + amount);
@@ -131,18 +136,17 @@ export const dryIngredientsActions = {
     dryIngredientsStore,
     'update',
     (store, /** @type {import('../..').DryItem} */ item) => {
-      let extraFlour = 0;
+      let usedFlour = 0;
       const newContent = store.get().map((ingredient) => {
         if (ingredient.id === item.id) {
-          if (ingredient.amount !== item.amount) {
-            extraFlour = ingredient.amount - item.amount;
-          }
+          usedFlour += item.amount;
           return item;
         }
+        usedFlour += ingredient.amount;
         return ingredient;
       });
       store.set(newContent);
-      flourActions.return(extraFlour);
+      flourActions.setUsed(usedFlour);
       return newContent;
     },
   ),
@@ -188,12 +192,8 @@ export const wetIngredientsActions = {
       let extraWater = 0;
       const newContent = store.get().map((ingredient) => {
         if (item.id === ingredient.id) {
-          if (item.amount !== ingredient.amount) {
-            extraFlour = ingredient.amount - item.amount;
-          }
-          if (item.waterAmount !== ingredient.waterAmount) {
-            extraWater = ingredient.waterAmount - item.waterAmount;
-          }
+          extraFlour = ingredient.amount - item.amount;
+          extraWater = ingredient.waterAmount - item.waterAmount;
           return item;
         }
         return ingredient;
@@ -272,9 +272,7 @@ export const wetAdjunctsActions = {
       let extraWater = 0;
       const newContent = store.get().map((ingredient) => {
         if (item.id === ingredient.id) {
-          if (item.waterAmount !== ingredient.waterAmount) {
-            extraWater = ingredient.waterAmount - item.waterAmount;
-          }
+          extraWater = ingredient.waterAmount - item.waterAmount;
           return item;
         }
         return ingredient;

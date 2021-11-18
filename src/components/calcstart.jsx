@@ -62,7 +62,7 @@ function CalcStart() {
           <div class="section-wrapper">
             <div>
               <label>
-                Całkowita ilość mąki <span class="label-required">*</span>
+                Całkowita ilość <span class="label-required">*</span>
                 <input
                   type="number"
                   inputMode="numeric"
@@ -83,7 +83,7 @@ function CalcStart() {
             <div class="row">
               <div class="column">
                 <label>
-                  Całkowita ilość wody
+                  Całkowita ilość
                   <input
                     type="number"
                     step="1"
@@ -123,7 +123,7 @@ function CalcStart() {
             <div class="row">
               <div class="column">
                 <label>
-                  Całkowita ilość soli
+                  Całkowita ilość
                   <input
                     type="number"
                     step="1"
