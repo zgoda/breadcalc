@@ -290,10 +290,7 @@ function Leaven() {
   const [leavenFlourTotal, setLeavenFlourTotal] = useState(0);
   const [leavenFlourLeft, setLeavenFlourLeft] = useState(0);
   /**
-   * @typedef {Array<import('../..').DryItem>} TLeavenFlourItems
-   * @typedef {import('preact/hooks').StateUpdater<Array<import('../..').DryItem>>} TLeavenFlourItemsSetter
-   *
-   * @type {[TLeavenFlourItems, TLeavenFlourItemsSetter]}
+   * @type {[Array<import('../..').DryItem>, import('preact/hooks').StateUpdater<Array<import('../..').DryItem>>]}
    */
   const [leavenFlourItems, setLeavenFlourItems] = useState([]);
   const [leavenWater, setLeavenWater] = useState(0);

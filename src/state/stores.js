@@ -13,7 +13,13 @@ export const dryAdjunctsStore = atom([]);
 export const wetAdjunctsStore = atom([]);
 
 /** @type {import('nanostores').MapStore<import('../..').Leaven>} */
-export const leavenStore = map({ flour: [], water: 0, sourdough: 0 });
+export const leavenStore = map({
+  flourItems: [],
+  flourTotal: 0,
+  flourLeft: 0,
+  water: 0,
+  sourdough: 0,
+});
 
 /** @type {import('nanostores').MapStore<import('../..').WaterData>} */
 export const waterStore = map({ total: 0, percentage: 0, left: 0 });

@@ -2,7 +2,7 @@ import { useStore } from '@nanostores/preact';
 
 import { HelpButton } from './misc';
 import { round, AmountType } from '../utils/numbers';
-import fieldHelp from './calcstart.json';
+import { fieldHelp } from './calcstart.json';
 import { flourStore, saltStore, waterStore } from '../state/stores';
 import { SectionTitle } from './pageinfo';
 import { flourActions, saltActions, waterActions } from '../state/actions';
@@ -20,10 +20,14 @@ function CalcStart() {
       return;
     }
     flourActions.set(amount);
-    const waterAmount = (amount * water.percentage) / 100;
-    waterActions.setAmount(waterAmount);
-    const saltAmount = (amount * salt.percentage) / 100;
-    saltActions.setAmount(saltAmount);
+    if (water.percentage > 0) {
+      const waterAmount = (amount * water.percentage) / 100;
+      waterActions.setAmount(waterAmount);
+    }
+    if (salt.percentage > 0) {
+      const saltAmount = (amount * salt.percentage) / 100;
+      saltActions.setAmount(saltAmount);
+    }
   };
 
   const setWater = (/** @type {number} */ value, /** @type {string} */ type) => {
@@ -58,7 +62,7 @@ function CalcStart() {
           <div class="section-wrapper">
             <div>
               <label>
-                Całkowita ilość mąki (g) <span class="label-required">*</span>
+                Całkowita ilość mąki <span class="label-required">*</span>
                 <input
                   type="number"
                   inputMode="numeric"
@@ -76,33 +80,37 @@ function CalcStart() {
         <fieldset>
           <legend>Woda</legend>
           <div class="section-wrapper">
-            <div>
-              <label>
-                Całkowita ilość wody (g, ml)
-                <input
-                  type="number"
-                  step="1"
-                  inputMode="numeric"
-                  value={Math.round(water.total)}
-                  onInput={(e) =>
-                    // @ts-ignore
-                    setWater(parseFloat(e.target.value), AmountType.TOTAL)
-                  }
-                />
-              </label>
-              <label>
-                lub w %
-                <input
-                  type="number"
-                  step="0.1"
-                  inputMode="numeric"
-                  value={round(water.percentage, 1)}
-                  onInput={(e) =>
-                    // @ts-ignore
-                    setWater(parseFloat(e.target.value), AmountType.PERCENT)
-                  }
-                />
-              </label>
+            <div class="row">
+              <div class="column">
+                <label>
+                  Całkowita ilość wody
+                  <input
+                    type="number"
+                    step="1"
+                    inputMode="numeric"
+                    value={Math.round(water.total)}
+                    onInput={(e) =>
+                      // @ts-ignore
+                      setWater(parseFloat(e.target.value), AmountType.TOTAL)
+                    }
+                  />
+                </label>
+              </div>
+              <div class="column">
+                <label>
+                  lub w %
+                  <input
+                    type="number"
+                    step="0.1"
+                    inputMode="numeric"
+                    value={round(water.percentage, 1)}
+                    onInput={(e) =>
+                      // @ts-ignore
+                      setWater(parseFloat(e.target.value), AmountType.PERCENT)
+                    }
+                  />
+                </label>
+              </div>
             </div>
             <div class="column-center center">
               <HelpButton text={fieldHelp.water} />
@@ -112,33 +120,37 @@ function CalcStart() {
         <fieldset>
           <legend>Sól</legend>
           <div class="section-wrapper">
-            <div>
-              <label>
-                Całkowita ilość soli (g)
-                <input
-                  type="number"
-                  step="1"
-                  inputMode="numeric"
-                  value={Math.round(salt.total)}
-                  onInput={(e) =>
-                    // @ts-ignore
-                    calcSalt(parseFloat(e.target.value), AmountType.TOTAL)
-                  }
-                />
-              </label>
-              <label>
-                lub w %
-                <input
-                  type="number"
-                  step="0.1"
-                  inputMode="numeric"
-                  value={round(salt.percentage, 1)}
-                  onInput={(e) =>
-                    // @ts-ignore
-                    calcSalt(parseFloat(e.target.value), AmountType.PERCENT)
-                  }
-                />
-              </label>
+            <div class="row">
+              <div class="column">
+                <label>
+                  Całkowita ilość soli
+                  <input
+                    type="number"
+                    step="1"
+                    inputMode="numeric"
+                    value={Math.round(salt.total)}
+                    onInput={(e) =>
+                      // @ts-ignore
+                      calcSalt(parseFloat(e.target.value), AmountType.TOTAL)
+                    }
+                  />
+                </label>
+              </div>
+              <div class="column">
+                <label>
+                  lub w %
+                  <input
+                    type="number"
+                    step="0.1"
+                    inputMode="numeric"
+                    value={round(salt.percentage, 1)}
+                    onInput={(e) =>
+                      // @ts-ignore
+                      calcSalt(parseFloat(e.target.value), AmountType.PERCENT)
+                    }
+                  />
+                </label>
+              </div>
             </div>
             <div class="column-center center">
               <HelpButton text={fieldHelp.salt} />
