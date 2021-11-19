@@ -5,7 +5,7 @@ import { useStore } from '@nanostores/preact';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
 import { AddItemButton, RemoveItemButton } from './misc';
-import wetadjuncts from './wetadjuncts.json';
+import { text } from './wetadjuncts.json';
 import {
   flourStore,
   waterStore,
@@ -40,7 +40,6 @@ function WetAdjunctItem({ item }) {
   }, [item]);
 
   const nameChange = (/** @type {string} */ name) => {
-    setName(name);
     item.name = name;
     wetAdjunctsActions.update(item);
   };
@@ -86,70 +85,82 @@ function WetAdjunctItem({ item }) {
 
   return (
     <div class="section-wrapper">
-      <div>
-        <label>
-          Nazwa <span class="label-required">*</span>
-          <input
-            type="text"
-            value={name}
-            // @ts-ignore
-            onInput={(e) => nameChange(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Składnik wagowo
-          <input
-            type="number"
-            inputMode="numeric"
-            step="1"
-            value={amtWeight}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
-            // @ts-ignore
-            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-          />
-        </label>
-        <label>
-          Składnik procentowo
-          <input
-            type="number"
-            inputMode="numeric"
-            step="0.1"
-            value={amtPc}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
-            // @ts-ignore
-            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-          />
-        </label>
-        <label>
-          Woda wagowo
-          <input
-            type="number"
-            inputMode="numeric"
-            step="1"
-            max={water.left}
-            value={waterWeight}
-            // @ts-ignore
-            onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)}
-            // @ts-ignore
-            onInput={(e) => setWaterWeight(parseFloat(e.target.value))}
-          />
-        </label>
-        <label>
-          Woda procentowo
-          <input
-            type="number"
-            inputMode="numeric"
-            step="0.1"
-            value={waterPc}
-            // @ts-ignore
-            onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.PERCENT)}
-            // @ts-ignore
-            onInput={(e) => setWaterPc(parseFloat(e.target.value))}
-          />
-        </label>
+      <div class="row">
+        <div class="column">
+          <label>
+            Nazwa <span class="label-required">*</span>
+            <input
+              type="text"
+              value={name}
+              // @ts-ignore
+              onInput={(e) => setName(e.target.value)}
+              // @ts-ignore
+              onBlur={(e) => nameChange(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div class="column">
+          <label>
+            Składnik wagowo
+            <input
+              type="number"
+              inputMode="numeric"
+              step="1"
+              value={amtWeight}
+              // @ts-ignore
+              onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
+              // @ts-ignore
+              onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+            />
+          </label>
+          <label>
+            Składnik procentowo
+            <input
+              type="number"
+              inputMode="numeric"
+              step="0.1"
+              value={amtPc}
+              onBlur={(e) =>
+                // @ts-ignore
+                recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
+              }
+              // @ts-ignore
+              onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+            />
+          </label>
+        </div>
+        <div class="column">
+          <label>
+            Woda wagowo
+            <input
+              type="number"
+              inputMode="numeric"
+              step="1"
+              max={water.left}
+              value={waterWeight}
+              // @ts-ignore
+              onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)}
+              // @ts-ignore
+              onInput={(e) => setWaterWeight(parseFloat(e.target.value))}
+            />
+          </label>
+          <label>
+            Woda procentowo
+            <input
+              type="number"
+              inputMode="numeric"
+              step="0.1"
+              value={waterPc}
+              onBlur={(e) =>
+                // @ts-ignore
+                recalcWater(parseFloat(e.target.value), AmountType.PERCENT)
+              }
+              // @ts-ignore
+              onInput={(e) => setWaterPc(parseFloat(e.target.value))}
+            />
+          </label>
+        </div>
       </div>
       <div class="column-center center">
         <RemoveItemButton actionHandler={removeItem} />
@@ -185,8 +196,8 @@ function WetAdjuncts() {
   return (
     <section>
       <SectionTitle title="Dodatki namaczane" level={3} />
-      <p>{wetadjuncts.text}</p>
-      {warnFull && <p class="error">{wetadjuncts.full}</p>}
+      <p>{text.intro}</p>
+      {warnFull && <p class="error">{text.full}</p>}
       <form>
         {wetAdjuncts.map((item) => (
           <WetAdjunctItem item={item} key={item.id} />
