@@ -5,7 +5,7 @@ import { useStore } from '@nanostores/preact';
 import { AddItemButton, RemoveItemButton } from './misc';
 import { SectionTitle } from './pageinfo';
 import { AmountType } from '../utils/numbers';
-import leavenText from './leaven.json';
+import { text } from './leaven.json';
 import {
   dryIngredientsStore,
   flourStore,
@@ -367,7 +367,7 @@ function Leaven() {
   return (
     <section>
       <SectionTitle title="Zaczyn" level={2} />
-      <p>{leavenText.text}</p>
+      <p>{text.intro}</p>
       {canAddItem && <LeavenFlourWeight />}
       {canAddWater && (
         <LeavenWaterWeight
@@ -376,7 +376,7 @@ function Leaven() {
         />
       )}
       <LeavenIngredients />
-      {isFull && <p class="error">{leavenText.full}</p>}
+      {isFull && <p class="error">{text.full}</p>}
     </section>
   );
 }

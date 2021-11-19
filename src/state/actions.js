@@ -12,12 +12,8 @@ import {
 
 export const flourActions = {
   set: action(flourStore, 'set', (store, /** @type {number} */ amount) => {
-    const newContent = {
-      total: amount,
-      left: amount,
-    };
-    store.set(newContent);
-    return newContent;
+    store.set({ total: amount, left: amount });
+    return store.get();
   }),
   use: action(flourStore, 'use', (store, /** @type {number} */ amount) => {
     const prevContent = store.get();
@@ -39,24 +35,14 @@ export const flourActions = {
 export const waterActions = {
   setAmount: action(waterStore, 'setAmount', (store, /** @type {number} */ value) => {
     const flourTotal = flourStore.get().total;
-    const newContent = {
-      total: value,
-      left: value,
-      percentage: (value / flourTotal) * 100,
-    };
-    store.set(newContent);
-    return newContent;
+    store.set({ total: value, left: value, percentage: (value / flourTotal) * 100 });
+    return store.get();
   }),
   setPercent: action(waterStore, 'setPercent', (store, /** @type {number} */ value) => {
     const flourTotal = flourStore.get().total;
     const total = (flourTotal * value) / 100;
-    const newContent = {
-      percentage: value,
-      total,
-      left: total,
-    };
-    store.set(newContent);
-    return newContent;
+    store.set({ percentage: value, total, left: total });
+    return store.get();
   }),
   use: action(waterStore, 'use', (store, /** @type {number} */ value) => {
     const prevLeft = store.get().left;
@@ -78,24 +64,14 @@ export const waterActions = {
 export const saltActions = {
   setAmount: action(saltStore, 'setAmount', (store, /** @type {number} */ value) => {
     const flourTotal = flourStore.get().total;
-    const newContent = {
-      total: value,
-      left: value,
-      percentage: (value / flourTotal) * 100,
-    };
-    store.set(newContent);
-    return newContent;
+    store.set({ total: value, left: value, percentage: (value / flourTotal) * 100 });
+    return store.get();
   }),
   setPercent: action(saltStore, 'setPercent', (store, /** @type {number} */ value) => {
     const flourTotal = flourStore.get().total;
     const total = (flourTotal * value) / 100;
-    const newContent = {
-      percentage: value,
-      total,
-      left: total,
-    };
-    store.set(newContent);
-    return newContent;
+    store.set({ percentage: value, total, left: total });
+    return store.get();
   }),
   use: action(saltStore, 'use', (store, /** @type {number} */ value) => {
     const prevLeft = store.get().left;
