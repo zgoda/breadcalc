@@ -30,7 +30,6 @@ function DryAdjunctItem({ item }) {
   }, [item]);
 
   const nameChange = (/** @type {string} */ name) => {
-    setName(name);
     item.name = name;
     dryAdjunctsActions.update(item);
   };
@@ -54,44 +53,52 @@ function DryAdjunctItem({ item }) {
 
   return (
     <div class="section-wrapper">
-      <div>
-        <label>
-          Nazwa <span class="label-required">*</span>
-          <input
-            type="text"
-            value={name}
-            // @ts-ignore
-            onInput={(e) => nameChange(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Ilość (g)
-          <input
-            type="number"
-            inputMode="numeric"
-            step="1"
-            value={amtWeight}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
-            // @ts-ignore
-            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-          />
-        </label>
-        <label>
-          Ilość (%)
-          <input
-            type="number"
-            inputMode="numeric"
-            step="0.1"
-            max="100"
-            value={amtPc}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
-            // @ts-ignore
-            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-          />
-        </label>
+      <div class="row">
+        <div class="column">
+          <label>
+            Nazwa <span class="label-required">*</span>
+            <input
+              type="text"
+              value={name}
+              // @ts-ignore
+              onInput={(e) => setName(e.target.value)}
+              // @ts-ignore
+              onBlur={(e) => nameChange(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div class="column">
+          <label>
+            Ilość (g)
+            <input
+              type="number"
+              inputMode="numeric"
+              step="1"
+              value={amtWeight}
+              // @ts-ignore
+              onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
+              // @ts-ignore
+              onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+            />
+          </label>
+          <label>
+            Ilość (%)
+            <input
+              type="number"
+              inputMode="numeric"
+              step="0.1"
+              max="100"
+              value={amtPc}
+              onBlur={(e) =>
+                // @ts-ignore
+                recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
+              }
+              // @ts-ignore
+              onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+            />
+          </label>
+        </div>
       </div>
       <div class="column-center center">
         <RemoveItemButton actionHandler={removeItem} />
