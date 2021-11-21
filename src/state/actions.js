@@ -13,6 +13,18 @@ import {
 export const flourActions = {
   set: action(flourStore, 'set', (store, /** @type {number} */ amount) => {
     store.set({ total: amount, left: amount });
+    const waterPc = waterStore.get().percentage;
+    if (waterPc > 0) {
+      const waterTotal = (amount * waterPc) / 100;
+      waterStore.setKey('total', waterTotal);
+      waterStore.setKey('left', waterTotal);
+    }
+    const saltPc = saltStore.get().percentage;
+    if (saltPc > 0) {
+      const saltTotal = (amount * saltPc) / 100;
+      saltStore.setKey('total', saltTotal);
+      saltStore.setKey('left', saltTotal);
+    }
     return store.get();
   }),
   use: action(flourStore, 'use', (store, /** @type {number} */ amount) => {

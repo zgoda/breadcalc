@@ -20,14 +20,6 @@ function CalcStart() {
       return;
     }
     flourActions.set(amount);
-    if (water.percentage > 0) {
-      const waterAmount = (amount * water.percentage) / 100;
-      waterActions.setAmount(waterAmount);
-    }
-    if (salt.percentage > 0) {
-      const saltAmount = (amount * salt.percentage) / 100;
-      saltActions.setAmount(saltAmount);
-    }
   };
 
   const setWater = (/** @type {number} */ value, /** @type {string} */ type) => {

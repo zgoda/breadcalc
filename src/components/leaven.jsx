@@ -36,35 +36,41 @@ function LeavenFlourWeight() {
 
   return (
     <div class="section-wrapper">
-      <div>
-        <label>
-          Waga mąki w zaczynie (g)
-          <input
-            type="number"
-            inputMode="numeric"
-            step="1"
-            max={flour.total}
-            value={amtWeight}
-            // @ts-ignore
-            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
-          />
-        </label>
-        <label>
-          Jako % całkowitej ilości mąki
-          <input
-            type="number"
-            inputMode="numeric"
-            step="0.1"
-            max="100"
-            value={amtPc}
-            // @ts-ignore
-            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
-          />
-        </label>
+      <div class="row">
+        <div class="column">
+          <label>
+            Waga mąki w zaczynie (g)
+            <input
+              type="number"
+              inputMode="numeric"
+              step="1"
+              max={flour.total}
+              value={amtWeight}
+              // @ts-ignore
+              onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+              // @ts-ignore
+              onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
+            />
+          </label>
+        </div>
+        <div class="column">
+          <label>
+            Jako % całkowitej ilości mąki
+            <input
+              type="number"
+              inputMode="numeric"
+              step="0.1"
+              max="100"
+              value={amtPc}
+              // @ts-ignore
+              onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+              onBlur={(e) =>
+                // @ts-ignore
+                recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
+              }
+            />
+          </label>
+        </div>
       </div>
     </div>
   );
@@ -98,33 +104,39 @@ function LeavenWaterWeight({ leavenFlourTotal, changeWaterHandler }) {
 
   return (
     <div class="section-wrapper">
-      <div>
-        <label>
-          Waga wody w zaczynie (g)
-          <input
-            type="number"
-            inputMode="numeric"
-            step="1"
-            value={amtWeight}
-            // @ts-ignore
-            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
-          />
-        </label>
-        <label>
-          Jako % ilości mąki w zaczynie
-          <input
-            type="number"
-            inputMode="numeric"
-            step="0.1"
-            value={amtPc}
-            // @ts-ignore
-            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
-          />
-        </label>
+      <div class="row">
+        <div class="column">
+          <label>
+            Waga wody w zaczynie (g)
+            <input
+              type="number"
+              inputMode="numeric"
+              step="1"
+              value={amtWeight}
+              // @ts-ignore
+              onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+              // @ts-ignore
+              onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
+            />
+          </label>
+        </div>
+        <div class="column">
+          <label>
+            Jako % ilości mąki w zaczynie
+            <input
+              type="number"
+              inputMode="numeric"
+              step="0.1"
+              value={amtPc}
+              // @ts-ignore
+              onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+              onBlur={(e) =>
+                // @ts-ignore
+                recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
+              }
+            />
+          </label>
+        </div>
       </div>
     </div>
   );
@@ -185,45 +197,53 @@ function LeavenFlourItem({
 
   return (
     <div class="section-wrapper">
-      <div>
-        <label>
-          Nazwa <span class="label-required">*</span>
-          <input
-            type="text"
-            value={name}
-            // @ts-ignore
-            onInput={(e) => nameChange(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Ilość (g)
-          <input
-            type="number"
-            inputMode="numeric"
-            step="1"
-            max={leavenFlourLeft}
-            value={amtWeight}
-            // @ts-ignore
-            onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
-          />
-        </label>
-        <label>
-          Ilość (%)
-          <input
-            type="number"
-            inputMode="numeric"
-            step="0.1"
-            max="100"
-            value={amtPc}
-            // @ts-ignore
-            onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            // @ts-ignore
-            onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)}
-          />
-        </label>
+      <div class="row">
+        <div class="column">
+          <label>
+            Nazwa <span class="label-required">*</span>
+            <input
+              type="text"
+              value={name}
+              // @ts-ignore
+              onInput={(e) => nameChange(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div class="column">
+          <label>
+            Ilość (g)
+            <input
+              type="number"
+              inputMode="numeric"
+              step="1"
+              max={leavenFlourLeft}
+              value={amtWeight}
+              // @ts-ignore
+              onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+              // @ts-ignore
+              onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
+            />
+          </label>
+        </div>
+        <div class="column">
+          <label>
+            Ilość (%)
+            <input
+              type="number"
+              inputMode="numeric"
+              step="0.1"
+              max="100"
+              value={amtPc}
+              // @ts-ignore
+              onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+              onBlur={(e) =>
+                // @ts-ignore
+                recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
+              }
+            />
+          </label>
+        </div>
       </div>
       <div class="column-center center">
         <RemoveItemButton actionHandler={removeItem} />
@@ -269,6 +289,7 @@ function LeavenFlourItems({
 function Leaven() {
   const [canAddItem, setCanAddItem] = useState(true);
   const [canAddWater, setCanAddWater] = useState(false);
+  const [canSetFlour, setCanSetFlour] = useState(false);
   const [isFull, setIsFull] = useState(false);
   const [leavenFlourTotal, setLeavenFlourTotal] = useState(0);
   const [leavenFlourLeft, setLeavenFlourLeft] = useState(0);
@@ -293,12 +314,22 @@ function Leaven() {
   useEffect(() => {
     const canAddItem = flour.total > 0 && water.total > 0 && dryIngredients.length > 0;
     setCanAddItem(canAddItem);
-    setIsFull(canAddItem && leavenFlourLeft === 0);
-  }, [flour, water, dryIngredients, leavenFlourLeft]);
-
-  useEffect(() => {
-    setCanAddWater(leavenFlourTotal > 0);
-  }, [leavenFlourTotal]);
+    setCanSetFlour(flour.total > 0);
+    setIsFull(
+      canAddItem &&
+        leavenFlourTotal > 0 &&
+        leavenFlourLeft === 0 &&
+        leavenFlourItems.length > 0,
+    );
+    setCanAddWater(flour.total > 0 && water.total > 0 && water.left > 0);
+  }, [
+    flour,
+    water,
+    dryIngredients,
+    leavenFlourLeft,
+    leavenFlourItems,
+    leavenFlourTotal,
+  ]);
 
   const addItemHandler = () => {
     const items = [
@@ -368,14 +399,14 @@ function Leaven() {
     <section>
       <SectionTitle title="Zaczyn" level={2} />
       <p>{text.intro}</p>
-      {canAddItem && <LeavenFlourWeight />}
+      {canSetFlour && <LeavenFlourWeight />}
       {canAddWater && (
         <LeavenWaterWeight
           changeWaterHandler={changeWaterHandler}
           leavenFlourTotal={leavenFlourTotal}
         />
       )}
-      <LeavenIngredients />
+      {canAddItem && <LeavenIngredients />}
       {isFull && <p class="error">{text.full}</p>}
     </section>
   );
