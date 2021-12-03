@@ -5,7 +5,7 @@ import { useStore } from '@nanostores/preact';
 import { AddItemButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
-import { text } from './dryingredients.json';
+import { text, title, form } from './dryingredients.json';
 import { dryIngredientsStore, flourStore } from '../state/stores';
 import { dryIngredientsActions } from '../state/actions';
 
@@ -60,7 +60,7 @@ function DryIngredientItem({ item }) {
       <div class="row">
         <div class="column">
           <label>
-            Nazwa <span class="label-required">*</span>
+            {form.name} <span class="label-required">*</span>
             <input
               type="text"
               value={name}
@@ -74,7 +74,7 @@ function DryIngredientItem({ item }) {
         </div>
         <div class="column">
           <label>
-            Ilość (g)
+            {form.amtGms}
             <input
               type="number"
               inputMode="numeric"
@@ -90,7 +90,7 @@ function DryIngredientItem({ item }) {
         </div>
         <div class="column">
           <label>
-            Ilość (%)
+            {form.amtPc}
             <input
               type="number"
               inputMode="numeric"
@@ -131,7 +131,7 @@ function DryIngredients() {
 
   return (
     <section>
-      <SectionTitle title="Mąka i składniki suche" level={3} />
+      <SectionTitle title={title} level={3} />
       <p>{text.intro}</p>
       {warnFull && <p class="error">{text.full}</p>}
       <form>

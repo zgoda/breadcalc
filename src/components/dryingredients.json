@@ -2,5 +2,11 @@
   "text": {
     "intro": "W tej sekcji wyliczone zostaną ilości tych składników dostarczających skrobi, które nie wymagają namaczania, tj. sucha (nie zaparzana) mąka i np. płatki ziemniaczane. W każdym wierszu wystarczy wypełnić jedno z pól ilości (w gramach lub w procentach piekarniczych), druga wartość zostanie wyliczona automatycznie.",
     "full": "Cała dostępna ilość składników dostarczających skrobi została już wykorzystana."
+  },
+  "title": "Mąka i składniki suche",
+  "form": {
+    "amtPc": "Ilość (%)",
+    "amtGms": "Ilość (g)",
+    "name": "Nazwa"
   }
 }
