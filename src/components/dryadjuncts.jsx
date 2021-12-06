@@ -6,6 +6,7 @@ import { SectionTitle } from './pageinfo';
 import { AddItemButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { text } from './dryadjuncts.json';
+import { labelAmtGms, labelAmtPc, labelName } from './forms.json';
 import { dryAdjunctsStore, flourStore } from '../state/stores';
 import { dryAdjunctsActions } from '../state/actions';
 
@@ -56,7 +57,7 @@ function DryAdjunctItem({ item }) {
       <div class="row">
         <div class="column">
           <label>
-            Nazwa <span class="label-required">*</span>
+            {labelName} <span class="label-required">*</span>
             <input
               type="text"
               value={name}
@@ -70,7 +71,7 @@ function DryAdjunctItem({ item }) {
         </div>
         <div class="column">
           <label>
-            Ilość (g)
+            {labelAmtGms}
             <input
               type="number"
               inputMode="numeric"
@@ -83,7 +84,7 @@ function DryAdjunctItem({ item }) {
             />
           </label>
           <label>
-            Ilość (%)
+            {labelAmtPc}
             <input
               type="number"
               inputMode="numeric"

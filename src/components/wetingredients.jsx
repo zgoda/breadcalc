@@ -7,6 +7,13 @@ import { AddItemButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { text } from './wetingredients.json';
 import {
+  labelAmtGms,
+  labelAmtPc,
+  labelName,
+  labelWaterGms,
+  labelWaterPc,
+} from './forms.json';
+import {
   dryIngredientsStore,
   flourStore,
   waterStore,
@@ -86,7 +93,7 @@ function WetIngredientItem({ item }) {
       <div class="row">
         <div class="column">
           <label>
-            {text.form.fields.name.label} <span class="label-required">*</span>
+            {labelName} <span class="label-required">*</span>
             <input
               type="text"
               value={name}
@@ -100,7 +107,7 @@ function WetIngredientItem({ item }) {
         </div>
         <div class="column">
           <label>
-            {text.form.fields.ingByWeight.label}
+            {labelAmtGms}
             <input
               type="number"
               inputMode="numeric"
@@ -114,7 +121,7 @@ function WetIngredientItem({ item }) {
             />
           </label>
           <label>
-            {text.form.fields.ingByPercent.label}
+            {labelAmtPc}
             <input
               type="number"
               inputMode="numeric"
@@ -132,7 +139,7 @@ function WetIngredientItem({ item }) {
         </div>
         <div class="column">
           <label>
-            {text.form.fields.waterByWeight.label}
+            {labelWaterGms}
             <input
               type="number"
               inputMode="numeric"
@@ -146,7 +153,7 @@ function WetIngredientItem({ item }) {
             />
           </label>
           <label>
-            {text.form.fields.waterByPercent.label}
+            {labelWaterPc}
             <input
               type="number"
               inputMode="numeric"

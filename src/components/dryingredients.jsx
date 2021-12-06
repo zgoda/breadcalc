@@ -5,7 +5,8 @@ import { useStore } from '@nanostores/preact';
 import { AddItemButton, RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
-import { text, title, form } from './dryingredients.json';
+import { text, title } from './dryingredients.json';
+import { labelAmtGms, labelAmtPc, labelName } from './forms.json';
 import { dryIngredientsStore, flourStore } from '../state/stores';
 import { dryIngredientsActions } from '../state/actions';
 
@@ -60,7 +61,7 @@ function DryIngredientItem({ item }) {
       <div class="row">
         <div class="column">
           <label>
-            {form.name} <span class="label-required">*</span>
+            {labelName} <span class="label-required">*</span>
             <input
               type="text"
               value={name}
@@ -74,7 +75,7 @@ function DryIngredientItem({ item }) {
         </div>
         <div class="column">
           <label>
-            {form.amtGms}
+            {labelAmtGms}
             <input
               type="number"
               inputMode="numeric"
@@ -90,7 +91,7 @@ function DryIngredientItem({ item }) {
         </div>
         <div class="column">
           <label>
-            {form.amtPc}
+            {labelAmtPc}
             <input
               type="number"
               inputMode="numeric"

@@ -7,6 +7,13 @@ import { SectionTitle } from './pageinfo';
 import { AddItemButton, RemoveItemButton } from './misc';
 import { text } from './wetadjuncts.json';
 import {
+  labelAmtGms,
+  labelAmtPc,
+  labelName,
+  labelWaterGms,
+  labelWaterPc,
+} from './forms.json';
+import {
   flourStore,
   waterStore,
   wetAdjunctsStore,
@@ -88,7 +95,7 @@ function WetAdjunctItem({ item }) {
       <div class="row">
         <div class="column">
           <label>
-            Nazwa <span class="label-required">*</span>
+            {labelName} <span class="label-required">*</span>
             <input
               type="text"
               value={name}
@@ -102,7 +109,7 @@ function WetAdjunctItem({ item }) {
         </div>
         <div class="column">
           <label>
-            Składnik wagowo
+            {labelAmtGms}
             <input
               type="number"
               inputMode="numeric"
@@ -115,7 +122,7 @@ function WetAdjunctItem({ item }) {
             />
           </label>
           <label>
-            Składnik procentowo
+            {labelAmtPc}
             <input
               type="number"
               inputMode="numeric"
@@ -132,7 +139,7 @@ function WetAdjunctItem({ item }) {
         </div>
         <div class="column">
           <label>
-            Woda wagowo
+            {labelWaterGms}
             <input
               type="number"
               inputMode="numeric"
@@ -146,7 +153,7 @@ function WetAdjunctItem({ item }) {
             />
           </label>
           <label>
-            Woda procentowo
+            {labelWaterPc}
             <input
               type="number"
               inputMode="numeric"
