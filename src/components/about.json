@@ -3,6 +3,8 @@
     "Copyright: © 2021, Jarek Zgoda. Wolne oprogramowanie na licencji BSD."
   ],
   "links": [
-    ["O aplikacji", "/pages/about.html"]
+    ["O aplikacji", "/pages/about.html"],
+    ["Kontakt", "/pages/contact.html"],
+    ["Deklaracja prywatności", "/pages/privacy.html"]
   ]
 }
