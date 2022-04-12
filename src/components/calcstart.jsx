@@ -12,9 +12,7 @@ function CalcStart() {
   const water = useStore(waterStore);
   const salt = useStore(saltStore);
 
-  const setFlour = (/** @type {{ preventDefault: () => void }} */ e) => {
-    e.preventDefault();
-    // @ts-ignore
+  const setFlour = (/** @type {{ target: { value: string; }; }} */ e) => {
     const amount = parseFloat(e.target.value);
     if (isNaN(amount)) {
       return;
@@ -59,6 +57,7 @@ function CalcStart() {
                   type="number"
                   inputMode="numeric"
                   value={flour.total}
+                  // @ts-ignore
                   onInput={setFlour}
                   required
                 />
