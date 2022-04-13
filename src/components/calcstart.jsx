@@ -2,7 +2,7 @@ import { useStore } from '@nanostores/preact';
 
 import { HelpButton } from './misc';
 import { round, AmountType } from '../utils/numbers';
-import { fieldHelp } from './calcstart.json';
+import { fieldHelp, title, intro, totalAmt, orPct } from './calcstart.json';
 import { flourStore, saltStore, waterStore } from '../state/stores';
 import { SectionTitle } from './pageinfo';
 import { flourActions, saltActions, waterActions } from '../state/actions';
@@ -44,15 +44,15 @@ function CalcStart() {
 
   return (
     <section>
-      <SectionTitle level={2} title="Początek wyliczeń" />
-      <p>Zawsze zaczyna się od mąki, wody i soli.</p>
+      <SectionTitle level={2} title={title} />
+      <p>{intro}</p>
       <form>
         <fieldset>
           <legend>Mąka</legend>
           <div class="section-wrapper">
             <div>
               <label>
-                Całkowita ilość <span class="label-required">*</span>
+                {totalAmt} <span class="label-required">*</span>
                 <input
                   type="number"
                   inputMode="numeric"
@@ -74,7 +74,7 @@ function CalcStart() {
             <div class="row">
               <div class="column">
                 <label>
-                  Całkowita ilość
+                  {totalAmt}
                   <input
                     type="number"
                     step="1"
@@ -89,7 +89,7 @@ function CalcStart() {
               </div>
               <div class="column">
                 <label>
-                  lub w %
+                  {orPct}
                   <input
                     type="number"
                     step="0.1"
@@ -114,7 +114,7 @@ function CalcStart() {
             <div class="row">
               <div class="column">
                 <label>
-                  Całkowita ilość
+                  {totalAmt}
                   <input
                     type="number"
                     step="1"
@@ -129,7 +129,7 @@ function CalcStart() {
               </div>
               <div class="column">
                 <label>
-                  lub w %
+                  {orPct}
                   <input
                     type="number"
                     step="0.1"
