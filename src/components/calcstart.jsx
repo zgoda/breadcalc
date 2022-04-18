@@ -62,6 +62,7 @@ function CalcStart() {
                 />
               </label>
             </div>
+            <div>&nbsp;</div>
             <div>
               <small>{fieldHelp.flourTotal}</small>
             </div>
