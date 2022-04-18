@@ -1,6 +1,5 @@
 import { useStore } from '@nanostores/preact';
 
-import { HelpButton } from './misc';
 import { round, AmountType } from '../utils/numbers';
 import { fieldHelp, title, intro, totalAmt, orPct } from './calcstart.json';
 import { flourStore, saltStore, waterStore } from '../state/stores';
@@ -49,7 +48,7 @@ function CalcStart() {
       <form>
         <fieldset>
           <legend>Mąka</legend>
-          <div class="section-wrapper">
+          <div class="grid">
             <div>
               <label>
                 {totalAmt} <span class="label-required">*</span>
@@ -63,88 +62,84 @@ function CalcStart() {
                 />
               </label>
             </div>
-            <div class="column-center center">
-              <HelpButton text={fieldHelp.flourTotal} />
+            <div>
+              <small>{fieldHelp.flourTotal}</small>
             </div>
           </div>
         </fieldset>
         <fieldset>
           <legend>Woda</legend>
-          <div class="section-wrapper">
-            <div class="row">
-              <div class="column">
-                <label>
-                  {totalAmt}
-                  <input
-                    type="number"
-                    step="1"
-                    inputMode="numeric"
-                    value={Math.round(water.total)}
-                    onInput={(e) =>
-                      // @ts-ignore
-                      setWater(parseFloat(e.target.value), AmountType.TOTAL)
-                    }
-                  />
-                </label>
-              </div>
-              <div class="column">
-                <label>
-                  {orPct}
-                  <input
-                    type="number"
-                    step="0.1"
-                    inputMode="numeric"
-                    value={round(water.percentage, 1)}
-                    onInput={(e) =>
-                      // @ts-ignore
-                      setWater(parseFloat(e.target.value), AmountType.PERCENT)
-                    }
-                  />
-                </label>
-              </div>
+          <div class="grid">
+            <div>
+              <label>
+                {totalAmt}
+                <input
+                  type="number"
+                  step="1"
+                  inputMode="numeric"
+                  value={Math.round(water.total)}
+                  onInput={(e) =>
+                    // @ts-ignore
+                    setWater(parseFloat(e.target.value), AmountType.TOTAL)
+                  }
+                />
+              </label>
             </div>
-            <div class="column-center center">
-              <HelpButton text={fieldHelp.water} />
+            <div>
+              <label>
+                {orPct}
+                <input
+                  type="number"
+                  step="0.1"
+                  inputMode="numeric"
+                  value={round(water.percentage, 1)}
+                  onInput={(e) =>
+                    // @ts-ignore
+                    setWater(parseFloat(e.target.value), AmountType.PERCENT)
+                  }
+                />
+              </label>
+            </div>
+            <div>
+              <small>{fieldHelp.water}</small>
             </div>
           </div>
         </fieldset>
         <fieldset>
           <legend>Sól</legend>
-          <div class="section-wrapper">
-            <div class="row">
-              <div class="column">
-                <label>
-                  {totalAmt}
-                  <input
-                    type="number"
-                    step="1"
-                    inputMode="numeric"
-                    value={Math.round(salt.total)}
-                    onInput={(e) =>
-                      // @ts-ignore
-                      calcSalt(parseFloat(e.target.value), AmountType.TOTAL)
-                    }
-                  />
-                </label>
-              </div>
-              <div class="column">
-                <label>
-                  {orPct}
-                  <input
-                    type="number"
-                    step="0.1"
-                    inputMode="numeric"
-                    value={round(salt.percentage, 1)}
-                    onInput={(e) =>
-                      // @ts-ignore
-                      calcSalt(parseFloat(e.target.value), AmountType.PERCENT)
-                    }
-                  />
-                </label>
-              </div>
+          <div class="grid">
+            <div>
+              <label>
+                {totalAmt}
+                <input
+                  type="number"
+                  step="1"
+                  inputMode="numeric"
+                  value={Math.round(salt.total)}
+                  onInput={(e) =>
+                    // @ts-ignore
+                    calcSalt(parseFloat(e.target.value), AmountType.TOTAL)
+                  }
+                />
+              </label>
             </div>
-            <div class="column-center center">
-              <HelpButton text={fieldHelp.salt} />
+            <div>
+              <label>
+                {orPct}
+                <input
+                  type="number"
+                  step="0.1"
+                  inputMode="numeric"
+                  value={round(salt.percentage, 1)}
+                  onInput={(e) =>
+                    // @ts-ignore
+                    calcSalt(parseFloat(e.target.value), AmountType.PERCENT)
+                  }
+                />
+              </label>
+            </div>
+            <div>
+              <small>{fieldHelp.salt}</small>
             </div>
           </div>
         </fieldset>

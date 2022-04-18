@@ -12,7 +12,7 @@ export default defineConfig({
     preact(),
     VitePWA({
       base: '/',
-      includeAssets: ['favicon.svg', 'fonts/*.woff*'],
+      includeAssets: ['favicon.svg'],
       manifest: {
         lang: 'pl',
         name: 'Kalkulator ciasta chlebowego',
