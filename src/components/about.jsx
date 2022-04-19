@@ -1,17 +1,19 @@
-import json from './about.json';
+import { text, links } from './about.json';
 
-function About() {
+export function About() {
   return (
     <footer class="container">
-      {json.text.map((line, index) => (
+      {text.map((line, index) => (
         <p key={`about-line-${index}`}>{line}</p>
       ))}
-      <div class="row">
-        {json.links.map((item, index) => {
+      <div class="grid">
+        {links.map((item, index) => {
           const [title, url] = item;
           return (
-            <div key={`link-${index}`} class="column center">
-              <a href={url}>{title}</a>
+            <div key={`link-${index}`} class="center">
+              <p>
+                <a href={url}>{title}</a>
+              </p>
             </div>
           );
         })}
@@ -19,5 +21,3 @@ function About() {
     </footer>
   );
 }
-
-export { About };

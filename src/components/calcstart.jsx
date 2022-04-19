@@ -6,7 +6,7 @@ import { flourStore, saltStore, waterStore } from '../state/stores';
 import { SectionTitle } from './pageinfo';
 import { flourActions, saltActions, waterActions } from '../state/actions';
 
-function CalcStart() {
+export function CalcStart() {
   const flour = useStore(flourStore);
   const water = useStore(waterStore);
   const salt = useStore(saltStore);
@@ -51,7 +51,7 @@ function CalcStart() {
           <div class="grid">
             <div>
               <label>
-                {totalAmt} <span class="label-required">*</span>
+                {totalAmt}
                 <input
                   type="number"
                   inputMode="numeric"
@@ -148,5 +148,3 @@ function CalcStart() {
     </section>
   );
 }
-
-export { CalcStart };
