@@ -5,7 +5,7 @@ import { useEffect, useState } from 'preact/hooks';
  * @param {any} defaultValue
  */
 function getStorageValue(key, defaultValue) {
-  if (typeof window !== undefined) {
+  if (typeof window !== 'undefined') {
     const saved = localStorage.getItem(key);
     const initial = saved !== null ? JSON.parse(saved) : defaultValue;
     return initial;

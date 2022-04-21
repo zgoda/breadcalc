@@ -38,3 +38,27 @@ export interface SaltData {
   percentage: number;
   left: number;
 }
+
+/* Recipe storage related interfaces */
+interface RecipeFlourItem {
+  name: string;
+  percentage: number;
+}
+
+interface RecipeLeaven {
+  totalFlourPercentage: number;
+  flourItems: Array<RecipeFlourItem>;
+  water: number;
+  sourdough: number;
+}
+
+export interface Recipe {
+  name: string;
+  description?: string;
+  kind: string;
+  flourWeight: number;
+  flourItems: Array<RecipeFlourItem>;
+  water: number;
+  salt: number;
+  leaven: RecipeLeaven;
+}
