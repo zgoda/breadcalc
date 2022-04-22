@@ -5,6 +5,7 @@
     "salt": "Ilość soli dodana do ciasta. Możesz podać wagę lub ilość w procentach piekarniczych, druga wartość zostanie wyliczona automatycznie."
   },
   "title": "Początek wyliczeń",
+  "collapsedTitle": "Przepis ogólny",
   "intro": "Zawsze zaczyna się od mąki, wody i soli.",
   "totalAmt": "Całkowita ilość",
   "orPct": "lub w %"

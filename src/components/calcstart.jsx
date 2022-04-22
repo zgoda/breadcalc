@@ -1,12 +1,23 @@
+import { useState } from 'preact/hooks';
 import { useStore } from '@nanostores/preact';
+import { Lock, Unlock } from 'preact-feather';
 
 import { round, AmountType } from '../utils/numbers';
-import { fieldHelp, title, intro, totalAmt, orPct } from './calcstart.json';
+import {
+  fieldHelp,
+  title,
+  intro,
+  totalAmt,
+  orPct,
+  collapsedTitle,
+} from './calcstart.json';
 import { flourStore, saltStore, waterStore } from '../state/stores';
 import { SectionTitle } from './pageinfo';
 import { flourActions, saltActions, waterActions } from '../state/actions';
 
 export function CalcStart() {
+  const [isLocked, setIsLocked] = useState(false);
+
   const flour = useStore(flourStore);
   const water = useStore(waterStore);
   const salt = useStore(saltStore);
@@ -40,6 +51,51 @@ export function CalcStart() {
       saltActions.setAmount(value);
     }
   };
+
+  const lockForm = (/** @type {{ preventDefault: () => void; }} */ e) => {
+    e.preventDefault();
+    setIsLocked(true);
+  };
+
+  const unlockForm = (/** @type {{ preventDefault: () => void; }} */ e) => {
+    e.preventDefault();
+    setIsLocked(false);
+  };
+
+  if (isLocked) {
+    return (
+      <section>
+        <SectionTitle level={2} title={collapsedTitle} />
+        <table>
+          <tbody>
+            <tr>
+              <th scope="row">Mąka</th>
+              <td>{flour.total} g</td>
+              <td>100%</td>
+            </tr>
+            <tr>
+              <th scope="row">Woda</th>
+              <td>{water.total} g</td>
+              <td>{water.percentage}%</td>
+            </tr>
+            <tr>
+              <th scope="row">Sól</th>
+              <td>{salt.total} g</td>
+              <td>{salt.percentage}%</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          <button class="autowidth" onClick={unlockForm}>
+            <span class="icon">
+              <Unlock />
+            </span>{' '}
+            Edytuj
+          </button>
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section>
@@ -143,6 +199,16 @@ export function CalcStart() {
               <small>{fieldHelp.salt}</small>
             </div>
           </div>
+        </fieldset>
+        <fieldset>
+          <p>
+            <button class="autowidth" onClick={lockForm}>
+              <span class="icon">
+                <Lock />
+              </span>{' '}
+              Gotowe
+            </button>
+          </p>
         </fieldset>
       </form>
     </section>
