@@ -75,12 +75,12 @@ export function CalcStart() {
             </tr>
             <tr>
               <th scope="row">Woda</th>
-              <td>{water.total} g</td>
+              <td>{Math.round(water.total)} g</td>
               <td>{water.percentage}%</td>
             </tr>
             <tr>
               <th scope="row">Sól</th>
-              <td>{salt.total} g</td>
+              <td>{Math.round(salt.total)} g</td>
               <td>{salt.percentage}%</td>
             </tr>
           </tbody>
