@@ -52,14 +52,9 @@ export function CalcStart() {
     }
   };
 
-  const lockForm = (/** @type {{ preventDefault: () => void; }} */ e) => {
+  const toggleLock = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
-    setIsLocked(true);
-  };
-
-  const unlockForm = (/** @type {{ preventDefault: () => void; }} */ e) => {
-    e.preventDefault();
-    setIsLocked(false);
+    setIsLocked(!isLocked);
   };
 
   if (isLocked) {
@@ -86,7 +81,7 @@ export function CalcStart() {
           </tbody>
         </table>
         <p>
-          <button class="autowidth" onClick={unlockForm}>
+          <button class="autowidth" onClick={toggleLock}>
             <span class="icon">
               <Unlock />
             </span>{' '}
@@ -202,7 +197,7 @@ export function CalcStart() {
         </fieldset>
         <fieldset>
           <p>
-            <button class="autowidth" onClick={lockForm}>
+            <button class="autowidth" onClick={toggleLock}>
               <span class="icon">
                 <Lock />
               </span>{' '}
