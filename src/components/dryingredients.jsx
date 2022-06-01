@@ -22,7 +22,7 @@ function DryIngredientItem({ item }) {
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
 
-  const flour = useStore(flourStore);
+  const flourData = useStore(flourStore);
 
   useEffect(() => {
     setName(item.name);
@@ -41,11 +41,11 @@ function DryIngredientItem({ item }) {
     }
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
-      amtWeight = (flour.total * value) / 100;
+      amtWeight = (flourData.total * value) / 100;
       amtPc = value;
     } else if (type === AmountType.TOTAL) {
       amtWeight = value;
-      amtPc = (value / flour.total) * 100;
+      amtPc = (value / flourData.total) * 100;
     }
     setAmtWeight(amtWeight);
     item.amount = amtWeight;
@@ -80,7 +80,7 @@ function DryIngredientItem({ item }) {
               type="number"
               inputMode="numeric"
               step="1"
-              max={flour.left}
+              max={flourData.left}
               value={amtWeight}
               // @ts-ignore
               onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
@@ -115,17 +115,17 @@ function DryIngredientItem({ item }) {
   );
 }
 
-function DryIngredients() {
+export function DryIngredients() {
   const [canAddItem, setCanAddItem] = useState(true);
   const [warnFull, setWarnFull] = useState(false);
 
-  const flour = useStore(flourStore);
+  const flourData = useStore(flourStore);
   const dryIngredients = useStore(dryIngredientsStore);
 
   useEffect(() => {
-    setCanAddItem(flour.left > 0 && flour.total > 0);
-    setWarnFull(flour.left <= 0 && flour.total > 0);
-  }, [flour, dryIngredients]);
+    setCanAddItem(flourData.left > 0 && flourData.total > 0);
+    setWarnFull(flourData.left <= 0 && flourData.total > 0);
+  }, [flourData, dryIngredients]);
 
   const addItemHandler = () =>
     dryIngredientsActions.add({ id: uid(16), name: '', amount: 0, percentage: 0 });
@@ -146,5 +146,3 @@ function DryIngredients() {
     </section>
   );
 }
-
-export { DryIngredients };

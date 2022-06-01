@@ -14,13 +14,14 @@ import {
 import { flourStore, saltStore, waterStore } from '../state/stores';
 import { SectionTitle } from './pageinfo';
 import { flourActions, saltActions, waterActions } from '../state/actions';
+import { flour, water, salt, editButtonLabel, doneButtonLabel } from './text.json';
 
 export function CalcStart() {
   const [isLocked, setIsLocked] = useState(false);
 
-  const flour = useStore(flourStore);
-  const water = useStore(waterStore);
-  const salt = useStore(saltStore);
+  const flourData = useStore(flourStore);
+  const waterData = useStore(waterStore);
+  const saltData = useStore(saltStore);
 
   const setFlour = (/** @type {{ target: { value: string; }; }} */ e) => {
     const amount = parseFloat(e.target.value);
@@ -64,19 +65,19 @@ export function CalcStart() {
         <table>
           <tbody>
             <tr>
-              <th scope="row">Mąka</th>
-              <td>{flour.total} g</td>
+              <th scope="row">{flour}</th>
+              <td>{flourData.total} g</td>
               <td>100%</td>
             </tr>
             <tr>
-              <th scope="row">Woda</th>
-              <td>{Math.round(water.total)} g</td>
-              <td>{water.percentage}%</td>
+              <th scope="row">{water}</th>
+              <td>{Math.round(waterData.total)} g</td>
+              <td>{waterData.percentage}%</td>
             </tr>
             <tr>
-              <th scope="row">Sól</th>
-              <td>{Math.round(salt.total)} g</td>
-              <td>{salt.percentage}%</td>
+              <th scope="row">{salt}</th>
+              <td>{Math.round(saltData.total)} g</td>
+              <td>{saltData.percentage}%</td>
             </tr>
           </tbody>
         </table>
@@ -85,7 +86,7 @@ export function CalcStart() {
             <span class="icon">
               <Unlock />
             </span>{' '}
-            Edytuj
+            {editButtonLabel}
           </button>
         </p>
       </section>
@@ -98,7 +99,7 @@ export function CalcStart() {
       <p>{intro}</p>
       <form>
         <fieldset>
-          <legend>Mąka</legend>
+          <legend>{flour}</legend>
           <div class="grid">
             <div>
               <label>
@@ -106,7 +107,7 @@ export function CalcStart() {
                 <input
                   type="number"
                   inputMode="numeric"
-                  value={flour.total}
+                  value={flourData.total}
                   // @ts-ignore
                   onInput={setFlour}
                   required
@@ -120,7 +121,7 @@ export function CalcStart() {
           </div>
         </fieldset>
         <fieldset>
-          <legend>Woda</legend>
+          <legend>{water}</legend>
           <div class="grid">
             <div>
               <label>
@@ -129,7 +130,7 @@ export function CalcStart() {
                   type="number"
                   step="1"
                   inputMode="numeric"
-                  value={Math.round(water.total)}
+                  value={Math.round(waterData.total)}
                   onInput={(e) =>
                     // @ts-ignore
                     setWater(parseFloat(e.target.value), AmountType.TOTAL)
@@ -144,7 +145,7 @@ export function CalcStart() {
                   type="number"
                   step="0.1"
                   inputMode="numeric"
-                  value={round(water.percentage, 1)}
+                  value={round(waterData.percentage, 1)}
                   onInput={(e) =>
                     // @ts-ignore
                     setWater(parseFloat(e.target.value), AmountType.PERCENT)
@@ -158,7 +159,7 @@ export function CalcStart() {
           </div>
         </fieldset>
         <fieldset>
-          <legend>Sól</legend>
+          <legend>{salt}</legend>
           <div class="grid">
             <div>
               <label>
@@ -167,7 +168,7 @@ export function CalcStart() {
                   type="number"
                   step="1"
                   inputMode="numeric"
-                  value={Math.round(salt.total)}
+                  value={Math.round(saltData.total)}
                   onInput={(e) =>
                     // @ts-ignore
                     calcSalt(parseFloat(e.target.value), AmountType.TOTAL)
@@ -182,7 +183,7 @@ export function CalcStart() {
                   type="number"
                   step="0.1"
                   inputMode="numeric"
-                  value={round(salt.percentage, 1)}
+                  value={round(saltData.percentage, 1)}
                   onInput={(e) =>
                     // @ts-ignore
                     calcSalt(parseFloat(e.target.value), AmountType.PERCENT)
@@ -201,7 +202,7 @@ export function CalcStart() {
               <span class="icon">
                 <Lock />
               </span>{' '}
-              Gotowe
+              {doneButtonLabel}
             </button>
           </p>
         </fieldset>
