@@ -1,24 +1,16 @@
-import { useState } from 'preact/hooks';
 import { useStore } from '@nanostores/preact';
-import { Lock, Unlock } from 'preact-feather';
 
 import { round, AmountType } from '../utils/numbers';
-import {
-  fieldHelp,
-  title,
-  intro,
-  totalAmt,
-  orPct,
-  collapsedTitle,
-} from './calcstart.json';
+import { fieldHelp, title, intro, totalAmt, orPct } from './calcstart.json';
 import { flourStore, saltStore, waterStore } from '../state/stores';
 import { SectionTitle } from './pageinfo';
 import { flourActions, saltActions, waterActions } from '../state/actions';
-import { flour, water, salt, editButtonLabel, doneButtonLabel } from './text.json';
+import { flour, water, salt } from './text.json';
 
+/**
+ * @returns {JSX.Element}
+ */
 export function CalcStart() {
-  const [isLocked, setIsLocked] = useState(false);
-
   const flourData = useStore(flourStore);
   const waterData = useStore(waterStore);
   const saltData = useStore(saltStore);
@@ -52,46 +44,6 @@ export function CalcStart() {
       saltActions.setAmount(value);
     }
   };
-
-  const toggleLock = (/** @type {{ preventDefault: () => void; }} */ e) => {
-    e.preventDefault();
-    setIsLocked(!isLocked);
-  };
-
-  if (isLocked) {
-    return (
-      <section>
-        <SectionTitle level={2} title={collapsedTitle} />
-        <table>
-          <tbody>
-            <tr>
-              <th scope="row">{flour}</th>
-              <td>{flourData.total} g</td>
-              <td>100%</td>
-            </tr>
-            <tr>
-              <th scope="row">{water}</th>
-              <td>{Math.round(waterData.total)} g</td>
-              <td>{waterData.percentage}%</td>
-            </tr>
-            <tr>
-              <th scope="row">{salt}</th>
-              <td>{Math.round(saltData.total)} g</td>
-              <td>{saltData.percentage}%</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          <button class="autowidth" onClick={toggleLock}>
-            <span class="icon">
-              <Unlock />
-            </span>{' '}
-            {editButtonLabel}
-          </button>
-        </p>
-      </section>
-    );
-  }
 
   return (
     <section>
@@ -195,16 +147,6 @@ export function CalcStart() {
               <small>{fieldHelp.salt}</small>
             </div>
           </div>
-        </fieldset>
-        <fieldset>
-          <p>
-            <button class="autowidth" onClick={toggleLock}>
-              <span class="icon">
-                <Lock />
-              </span>{' '}
-              {doneButtonLabel}
-            </button>
-          </p>
         </fieldset>
       </form>
     </section>
