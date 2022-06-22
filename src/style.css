@@ -57,3 +57,8 @@ span.icon > svg {
 .label-required {
   color: red;
 }
+
+.error {
+  color: red;
+  font-weight: bold;
+}

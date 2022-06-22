@@ -50,7 +50,7 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
 
   const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
-    actionHandler && actionHandler();
+    actionHandler();
     buttonRef.current && buttonRef.current.blur();
   };
 
@@ -69,22 +69,8 @@ function ActionButton({ actionHandler, actionType, text, size, small = true }) {
     return null;
   };
 
-  const buttonClasses = ['button'];
-  if (small || (size != null && size < 32)) {
-    buttonClasses.push('button-icon-small');
-  }
-  if (text == null) {
-    buttonClasses.push('button-clear');
-  }
-  const buttonClassesStr = buttonClasses.join(' ');
-
   return (
-    <button
-      class={buttonClassesStr}
-      type="button"
-      ref={buttonRef}
-      onClick={handleButtonClick}
-    >
+    <button class="autowidth" type="button" ref={buttonRef} onClick={handleButtonClick}>
       <ActionTypeIcon />
       {text && `${text}`}
     </button>
