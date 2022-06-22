@@ -125,7 +125,7 @@ export function DryIngredients() {
   useEffect(() => {
     setCanAddItem(flourData.left > 0 && flourData.total > 0);
     setWarnFull(flourData.left <= 0 && flourData.total > 0);
-  }, [flourData, dryIngredients]);
+  }, [flourData.left, flourData.total]);
 
   const addItemHandler = () =>
     dryIngredientsActions.add({ id: uid(16), name: '', amount: 0, percentage: 0 });

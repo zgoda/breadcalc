@@ -1,16 +1,77 @@
+import { useRef, useState } from 'preact/hooks';
 import { useStore } from '@nanostores/preact';
+import { Edit, Lock } from 'preact-feather';
 
 import { round, AmountType } from '../utils/numbers';
 import { fieldHelp, title, intro, totalAmt, orPct } from './calcstart.json';
 import { flourStore, saltStore, waterStore } from '../state/stores';
 import { SectionTitle } from './pageinfo';
 import { flourActions, saltActions, waterActions } from '../state/actions';
-import { flour, water, salt } from './text.json';
+import { flour, water, salt, editButtonLabel, doneButtonLabel } from './text.json';
 
 /**
+ * @typedef {Object} MiscInfoPanelProps
+ * @property {(value: boolean) => void} lockStateSwitch
+ *
+ * @param {MiscInfoPanelProps} props
  * @returns {JSX.Element}
  */
-export function CalcStart() {
+function Info({ lockStateSwitch }) {
+  const buttonRef = useRef(null);
+
+  const flourData = useStore(flourStore);
+  const waterData = useStore(waterStore);
+  const saltData = useStore(saltStore);
+
+  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
+    e.preventDefault();
+    lockStateSwitch && lockStateSwitch(false);
+    buttonRef.current && buttonRef.current.blur();
+  };
+
+  return (
+    <div>
+      <table>
+        <tbody>
+          <tr>
+            <th scope="row">{flour}</th>
+            <td>100%</td>
+            <td>{flourData.total}</td>
+          </tr>
+          <tr>
+            <th scope="row">{water}</th>
+            <td>{waterData.percentage}%</td>
+            <td>{waterData.total}</td>
+          </tr>
+          <tr>
+            <th scope="row">{salt}</th>
+            <td>{saltData.percentage}%</td>
+            <td>{saltData.total}</td>
+          </tr>
+        </tbody>
+      </table>
+      <button
+        type="button"
+        ref={buttonRef}
+        onClick={handleButtonClick}
+        class="autowidth"
+      >
+        <Edit /> {editButtonLabel}
+      </button>
+    </div>
+  );
+}
+
+/**
+ * @typedef {Object} MiscFormProps
+ * @property {(arg0: boolean) => void} lockStateSwitch
+ *
+ * @param {MiscFormProps} props
+ * @returns {JSX.Element}
+ */
+function Form({ lockStateSwitch }) {
+  const buttonRef = useRef(null);
+
   const flourData = useStore(flourStore);
   const waterData = useStore(waterStore);
   const saltData = useStore(saltStore);
@@ -45,10 +106,14 @@ export function CalcStart() {
     }
   };
 
+  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
+    e.preventDefault();
+    lockStateSwitch && lockStateSwitch(true);
+    buttonRef.current && buttonRef.current.blur();
+  };
+
   return (
-    <section>
-      <SectionTitle level={2} title={title} />
-      <p>{intro}</p>
+    <div>
       <form>
         <fieldset>
           <legend>{flour}</legend>
@@ -149,6 +214,30 @@ export function CalcStart() {
           </div>
         </fieldset>
       </form>
+      <button
+        type="button"
+        ref={buttonRef}
+        onClick={handleButtonClick}
+        class="autowidth"
+      >
+        <Lock /> {doneButtonLabel}
+      </button>
+    </div>
+  );
+}
+
+/**
+ * @returns {JSX.Element}
+ */
+export function CalcStart() {
+  const [isLocked, setIsLocked] = useState(false);
+
+  return (
+    <section>
+      <SectionTitle level={2} title={title} />
+      <p>{intro}</p>
+      {isLocked && <Info lockStateSwitch={setIsLocked} />}
+      {!isLocked && <Form lockStateSwitch={setIsLocked} />}
     </section>
   );
 }

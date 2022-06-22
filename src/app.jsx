@@ -13,7 +13,7 @@ export function App() {
 
   const flour = useStore(flourStore);
 
-  useEffect(() => setDryIngredientsVisible(flour.left > 0), [flour.left]);
+  useEffect(() => setDryIngredientsVisible(flour.total > 0), [flour.total]);
 
   return (
     <>
