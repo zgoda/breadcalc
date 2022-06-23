@@ -1,5 +1,6 @@
 import { HelpCircle, PlusCircle, MinusCircle } from 'preact-feather';
 import { useState, useRef } from 'preact/hooks';
+import { createElement } from 'preact';
 
 /**
  * @typedef {object} HelpButtonProps
@@ -40,12 +41,11 @@ function HelpButton({ text }) {
  * @property {string} actionType
  * @property {string} [text]
  * @property {number} [size]
- * @property {boolean} [small=true]
  *
  * @param {ActionButtonProps} props
  * @returns {JSX.Element}
  */
-function ActionButton({ actionHandler, actionType, text, size, small = true }) {
+function ActionButton({ actionHandler, actionType, text, size }) {
   const buttonRef = useRef(null);
 
   const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
@@ -100,4 +100,16 @@ function RemoveItemButton({ actionHandler }) {
   return <ActionButton actionHandler={actionHandler} actionType="remove" />;
 }
 
-export { HelpButton, AddItemButton, RemoveItemButton };
+/**
+ * @typedef {object} SectionTitleProps
+ * @property {string} title
+ * @property {number} level
+ *
+ * @param {SectionTitleProps} props
+ * @returns {JSX.Element}
+ */
+function SectionTitle({ title, level }) {
+  return createElement(`h${level}`, {}, title);
+}
+
+export { HelpButton, AddItemButton, RemoveItemButton, SectionTitle };

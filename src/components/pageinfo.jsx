@@ -1,18 +1,5 @@
-import { createElement } from 'preact';
-
+import { SectionTitle } from './misc';
 import json from './pageinfo.json';
-
-/**
- * @typedef {object} SectionTitleProps
- * @property {string} title
- * @property {number} level
- *
- * @param {SectionTitleProps} props
- * @returns {JSX.Element}
- */
-function SectionTitle({ title, level }) {
-  return createElement(`h${level}`, {}, title);
-}
 
 /**
  * @typedef {object} PageInfoProps
@@ -21,15 +8,13 @@ function SectionTitle({ title, level }) {
  * @param {PageInfoProps} props
  * @returns {JSX.Element}
  */
-function PageInfo({ title }) {
+export function PageInfo({ title }) {
   return (
-    <>
+    <section>
       <SectionTitle title={title} level={1} />
       {json.text.map((line, index) => (
         <p key={`appinfo-line-${index}`}>{line}</p>
       ))}
-    </>
+    </section>
   );
 }
-
-export { PageInfo, SectionTitle };

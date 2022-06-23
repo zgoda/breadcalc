@@ -5,7 +5,7 @@ import { Edit, Lock } from 'preact-feather';
 import { round, AmountType } from '../utils/numbers';
 import { fieldHelp, title, intro, totalAmt, orPct } from './calcstart.json';
 import { flourStore, saltStore, waterStore } from '../state/stores';
-import { SectionTitle } from './pageinfo';
+import { SectionTitle } from './misc';
 import { flourActions, saltActions, waterActions } from '../state/actions';
 import { flour, water, salt, editButtonLabel, doneButtonLabel } from './text.json';
 
@@ -23,7 +23,7 @@ function Info({ lockStateSwitch }) {
   const waterData = useStore(waterStore);
   const saltData = useStore(saltStore);
 
-  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
+  const handleButtonClick = (/** @type {Event} */ e) => {
     e.preventDefault();
     lockStateSwitch && lockStateSwitch(false);
     buttonRef.current && buttonRef.current.blur();
@@ -64,7 +64,7 @@ function Info({ lockStateSwitch }) {
 
 /**
  * @typedef {Object} MiscFormProps
- * @property {(arg0: boolean) => void} lockStateSwitch
+ * @property {(value: boolean) => void} lockStateSwitch
  *
  * @param {MiscFormProps} props
  * @returns {JSX.Element}
@@ -106,7 +106,7 @@ function Form({ lockStateSwitch }) {
     }
   };
 
-  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
+  const handleButtonClick = (/** @type {Event} */ e) => {
     e.preventDefault();
     lockStateSwitch && lockStateSwitch(true);
     buttonRef.current && buttonRef.current.blur();

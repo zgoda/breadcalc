@@ -3,9 +3,8 @@ import { Lock } from 'preact-feather';
 import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
 
-import { RemoveItemButton } from './misc';
+import { RemoveItemButton, SectionTitle } from './misc';
 import { AmountType } from '../utils/numbers';
-import { SectionTitle } from './pageinfo';
 import { text, title } from './dryingredients.json';
 import { labelAmtGms, labelAmtPc, labelName } from './forms.json';
 import { doneButtonLabel } from './text.json';
@@ -72,7 +71,7 @@ function Form() {
     setAmtPc(amtPc);
   };
 
-  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
+  const handleButtonClick = (/** @type {Event} */ e) => {
     e.preventDefault();
     dryIngredientsActions.add({
       id: uid(16),
