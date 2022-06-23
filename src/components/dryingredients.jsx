@@ -3,7 +3,7 @@ import { Lock } from 'preact-feather';
 import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
 
-import { AddItemButton, RemoveItemButton } from './misc';
+import { RemoveItemButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { SectionTitle } from './pageinfo';
 import { text, title } from './dryingredients.json';
@@ -12,20 +12,26 @@ import { doneButtonLabel } from './text.json';
 import { dryIngredientsStore, flourStore } from '../state/stores';
 import { dryIngredientsActions } from '../state/actions';
 
+/**
+ * @returns {JSX.Element}
+ */
 function ItemsList() {
   const dryItems = useStore(dryIngredientsStore);
-
-  const removeItem = (/** @type {string} */ itemId) =>
-    dryIngredientsActions.remove(itemId);
 
   return (
     <table>
       {dryItems.map((item) => (
-        <tr>
+        <tr key={item.id}>
           <th scope="row">{item.name}</th>
           <td>{item.amount}g</td>
           <td>{item.percentage}%</td>
-          <td>{<RemoveItemButton actionHandler={() => removeItem(item.id)} />}</td>
+          <td>
+            {
+              <RemoveItemButton
+                actionHandler={() => dryIngredientsActions.remove(item.id)}
+              />
+            }
+          </td>
         </tr>
       ))}
     </table>
@@ -33,13 +39,9 @@ function ItemsList() {
 }
 
 /**
- * @typedef {object} DryIngredientFormProps
- * @property {import('../..').DryItem} [item]
- *
- * @param {DryIngredientFormProps} props
  * @returns {JSX.Element}
  */
-function Form({ item }) {
+function Form() {
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
@@ -47,14 +49,6 @@ function Form({ item }) {
   const buttonRef = useRef(null);
 
   const flourData = useStore(flourStore);
-
-  useEffect(() => {
-    if (item != null) {
-      setName(item.name);
-      setAmtWeight(item.amount);
-      setAmtPc(item.percentage);
-    }
-  }, [item]);
 
   const clearState = () => {
     setName('');
@@ -80,19 +74,12 @@ function Form({ item }) {
 
   const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
-    if (item != null) {
-      item.name = name;
-      item.amount = amtWeight;
-      item.percentage = amtPc;
-      dryIngredientsActions.update(item);
-    } else {
-      dryIngredientsActions.add({
-        id: uid(16),
-        name,
-        amount: amtWeight,
-        percentage: amtPc,
-      });
-    }
+    dryIngredientsActions.add({
+      id: uid(16),
+      name,
+      amount: amtWeight,
+      percentage: amtPc,
+    });
     clearState();
     buttonRef.current && buttonRef.current.blur();
   };
