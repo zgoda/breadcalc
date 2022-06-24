@@ -1,6 +1,7 @@
 {
   "text": {
-    "intro": "W tej sekcji wyliczone zostaną ilości dodatków, które wymagają namaczania, np siemię lniane. Konieczność namoczenia przed użyciem powoduje, że zmniejszy się ilość wody pozostałej do ciasta właściwego. Podobnie jak w innych sekcjach, ilość składnika możesz podać zarówno jako wagę, jak i jako procent piekarniczy (liczony w stosunku do całkowitej wagi mąki). Procentowy udział wody musi być podany w stosunku do ilości składnika, podobnie jak w przypadku namoczonej mąki. Oczywiście, można ilość wody podać jako wagę w gramach lub objętość w ml.",
-    "full": "Cała dostępna ilość wody została już wykorzystana."
+    "intro": "W tej sekcji wyliczone zostaną ilości dodatków, które wymagają namaczania, np siemię lniane. Konieczność namoczenia przed użyciem powoduje, że zmniejszy się ilość wody pozostałej do ciasta właściwego. Podobnie jak w innych sekcjach, ilość składnika możesz podać zarówno jako wagę, jak i jako procent piekarniczy (liczony w stosunku do całkowitej wagi mąki). Procentowy udział wody musi być podany w stosunku do ilości składnika, podobnie jak w przypadku namoczonej mąki. Oczywiście, można ilość wody podać jako wagę w gramach lub objętość w ml.",
+    "full": "Cała dostępna ilość wody została już wykorzystana.",
+    "title": "Dodatki namaczane"
   }
 }

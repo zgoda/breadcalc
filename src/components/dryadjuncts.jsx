@@ -145,6 +145,9 @@ function Form() {
   );
 }
 
+/**
+ * @returns {JSX.Element}
+ */
 export function DryAdjuncts() {
   const [canAddItem, setCanAddItem] = useState(true);
 

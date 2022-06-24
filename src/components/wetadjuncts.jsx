@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
+import { Lock } from 'preact-feather';
 import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
 
 import { AmountType } from '../utils/numbers';
-import { SectionTitle } from './pageinfo';
-import { AddItemButton, RemoveItemButton } from './misc';
+import { RemoveItemButton, SectionTitle } from './misc';
 import { text } from './wetadjuncts.json';
 import {
   labelAmtGms,
@@ -13,22 +13,42 @@ import {
   labelWaterGms,
   labelWaterPc,
 } from './forms.json';
-import {
-  flourStore,
-  waterStore,
-  wetAdjunctsStore,
-  wetIngredientsStore,
-} from '../state/stores';
+import { doneButtonLabel } from './text.json';
+import { flourStore, waterStore, wetAdjunctsStore } from '../state/stores';
 import { wetAdjunctsActions } from '../state/actions';
 
 /**
- * @typedef {object} WetAdjunctItemProps
- * @property {import('../..').WetItem} item
- *
- * @param {WetAdjunctItemProps} props
  * @returns {JSX.Element}
  */
-function WetAdjunctItem({ item }) {
+function ItemsList() {
+  const wetItems = useStore(wetAdjunctsStore);
+
+  return (
+    <table>
+      {wetItems.map((item) => (
+        <tr key={item.id}>
+          <th scope="row">{item.name}</th>
+          <td>{item.amount}g</td>
+          <td>{item.percentage}%</td>
+          <td>{item.waterAmount}g/ml</td>
+          <td>{item.waterPercentage}%</td>
+          <td>
+            {
+              <RemoveItemButton
+                actionHandler={() => wetAdjunctsActions.remove(item.id)}
+              />
+            }
+          </td>
+        </tr>
+      ))}
+    </table>
+  );
+}
+
+/**
+ * @returns {JSX.Element}
+ */
+function Form() {
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
@@ -38,17 +58,14 @@ function WetAdjunctItem({ item }) {
   const flour = useStore(flourStore);
   const water = useStore(waterStore);
 
-  useEffect(() => {
-    setName(item.name);
-    setAmtWeight(item.amount);
-    setAmtPc(item.percentage);
-    setWaterWeight(item.waterAmount);
-    setWaterPc(item.waterPercentage);
-  }, [item]);
+  const buttonRef = useRef(null);
 
-  const nameChange = (/** @type {string} */ name) => {
-    item.name = name;
-    wetAdjunctsActions.update(item);
+  const clearState = () => {
+    setName('');
+    setAmtWeight(0);
+    setAmtPc(0);
+    setWaterWeight(0);
+    setWaterPc(0);
   };
 
   const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
@@ -61,10 +78,7 @@ function WetAdjunctItem({ item }) {
       amtPc = (value / flour.total) * 100;
     }
     setAmtWeight(amtWeight);
-    item.amount = amtWeight;
     setAmtPc(amtPc);
-    item.percentage = amtPc;
-    wetAdjunctsActions.update(item);
   };
 
   const recalcWater = (/** @type {number} */ value, /** @type {string} */ type) => {
@@ -80,141 +94,139 @@ function WetAdjunctItem({ item }) {
       waterPc = (value / amtWeight) * 100;
     }
     setWaterWeight(waterWeight);
-    item.waterAmount = waterWeight;
     setWaterPc(waterPc);
-    item.waterPercentage = waterPc;
-    wetAdjunctsActions.update(item);
   };
 
-  const removeItem = () => {
-    wetAdjunctsActions.remove(item.id);
+  const handleButtonClick = (/** @type {Event} */ e) => {
+    e.preventDefault();
+    wetAdjunctsActions.add({
+      id: uid(16),
+      name,
+      amount: amtWeight,
+      percentage: amtPc,
+      waterAmount: waterWeight,
+      waterPercentage: waterPc,
+    });
+    clearState();
+    buttonRef.current && buttonRef.current.blur();
   };
 
   return (
-    <div class="section-wrapper">
-      <div class="row">
-        <div class="column">
-          <label>
-            {labelName} <span class="label-required">*</span>
-            <input
-              type="text"
-              value={name}
-              // @ts-ignore
-              onInput={(e) => setName(e.target.value)}
-              // @ts-ignore
-              onBlur={(e) => nameChange(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div class="column">
-          <label>
-            {labelAmtGms}
-            <input
-              type="number"
-              inputMode="numeric"
-              step="1"
-              value={amtWeight}
-              // @ts-ignore
-              onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
-              // @ts-ignore
-              onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            />
-          </label>
-          <label>
-            {labelAmtPc}
-            <input
-              type="number"
-              inputMode="numeric"
-              step="0.1"
-              value={amtPc}
-              onBlur={(e) =>
+    <div>
+      <form>
+        <div class="grid">
+          <div>
+            <label>
+              {labelName} <span class="label-required">*</span>
+              <input
+                type="text"
+                value={name}
                 // @ts-ignore
-                recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
-              }
-              // @ts-ignore
-              onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            />
-          </label>
-        </div>
-        <div class="column">
-          <label>
-            {labelWaterGms}
-            <input
-              type="number"
-              inputMode="numeric"
-              step="1"
-              max={water.left}
-              value={waterWeight}
-              // @ts-ignore
-              onBlur={(e) => recalcWater(parseFloat(e.target.value), AmountType.TOTAL)}
-              // @ts-ignore
-              onInput={(e) => setWaterWeight(parseFloat(e.target.value))}
-            />
-          </label>
-          <label>
-            {labelWaterPc}
-            <input
-              type="number"
-              inputMode="numeric"
-              step="0.1"
-              value={waterPc}
-              onBlur={(e) =>
+                onInput={(e) => setName(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              {labelAmtGms}
+              <input
+                type="number"
+                inputMode="numeric"
+                step="1"
+                value={amtWeight}
+                onBlur={(e) =>
+                  // @ts-ignore
+                  recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
+                }
                 // @ts-ignore
-                recalcWater(parseFloat(e.target.value), AmountType.PERCENT)
-              }
-              // @ts-ignore
-              onInput={(e) => setWaterPc(parseFloat(e.target.value))}
-            />
-          </label>
+                onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+              />
+            </label>
+            <label>
+              {labelAmtPc}
+              <input
+                type="number"
+                inputMode="numeric"
+                step="0.1"
+                value={amtPc}
+                onBlur={(e) =>
+                  // @ts-ignore
+                  recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
+                }
+                // @ts-ignore
+                onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              {labelWaterGms}
+              <input
+                type="number"
+                inputMode="numeric"
+                step="1"
+                max={water.left}
+                value={waterWeight}
+                onBlur={(e) =>
+                  // @ts-ignore
+                  recalcWater(parseFloat(e.target.value), AmountType.TOTAL)
+                }
+                // @ts-ignore
+                onInput={(e) => setWaterWeight(parseFloat(e.target.value))}
+              />
+            </label>
+            <label>
+              {labelWaterPc}
+              <input
+                type="number"
+                inputMode="numeric"
+                step="0.1"
+                value={waterPc}
+                onBlur={(e) =>
+                  // @ts-ignore
+                  recalcWater(parseFloat(e.target.value), AmountType.PERCENT)
+                }
+                // @ts-ignore
+                onInput={(e) => setWaterPc(parseFloat(e.target.value))}
+              />
+            </label>
+          </div>
         </div>
-      </div>
-      <div class="column-center center">
-        <RemoveItemButton actionHandler={removeItem} />
-      </div>
+      </form>
+      <button
+        type="button"
+        ref={buttonRef}
+        onClick={handleButtonClick}
+        class="autowidth"
+      >
+        <Lock /> {doneButtonLabel}
+      </button>
     </div>
   );
 }
 
-function WetAdjuncts() {
+/**
+ * @returns {JSX.Element}
+ */
+export function WetAdjuncts() {
   const [canAddItem, setCanAddItem] = useState(true);
   const [warnFull, setWarnFull] = useState(false);
 
   const water = useStore(waterStore);
-  const flour = useStore(flourStore);
-  const wetAdjuncts = useStore(wetAdjunctsStore);
-  const wetIngredients = useStore(wetIngredientsStore);
 
   useEffect(() => {
     setCanAddItem(water.left > 0 && water.total > 0);
     setWarnFull(water.left <= 0 && water.total > 0);
-  }, [flour, water, wetAdjuncts, wetIngredients]);
-
-  const addItemHandler = () =>
-    wetAdjunctsActions.add({
-      id: uid(16),
-      name: '',
-      amount: 0,
-      percentage: 0,
-      waterAmount: 0,
-      waterPercentage: 0,
-    });
+  }, [water.left, water.total]);
 
   return (
     <section>
-      <SectionTitle title="Dodatki namaczane" level={3} />
-      <p>{text.intro}</p>
+      <SectionTitle title={text.title} level={3} />
+      {!warnFull && <p>{text.intro}</p>}
       {warnFull && <p class="error">{text.full}</p>}
-      <form>
-        {wetAdjuncts.map((item) => (
-          <WetAdjunctItem item={item} key={item.id} />
-        ))}
-      </form>
-      <div class="center">
-        {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
-      </div>
+      <ItemsList />
+      {canAddItem && <Form />}
     </section>
   );
 }
-
-export { WetAdjuncts };
