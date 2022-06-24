@@ -1,38 +1,58 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
+import { Lock } from 'preact-feather';
 import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
 
-import { SectionTitle } from './pageinfo';
-import { AddItemButton, RemoveItemButton } from './misc';
+import { RemoveItemButton, SectionTitle } from './misc';
 import { AmountType } from '../utils/numbers';
 import { text } from './dryadjuncts.json';
+import { doneButtonLabel } from './text.json';
 import { labelAmtGms, labelAmtPc, labelName } from './forms.json';
 import { dryAdjunctsStore, flourStore } from '../state/stores';
 import { dryAdjunctsActions } from '../state/actions';
 
 /**
- * @typedef {object} DryAdjunctItemProps
- * @property {import('../..').DryItem} item
- *
- * @param {DryAdjunctItemProps} props
  * @returns {JSX.Element}
  */
-function DryAdjunctItem({ item }) {
+function ItemsList() {
+  const dryItems = useStore(dryAdjunctsStore);
+
+  return (
+    <table>
+      {dryItems.map((item) => (
+        <tr key={item.id}>
+          <th scope="row">{item.name}</th>
+          <td>{item.amount}g</td>
+          <td>{item.percentage}%</td>
+          <td>
+            {
+              <RemoveItemButton
+                actionHandler={() => dryAdjunctsActions.remove(item.id)}
+              />
+            }
+          </td>
+        </tr>
+      ))}
+    </table>
+  );
+}
+
+/**
+ * @returns {JSX.Element}
+ */
+function Form() {
   const [name, setName] = useState('');
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
 
   const flour = useStore(flourStore);
 
-  useEffect(() => {
-    setName(item.name);
-    setAmtWeight(item.amount);
-    setAmtPc(item.percentage);
-  }, [item]);
+  const buttonRef = useRef(null);
 
-  const nameChange = (/** @type {string} */ name) => {
-    item.name = name;
-    dryAdjunctsActions.update(item);
+  const clearState = () => {
+    setName('');
+    setAmtWeight(0);
+    setAmtPc(0);
   };
 
   const recalcAmount = (/** @type {number} */ value, /** @type {string} */ type) => {
@@ -45,96 +65,101 @@ function DryAdjunctItem({ item }) {
       amtPc = (value / flour.total) * 100;
     }
     setAmtWeight(amtWeight);
-    item.amount = amtWeight;
     setAmtPc(amtPc);
-    item.percentage = amtPc;
   };
 
-  const removeItem = () => dryAdjunctsActions.remove(item.id);
+  const handleButtonClick = (/** @type {Event} */ e) => {
+    e.preventDefault();
+    dryAdjunctsActions.add({
+      id: uid(16),
+      name,
+      amount: amtWeight,
+      percentage: amtPc,
+    });
+    clearState();
+    buttonRef.current && buttonRef.current.blur();
+  };
 
   return (
-    <div class="section-wrapper">
-      <div class="row">
-        <div class="column">
-          <label>
-            {labelName} <span class="label-required">*</span>
-            <input
-              type="text"
-              value={name}
-              // @ts-ignore
-              onInput={(e) => setName(e.target.value)}
-              // @ts-ignore
-              onBlur={(e) => nameChange(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div class="column">
-          <label>
-            {labelAmtGms}
-            <input
-              type="number"
-              inputMode="numeric"
-              step="1"
-              value={amtWeight}
-              // @ts-ignore
-              onBlur={(e) => recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)}
-              // @ts-ignore
-              onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
-            />
-          </label>
-          <label>
-            {labelAmtPc}
-            <input
-              type="number"
-              inputMode="numeric"
-              step="0.1"
-              max="100"
-              value={amtPc}
-              onBlur={(e) =>
+    <div>
+      <form>
+        <div class="grid">
+          <div>
+            <label>
+              {labelName} <span class="label-required">*</span>
+              <input
+                type="text"
+                value={name}
                 // @ts-ignore
-                recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
-              }
-              // @ts-ignore
-              onInput={(e) => setAmtPc(parseFloat(e.target.value))}
-            />
-          </label>
+                onInput={(e) => setName(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              {labelAmtGms}
+              <input
+                type="number"
+                inputMode="numeric"
+                step="1"
+                value={amtWeight}
+                onBlur={(e) =>
+                  // @ts-ignore
+                  recalcAmount(parseFloat(e.target.value), AmountType.TOTAL)
+                }
+                // @ts-ignore
+                onInput={(e) => setAmtWeight(parseFloat(e.target.value))}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              {labelAmtPc}
+              <input
+                type="number"
+                inputMode="numeric"
+                step="0.1"
+                max="100"
+                value={amtPc}
+                onBlur={(e) =>
+                  // @ts-ignore
+                  recalcAmount(parseFloat(e.target.value), AmountType.PERCENT)
+                }
+                // @ts-ignore
+                onInput={(e) => setAmtPc(parseFloat(e.target.value))}
+              />
+            </label>
+          </div>
         </div>
-      </div>
-      <div class="column-center center">
-        <RemoveItemButton actionHandler={removeItem} />
-      </div>
+      </form>
+      <button
+        type="button"
+        ref={buttonRef}
+        onClick={handleButtonClick}
+        class="autowidth"
+      >
+        <Lock /> {doneButtonLabel}
+      </button>
     </div>
   );
 }
 
-function DryAdjuncts() {
+export function DryAdjuncts() {
   const [canAddItem, setCanAddItem] = useState(true);
 
   const flour = useStore(flourStore);
-  const dryAdjuncts = useStore(dryAdjunctsStore);
 
   useEffect(() => {
     setCanAddItem(flour.total > 0);
   }, [flour]);
 
-  const addItemHandler = () =>
-    dryAdjunctsActions.add({ id: uid(16), name: '', amount: 0, percentage: 0 });
-
   return (
     <section>
       <SectionTitle title="Dodatki suche" level={3} />
-      <p>{text}</p>
-      <form>
-        {dryAdjuncts.map((item) => (
-          <DryAdjunctItem item={item} key={item.id} />
-        ))}
-      </form>
-      <div class="center">
-        {canAddItem && <AddItemButton actionHandler={addItemHandler} />}
-      </div>
+      {canAddItem && <p>{text}</p>}
+      <ItemsList />
+      {canAddItem && <Form />}
     </section>
   );
 }
-
-export { DryAdjuncts };
