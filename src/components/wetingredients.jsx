@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
-import { Lock } from 'preact-feather';
 
-import { RemoveItemButton, SectionTitle } from './misc';
+import { RemoveItemButton, SectionTitle, DoneButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { text } from './wetingredients.json';
 import {
@@ -13,7 +12,6 @@ import {
   labelWaterGms,
   labelWaterPc,
 } from './forms.json';
-import { doneButtonLabel } from './text.json';
 import {
   dryIngredientsStore,
   flourStore,
@@ -63,8 +61,6 @@ function Form() {
   const flour = useStore(flourStore);
   const water = useStore(waterStore);
 
-  const buttonRef = useRef(null);
-
   const clearState = () => {
     setName('');
     setAmtWeight(0);
@@ -102,8 +98,7 @@ function Form() {
     setWaterPc(waterPc);
   };
 
-  const handleButtonClick = (/** @type {Event} */ e) => {
-    e.preventDefault();
+  const handleButtonClick = () => {
     wetIngredientsActions.add({
       id: uid(16),
       name,
@@ -113,7 +108,6 @@ function Form() {
       waterPercentage: waterPc,
     });
     clearState();
-    buttonRef.current && buttonRef.current.blur();
   };
 
   return (
@@ -201,14 +195,7 @@ function Form() {
           </div>
         </div>
       </form>
-      <button
-        class="autowidth"
-        type="button"
-        onClick={handleButtonClick}
-        ref={buttonRef}
-      >
-        <Lock /> {doneButtonLabel}
-      </button>
+      <DoneButton handler={handleButtonClick} />
     </div>
   );
 }

@@ -1,13 +1,11 @@
-import { useState, useEffect, useRef } from 'preact/hooks';
-import { Lock } from 'preact-feather';
+import { useState, useEffect } from 'preact/hooks';
 import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
 
-import { RemoveItemButton, SectionTitle } from './misc';
+import { RemoveItemButton, SectionTitle, DoneButton } from './misc';
 import { AmountType } from '../utils/numbers';
 import { text, title } from './dryingredients.json';
 import { labelAmtGms, labelAmtPc, labelName } from './forms.json';
-import { doneButtonLabel } from './text.json';
 import { dryIngredientsStore, flourStore } from '../state/stores';
 import { dryIngredientsActions } from '../state/actions';
 
@@ -45,8 +43,6 @@ function Form() {
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
 
-  const buttonRef = useRef(null);
-
   const flourData = useStore(flourStore);
 
   const clearState = () => {
@@ -71,8 +67,7 @@ function Form() {
     setAmtPc(amtPc);
   };
 
-  const handleButtonClick = (/** @type {Event} */ e) => {
-    e.preventDefault();
+  const handleButtonClick = () => {
     dryIngredientsActions.add({
       id: uid(16),
       name,
@@ -80,7 +75,6 @@ function Form() {
       percentage: amtPc,
     });
     clearState();
-    buttonRef.current && buttonRef.current.blur();
   };
 
   return (
@@ -137,14 +131,7 @@ function Form() {
           </div>
         </div>
       </form>
-      <button
-        type="button"
-        ref={buttonRef}
-        onClick={handleButtonClick}
-        class="autowidth"
-      >
-        <Lock /> {doneButtonLabel}
-      </button>
+      <DoneButton handler={handleButtonClick} />
     </div>
   );
 }

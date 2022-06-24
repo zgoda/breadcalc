@@ -1,13 +1,13 @@
 import { useRef, useState } from 'preact/hooks';
 import { useStore } from '@nanostores/preact';
-import { Edit, Lock } from 'preact-feather';
+import { Edit } from 'preact-feather';
 
 import { round, AmountType } from '../utils/numbers';
 import { fieldHelp, title, intro, totalAmt, orPct } from './calcstart.json';
 import { flourStore, saltStore, waterStore } from '../state/stores';
-import { SectionTitle } from './misc';
+import { SectionTitle, DoneButton } from './misc';
 import { flourActions, saltActions, waterActions } from '../state/actions';
-import { flour, water, salt, editButtonLabel, doneButtonLabel } from './text.json';
+import { flour, water, salt, editButtonLabel } from './text.json';
 
 /**
  * @typedef {Object} MiscInfoPanelProps
@@ -70,8 +70,6 @@ function Info({ lockStateSwitch }) {
  * @returns {JSX.Element}
  */
 function Form({ lockStateSwitch }) {
-  const buttonRef = useRef(null);
-
   const flourData = useStore(flourStore);
   const waterData = useStore(waterStore);
   const saltData = useStore(saltStore);
@@ -106,10 +104,8 @@ function Form({ lockStateSwitch }) {
     }
   };
 
-  const handleButtonClick = (/** @type {Event} */ e) => {
-    e.preventDefault();
+  const handleButtonClick = () => {
     lockStateSwitch && lockStateSwitch(true);
-    buttonRef.current && buttonRef.current.blur();
   };
 
   return (
@@ -214,14 +210,7 @@ function Form({ lockStateSwitch }) {
           </div>
         </fieldset>
       </form>
-      <button
-        type="button"
-        ref={buttonRef}
-        onClick={handleButtonClick}
-        class="autowidth"
-      >
-        <Lock /> {doneButtonLabel}
-      </button>
+      <DoneButton handler={handleButtonClick} />
     </div>
   );
 }

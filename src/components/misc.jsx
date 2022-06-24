@@ -1,6 +1,8 @@
-import { HelpCircle, PlusCircle, MinusCircle } from 'preact-feather';
+import { HelpCircle, PlusCircle, MinusCircle, Lock } from 'preact-feather';
 import { useState, useRef } from 'preact/hooks';
 import { createElement } from 'preact';
+
+import { doneButtonLabel } from './text.json';
 
 /**
  * @typedef {object} HelpButtonProps
@@ -101,7 +103,7 @@ function RemoveItemButton({ actionHandler }) {
 }
 
 /**
- * @typedef {object} SectionTitleProps
+ * @typedef {Object} SectionTitleProps
  * @property {string} title
  * @property {number} level
  *
@@ -112,4 +114,27 @@ function SectionTitle({ title, level }) {
   return createElement(`h${level}`, {}, title);
 }
 
-export { HelpButton, AddItemButton, RemoveItemButton, SectionTitle };
+/**
+ * @typedef {Object} DoneButtonProps
+ * @property {() => void} handler
+ *
+ * @param {DoneButtonProps} props
+ * @returns {JSX.Element}
+ */
+function DoneButton({ handler }) {
+  const buttonRef = useRef(null);
+
+  const handleButtonClick = (/** @type {Event} */ e) => {
+    e.preventDefault();
+    handler();
+    buttonRef.current && buttonRef.current.blur();
+  };
+
+  return (
+    <button type="button" ref={buttonRef} onClick={handleButtonClick} class="autowidth">
+      <Lock /> {doneButtonLabel}
+    </button>
+  );
+}
+
+export { HelpButton, AddItemButton, RemoveItemButton, SectionTitle, DoneButton };
