@@ -163,7 +163,7 @@ export function DryIngredients() {
   return (
     <section>
       <SectionTitle title={title} level={3} />
-      <p>{text.intro}</p>
+      {!warnFull && <p>{text.intro}</p>}
       {warnFull && <p class="error">{text.full}</p>}
       <ItemsList />
       {canAddItem && <Form />}

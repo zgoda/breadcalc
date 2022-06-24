@@ -244,7 +244,7 @@ export function WetIngredients() {
   return (
     <section>
       <SectionTitle title={text.title} level={3} />
-      <p>{text.intro}</p>
+      {!warnFull && <p>{text.intro}</p>}
       {warnFull && <p class="error">{text.full}</p>}
       <ItemsList />
       {canAddItem && <Form />}
