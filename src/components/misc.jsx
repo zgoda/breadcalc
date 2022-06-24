@@ -1,4 +1,4 @@
-import { HelpCircle, PlusCircle, MinusCircle, Lock } from 'preact-feather';
+import { HelpCircle, PlusCircle, MinusCircle, Check } from 'preact-feather';
 import { useState, useRef } from 'preact/hooks';
 import { createElement } from 'preact';
 
@@ -132,7 +132,7 @@ function DoneButton({ handler }) {
 
   return (
     <button type="button" ref={buttonRef} onClick={handleButtonClick} class="autowidth">
-      <Lock /> {doneButtonLabel}
+      <Check /> {doneButtonLabel}
     </button>
   );
 }
