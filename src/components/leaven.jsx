@@ -2,8 +2,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { uid } from 'uid';
 import { useStore } from '@nanostores/preact';
 
-import { AddItemButton, RemoveItemButton } from './misc';
-import { SectionTitle } from './pageinfo';
+import { AddItemButton, RemoveItemButton, SectionTitle } from './misc';
 import { AmountType } from '../utils/numbers';
 import { text } from './leaven.json';
 import {
@@ -14,6 +13,9 @@ import {
 } from '../state/stores';
 import { flourActions, leavenActions, waterActions } from '../state/actions';
 
+/**
+ * @returns {JSX.Element}
+ */
 function LeavenFlourWeight() {
   const [amtWeight, setAmtWeight] = useState(0);
   const [amtPc, setAmtPc] = useState(0);
@@ -35,9 +37,9 @@ function LeavenFlourWeight() {
   };
 
   return (
-    <div class="section-wrapper">
-      <div class="row">
-        <div class="column">
+    <div>
+      <div class="grid">
+        <div>
           <label>
             Waga mąki w zaczynie (g)
             <input
@@ -53,7 +55,7 @@ function LeavenFlourWeight() {
             />
           </label>
         </div>
-        <div class="column">
+        <div>
           <label>
             Jako % całkowitej ilości mąki
             <input
@@ -286,7 +288,7 @@ function LeavenFlourItems({
   );
 }
 
-function Leaven() {
+export function Leaven() {
   const [canAddItem, setCanAddItem] = useState(true);
   const [canAddWater, setCanAddWater] = useState(false);
   const [canSetFlour, setCanSetFlour] = useState(false);
@@ -309,7 +311,7 @@ function Leaven() {
     setLeavenFlourItems(leaven.flourItems);
     setLeavenWater(leaven.water);
     setLeavenSourdough(leaven.sourdough);
-  }, [leaven]);
+  }, [leaven.flourItems, leaven.water, leaven.sourdough]);
 
   useEffect(() => {
     const canAddItem = flour.total > 0 && water.total > 0 && dryIngredients.length > 0;
@@ -323,8 +325,9 @@ function Leaven() {
     );
     setCanAddWater(flour.total > 0 && water.total > 0 && water.left > 0);
   }, [
-    flour,
-    water,
+    flour.total,
+    water.total,
+    water.left,
     dryIngredients,
     leavenFlourLeft,
     leavenFlourItems,
@@ -397,8 +400,8 @@ function Leaven() {
 
   return (
     <section>
-      <SectionTitle title="Zaczyn" level={2} />
-      <p>{text.intro}</p>
+      <SectionTitle title={text.title} level={2} />
+      {!isFull && <p>{text.intro}</p>}
       {canSetFlour && <LeavenFlourWeight />}
       {canAddWater && (
         <LeavenWaterWeight
@@ -411,5 +414,3 @@ function Leaven() {
     </section>
   );
 }
-
-export { Leaven };
