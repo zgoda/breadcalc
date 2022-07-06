@@ -35,11 +35,11 @@ export function App() {
     <>
       <PageInfo title="Kalkulator ciasta chlebowego" />
       <CalcStart />
+      {leavenVisible && <Leaven />}
       {dryIngredientsVisible && <DryIngredients />}
       {wetIngredientsVisible && <WetIngredients />}
       {dryAdjunctsVisible && <DryAdjuncts />}
       {wetAdjunctsVisible && <WetAdjuncts />}
-      {leavenVisible && <Leaven />}
       <hr />
       <About />
     </>
