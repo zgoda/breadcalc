@@ -23,7 +23,7 @@
     "uid": "^2.0.0"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.3.1",
+    "@preact/preset-vite": "^2.4.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/preact": "^3.2.2",
     "cross-env": "^7.0.3",
@@ -37,7 +37,7 @@
     "prettier": "^2.7.1",
     "vite": "^3.1.0",
     "vite-plugin-handlebars": "^1.6.0",
-    "vite-plugin-pwa": "^0.12.6",
+    "vite-plugin-pwa": "^0.12.7",
     "workbox-window": "^6.5.4"
   }
 }
