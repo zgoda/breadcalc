@@ -15,9 +15,9 @@
     "not dead"
   ],
   "dependencies": {
-    "@nanostores/preact": "^0.2.1",
+    "@nanostores/preact": "^0.3.0",
     "@picocss/pico": "^1.5.3",
-    "nanostores": "^0.6.0",
+    "nanostores": "^0.7.0",
     "preact": "^10.10.6",
     "preact-feather": "^4.2.1",
     "uid": "^2.0.0"
