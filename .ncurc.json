@@ -1,6 +1,5 @@
 {
   "reject": [
-    "jest",
-    "vite"
+    "jest"
   ]
 }
