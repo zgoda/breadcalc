@@ -1,41 +1,8 @@
-import { HelpCircle, PlusCircle, MinusCircle, Check } from 'preact-feather';
-import { useState, useRef } from 'preact/hooks';
+import { PlusCircle, MinusCircle, Check } from 'preact-feather';
+import { useRef } from 'preact/hooks';
 import { createElement } from 'preact';
 
 import { doneButtonLabel } from './text.json';
-
-/**
- * @typedef {object} HelpButtonProps
- * @property {string} text
- *
- * @param {HelpButtonProps} props
- * @returns {JSX.Element}
- */
-function HelpButton({ text }) {
-  const [helpVisible, setHelpVisible] = useState(false);
-
-  const buttonRef = useRef(null);
-
-  const handleButtonClick = (/** @type {{ preventDefault: () => void; }} */ e) => {
-    e.preventDefault();
-    setHelpVisible(!helpVisible);
-    buttonRef.current && buttonRef.current.blur();
-  };
-
-  return (
-    <>
-      <button
-        class="button button-clear button-icon-small"
-        type="button"
-        ref={buttonRef}
-        onClick={handleButtonClick}
-      >
-        <HelpCircle />
-      </button>
-      {helpVisible && <div class="field-help">{text}</div>}
-    </>
-  );
-}
 
 /**
  * @typedef {Object} ActionButtonProps
@@ -87,7 +54,7 @@ function ActionButton({ actionHandler, actionType, text, size }) {
  * @param {AddItemButtonProps} props
  * @returns {JSX.Element}
  */
-function AddItemButton({ actionHandler, size = 32 }) {
+export function AddItemButton({ actionHandler, size = 32 }) {
   return <ActionButton actionHandler={actionHandler} actionType="add" size={size} />;
 }
 
@@ -98,7 +65,7 @@ function AddItemButton({ actionHandler, size = 32 }) {
  * @param {RemoveItemButtonProps} props
  * @returns {JSX.Element}
  */
-function RemoveItemButton({ actionHandler }) {
+export function RemoveItemButton({ actionHandler }) {
   return <ActionButton actionHandler={actionHandler} actionType="remove" />;
 }
 
@@ -110,7 +77,7 @@ function RemoveItemButton({ actionHandler }) {
  * @param {SectionTitleProps} props
  * @returns {JSX.Element}
  */
-function SectionTitle({ title, level }) {
+export function SectionTitle({ title, level }) {
   return createElement(`h${level}`, {}, title);
 }
 
@@ -121,7 +88,7 @@ function SectionTitle({ title, level }) {
  * @param {DoneButtonProps} props
  * @returns {JSX.Element}
  */
-function DoneButton({ handler }) {
+export function DoneButton({ handler }) {
   const buttonRef = useRef(null);
 
   const handleButtonClick = (/** @type {Event} */ e) => {
@@ -136,5 +103,3 @@ function DoneButton({ handler }) {
     </button>
   );
 }
-
-export { HelpButton, AddItemButton, RemoveItemButton, SectionTitle, DoneButton };
