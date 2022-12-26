@@ -16,19 +16,20 @@ import { flourActions, leavenActions, waterActions } from '../state/actions';
 
 /**
  * @typedef {object} LeavenBaseItemsProps
- * @property {number} leavenFlourTotal
  * @property {(amount: number) => void} changeWaterHandler
+ * @property {(amount: number) => void} changeFlourHandler
  *
  * @param {LeavenBaseItemsProps} props
  * @returns {JSX.Element}
  */
-function LeavenBaseItems({ leavenFlourTotal, changeWaterHandler }) {
+function LeavenBaseItems({ changeWaterHandler, changeFlourHandler }) {
   const [amtFlourWeight, setAmtFlourWeight] = useState(0);
   const [amtFlourPc, setAmtFlourPc] = useState(0);
   const [amtWaterWeight, setAmtWaterWeight] = useState(0);
   const [amtWaterPc, setAmtWaterPc] = useState(0);
 
   const flour = useStore(flourStore);
+  const leaven = useStore(leavenStore);
 
   const recalcFlourAmount = (
     /** @type {number} */ value,
@@ -44,6 +45,7 @@ function LeavenBaseItems({ leavenFlourTotal, changeWaterHandler }) {
     }
     setAmtFlourWeight(amtWeight);
     setAmtFlourPc(amtPc);
+    changeFlourHandler(amtWeight);
   };
 
   const recalcWaterAmount = (
@@ -53,9 +55,9 @@ function LeavenBaseItems({ leavenFlourTotal, changeWaterHandler }) {
     let amtPc, amtWeight;
     if (type === AmountType.PERCENT) {
       amtPc = value;
-      amtWeight = (leavenFlourTotal * value) / 100;
+      amtWeight = (leaven.flourTotal * value) / 100;
     } else if (type === AmountType.TOTAL) {
-      amtPc = (value / leavenFlourTotal) * 100;
+      amtPc = (value / leaven.flourTotal) * 100;
       amtWeight = value;
     }
     setAmtWaterPc(amtPc);
@@ -358,7 +360,7 @@ export function Leaven() {
     updateLeaven();
   };
 
-  const changeFlourItemHandler = (/** @type {number} */ amtFlour) => {
+  const changeFlourHandler = (/** @type {number} */ amtFlour) => {
     setLeavenFlourTotal(leavenFlourTotal + amtFlour);
     setLeavenFlourLeft(leavenFlourLeft - amtFlour);
     flourActions.use(amtFlour);
@@ -386,7 +388,7 @@ export function Leaven() {
           items={leavenFlourItems}
           leavenFlourTotal={leavenFlourTotal}
           leavenFlourLeft={leavenFlourLeft}
-          changeItemHandler={changeFlourItemHandler}
+          changeItemHandler={changeFlourHandler}
           removeItemHandler={removeFlourItemHandler}
         />
         <div class="center">
@@ -403,7 +405,7 @@ export function Leaven() {
       {canSetBaseItems && (
         <LeavenBaseItems
           changeWaterHandler={changeWaterHandler}
-          leavenFlourTotal={leavenFlourTotal}
+          changeFlourHandler={changeFlourHandler}
         />
       )}
       {canAddItem && <LeavenIngredients />}
