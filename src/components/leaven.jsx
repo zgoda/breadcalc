@@ -12,7 +12,8 @@ import {
   leavenStore,
   waterStore,
 } from '../state/stores';
-import { flourActions, leavenActions } from '../state/actions';
+import { flourActions } from '../state/actions';
+import { setFlourTotal, setWaterTotal } from '../state/actions/leaven';
 
 /**
  * @typedef {object} LeavenBaseItemsProps
@@ -26,9 +27,15 @@ function LeavenBaseItems({ changeFlourHandler }) {
   const [amtFlourPc, setAmtFlourPc] = useState(0);
   const [amtWaterWeight, setAmtWaterWeight] = useState(0);
   const [amtWaterPc, setAmtWaterPc] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
 
   const flour = useStore(flourStore);
+  const water = useStore(waterStore);
   const leaven = useStore(leavenStore);
+
+  useEffect(() => {
+    setIsVisible(flour.total > 0 && water.total > 0 && water.left > 0);
+  }, [flour.total, water.total, water.left]);
 
   const recalcFlourAmount = (
     /** @type {number} */ value,
@@ -61,8 +68,12 @@ function LeavenBaseItems({ changeFlourHandler }) {
     }
     setAmtWaterPc(amtPc);
     setAmtWaterWeight(amtWeight);
-    leavenActions.setWaterTotal(amtWeight);
+    setWaterTotal(amtWeight);
   };
+
+  if (!isVisible) {
+    return <></>;
+  }
 
   return (
     <div>
@@ -141,7 +152,7 @@ function LeavenBaseItems({ changeFlourHandler }) {
             </label>
           </div>
         </div>
-        <DoneButton handler={() => leavenActions.setFlourTotal(amtFlourWeight)} />
+        <DoneButton handler={() => setFlourTotal(amtFlourWeight)} />
       </form>
     </div>
   );
@@ -293,7 +304,6 @@ function LeavenFlourItems({
 
 export function Leaven() {
   const [canAddItem, setCanAddItem] = useState(true);
-  const [canSetBaseItems, setCanSetBaseItems] = useState(false);
   const [isFull, setIsFull] = useState(false);
   const [leavenFlourTotal, setLeavenFlourTotal] = useState(0);
   const [leavenFlourLeft, setLeavenFlourLeft] = useState(0);
@@ -314,7 +324,6 @@ export function Leaven() {
   useEffect(() => {
     const canAddItem = flour.total > 0 && water.total > 0 && dryIngredients.length > 0;
     setCanAddItem(canAddItem);
-    setCanSetBaseItems(flour.total > 0 && water.total > 0 && water.left > 0);
     setIsFull(
       canAddItem &&
         leaven.flourTotal > 0 &&
@@ -324,7 +333,6 @@ export function Leaven() {
   }, [
     flour.total,
     water.total,
-    water.left,
     dryIngredients,
     leaven.flourTotal,
     leaven.flourLeft,
@@ -379,7 +387,7 @@ export function Leaven() {
     <section>
       <SectionTitle title={text.title} level={2} />
       {!isFull && <p>{text.intro}</p>}
-      {canSetBaseItems && <LeavenBaseItems changeFlourHandler={changeFlourHandler} />}
+      <LeavenBaseItems changeFlourHandler={changeFlourHandler} />
       {canAddItem && <LeavenIngredients />}
       {isFull && <p class="error">{text.full}</p>}
     </section>
