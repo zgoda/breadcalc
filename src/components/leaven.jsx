@@ -15,14 +15,7 @@ import {
 import { flourActions } from '../state/actions';
 import { setFlourTotal, setWaterTotal } from '../state/actions/leaven';
 
-/**
- * @typedef {object} LeavenBaseItemsProps
- * @property {(amount: number) => void} changeFlourHandler
- *
- * @param {LeavenBaseItemsProps} props
- * @returns {JSX.Element}
- */
-function LeavenBaseItems({ changeFlourHandler }) {
+function LeavenBaseItems() {
   const [amtFlourWeight, setAmtFlourWeight] = useState(0);
   const [amtFlourPc, setAmtFlourPc] = useState(0);
   const [amtWaterWeight, setAmtWaterWeight] = useState(0);
@@ -51,7 +44,6 @@ function LeavenBaseItems({ changeFlourHandler }) {
     }
     setAmtFlourWeight(amtWeight);
     setAmtFlourPc(amtPc);
-    changeFlourHandler(amtWeight);
   };
 
   const recalcWaterAmount = (
@@ -68,11 +60,15 @@ function LeavenBaseItems({ changeFlourHandler }) {
     }
     setAmtWaterPc(amtPc);
     setAmtWaterWeight(amtWeight);
-    setWaterTotal(amtWeight);
+  };
+
+  const handleDone = () => {
+    setFlourTotal(amtFlourWeight);
+    setWaterTotal(amtWaterWeight);
   };
 
   if (!isVisible) {
-    return <></>;
+    return null;
   }
 
   return (
@@ -152,7 +148,7 @@ function LeavenBaseItems({ changeFlourHandler }) {
             </label>
           </div>
         </div>
-        <DoneButton handler={() => setFlourTotal(amtFlourWeight)} />
+        <DoneButton handler={handleDone} />
       </form>
     </div>
   );
@@ -387,7 +383,7 @@ export function Leaven() {
     <section>
       <SectionTitle title={text.title} level={2} />
       {!isFull && <p>{text.intro}</p>}
-      <LeavenBaseItems changeFlourHandler={changeFlourHandler} />
+      <LeavenBaseItems />
       {canAddItem && <LeavenIngredients />}
       {isFull && <p class="error">{text.full}</p>}
     </section>
