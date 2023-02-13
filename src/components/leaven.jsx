@@ -12,17 +12,16 @@ import {
   leavenStore,
   waterStore,
 } from '../state/stores';
-import { flourActions, leavenActions, waterActions } from '../state/actions';
+import { flourActions, leavenActions } from '../state/actions';
 
 /**
  * @typedef {object} LeavenBaseItemsProps
- * @property {(amount: number) => void} changeWaterHandler
  * @property {(amount: number) => void} changeFlourHandler
  *
  * @param {LeavenBaseItemsProps} props
  * @returns {JSX.Element}
  */
-function LeavenBaseItems({ changeWaterHandler, changeFlourHandler }) {
+function LeavenBaseItems({ changeFlourHandler }) {
   const [amtFlourWeight, setAmtFlourWeight] = useState(0);
   const [amtFlourPc, setAmtFlourPc] = useState(0);
   const [amtWaterWeight, setAmtWaterWeight] = useState(0);
@@ -62,7 +61,7 @@ function LeavenBaseItems({ changeWaterHandler, changeFlourHandler }) {
     }
     setAmtWaterPc(amtPc);
     setAmtWaterWeight(amtWeight);
-    changeWaterHandler(amtWeight);
+    leavenActions.setWaterTotal(amtWeight);
   };
 
   return (
@@ -302,8 +301,6 @@ export function Leaven() {
    * @type {[Array<import('../..').DryItem>, import('preact/hooks').StateUpdater<Array<import('../..').DryItem>>]}
    */
   const [leavenFlourItems, setLeavenFlourItems] = useState([]);
-  const [leavenWater, setLeavenWater] = useState(0);
-  const [leavenSourdough, setLeavenSourdough] = useState(0);
 
   const leaven = useStore(leavenStore);
   const flour = useStore(flourStore);
@@ -312,8 +309,6 @@ export function Leaven() {
 
   useEffect(() => {
     setLeavenFlourItems(leaven.flourItems);
-    setLeavenWater(leaven.water);
-    setLeavenSourdough(leaven.sourdough);
   }, [leaven.flourItems, leaven.water, leaven.sourdough]);
 
   useEffect(() => {
@@ -322,18 +317,18 @@ export function Leaven() {
     setCanSetBaseItems(flour.total > 0 && water.total > 0 && water.left > 0);
     setIsFull(
       canAddItem &&
-        leavenFlourTotal > 0 &&
-        leavenFlourLeft === 0 &&
-        leavenFlourItems.length > 0,
+        leaven.flourTotal > 0 &&
+        leaven.flourLeft === 0 &&
+        leaven.flourItems.length > 0,
     );
   }, [
     flour.total,
     water.total,
     water.left,
     dryIngredients,
-    leavenFlourLeft,
-    leavenFlourItems,
-    leavenFlourTotal,
+    leaven.flourTotal,
+    leaven.flourLeft,
+    leaven.flourItems,
   ]);
 
   const addItemHandler = () => {
@@ -344,27 +339,10 @@ export function Leaven() {
     setLeavenFlourItems(items);
   };
 
-  const updateLeaven = () => {
-    leavenActions.set({
-      flourItems: leavenFlourItems,
-      flourTotal: leavenFlourTotal,
-      flourLeft: leavenFlourTotal,
-      water: leavenWater,
-      sourdough: leavenSourdough,
-    });
-  };
-
-  const changeWaterHandler = (/** @type {number} */ amtWater) => {
-    setLeavenWater(amtWater);
-    waterActions.use(amtWater);
-    updateLeaven();
-  };
-
   const changeFlourHandler = (/** @type {number} */ amtFlour) => {
     setLeavenFlourTotal(leavenFlourTotal + amtFlour);
     setLeavenFlourLeft(leavenFlourLeft - amtFlour);
     flourActions.use(amtFlour);
-    updateLeaven();
   };
 
   const removeFlourItemHandler = (
@@ -375,7 +353,6 @@ export function Leaven() {
     setLeavenFlourItems(items);
     setLeavenFlourLeft(leavenFlourLeft + amtFlour);
     flourActions.return(amtFlour);
-    updateLeaven();
   };
 
   const LeavenIngredients = () => {
@@ -402,12 +379,7 @@ export function Leaven() {
     <section>
       <SectionTitle title={text.title} level={2} />
       {!isFull && <p>{text.intro}</p>}
-      {canSetBaseItems && (
-        <LeavenBaseItems
-          changeWaterHandler={changeWaterHandler}
-          changeFlourHandler={changeFlourHandler}
-        />
-      )}
+      {canSetBaseItems && <LeavenBaseItems changeFlourHandler={changeFlourHandler} />}
       {canAddItem && <LeavenIngredients />}
       {isFull && <p class="error">{text.full}</p>}
     </section>

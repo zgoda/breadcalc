@@ -300,6 +300,15 @@ export const leavenActions = {
       return store.get();
     },
   ),
+  setWaterTotal: action(
+    leavenStore,
+    'setWater',
+    (store, /** @type {number} */ amount) => {
+      store.setKey('water', amount);
+      waterActions.use(amount);
+      return store.get();
+    },
+  ),
   addFlourItem: action(
     leavenStore,
     'addFlourItem',
@@ -308,6 +317,7 @@ export const leavenActions = {
       const newItems = [...prevContent.flourItems, item];
       store.setKey('flourItems', newItems);
       store.setKey('flourLeft', prevContent.flourLeft - item.amount);
+      flourActions.use(item.amount);
       return store.get();
     },
   ),
@@ -326,6 +336,7 @@ export const leavenActions = {
       });
       store.setKey('flourItems', newItems);
       store.setKey('flourLeft', prevContent.flourLeft + extraFlour);
+      flourActions.return(extraFlour);
       return store.get();
     },
   ),
